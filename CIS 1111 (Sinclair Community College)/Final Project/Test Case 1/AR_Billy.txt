@@ -1,0 +1,3 @@
+Date	Description	Debit	Credit	Debit	Credit
+8/21	Starting_Balance			0	
+8/21		25		25	

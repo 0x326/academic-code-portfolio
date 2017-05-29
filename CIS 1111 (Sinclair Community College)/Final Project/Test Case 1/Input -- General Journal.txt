@@ -1,0 +1,13 @@
+Date	Description	Debit	Credit
+8/20	Cash_in_Bank	500	
+	Owner's_Equity		500
+	Receipt_101        		
+8/21	AR_Billy	25	
+	Cash_in_Bank		25
+	Invoice_101		
+8/22	Cash_in_Bank	1000	
+	AP_Big_Bank		1000
+	Receipt_102		
+8/23	Utilities_Expense	66.59	
+	Cash_in_Bank		66.59
+	Check_101		

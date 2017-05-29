@@ -1,0 +1,3 @@
+Date	Description	Debit	Credit	Debit	Credit
+12/3	Starting_Balance			0	
+12/3			10.00		10.00

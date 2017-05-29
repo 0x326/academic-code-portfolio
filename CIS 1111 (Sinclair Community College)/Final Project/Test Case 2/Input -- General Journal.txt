@@ -1,0 +1,13 @@
+Date	Description	Debit	Credit
+6/19	Cash_in_Bank	5896.36	
+	Owner's_Equity		5896.36
+	Receipt_101		
+6/20	Repair_Expense	2658.65	
+	Cash_in_Bank		2658.65
+	Check_101		
+6/22	AP_Molly_Mowing_Service	59.99	
+	Cash_in_Bank		59.99
+	Check_102		
+6/23	Cash_in_Bank	20.00	
+	AR_Joe		20.00
+	Check_501		

@@ -1,0 +1,6 @@
+Date	Description	Debit	Credit	Debit	Credit
+8/20	Starting_Balance			0	
+8/20		500		500	
+8/21			25	475	
+8/22		1000		1475	
+8/23			66.59	1408.41	

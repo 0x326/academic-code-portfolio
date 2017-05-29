@@ -1,0 +1,6 @@
+Date	Description	Debit	Credit	Debit	Credit
+6/19	Starting_Balance			0	
+6/19		5896.36		5896.36	
+6/20			2658.65	3237.71	
+6/22			59.99	3177.72	
+6/23		20		3197.72	

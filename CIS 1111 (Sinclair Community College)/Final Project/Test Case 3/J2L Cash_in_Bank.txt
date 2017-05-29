@@ -1,0 +1,6 @@
+Date	Description	Debit	Credit	Debit	Credit
+12/1	Starting_Balance			0	
+12/1		555.99		555.99	
+12/3		10		565.99	
+12/5			400	165.99	
+12/7			50	115.99	

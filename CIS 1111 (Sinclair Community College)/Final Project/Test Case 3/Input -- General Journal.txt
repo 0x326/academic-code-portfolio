@@ -1,0 +1,13 @@
+Date	Description	Debit	Credit
+12/1	Cash_in_Bank	555.99	
+	Income_Summary		555.99
+	Receipt_101		
+12/3	Cash_in_Bank	10.00	
+	AR_Bob		10.00
+	Memorandum_101		
+12/5	AP_Lighthouse_Power_Company	400.00	
+	Cash_in_Bank		400.00
+	Check_101		
+12/7	AR_Martin	50.00	
+	Cash_in_Bank		50.00
+	Receipt_102		
