@@ -19,7 +19,7 @@
 
 For this project, I chose to read and save `Appointment` objects in the JSON file format through complex regular expressions. `Appointment`'s are stored in the following fashion:
 
-```
+```JSON
 [
   {
     "_objectType": "Daily",
