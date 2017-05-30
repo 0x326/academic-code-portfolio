@@ -1,4 +1,4 @@
-# CSE 271 Project 1
+# CSE 271: Digital Appointment Book
 
 ## Specifications
 
@@ -15,9 +15,13 @@
 - `Appointment` has the method `abstract boolean occursOn(int year, int month, int day)`.
 - Provide a tester class where the user enters a date and sees which events occur on that date.
 
+## Features
+
+- Uses a complex set of regular expressions to accurately parse a JSON file storing various `Appointment`'s, even when an `Appointment`'s textual description contains escaped characters and special delimiters, such as commas and curly braces.
+
 ## `Appointment` File Format: JSON
 
-For this project, I chose to read and save `Appointment` objects in the JSON file format through complex regular expressions. `Appointment`'s are stored in the following fashion:
+For this project, I chose to read and save `Appointment` objects in the JSON file format.  `Appointment`'s are stored in the following fashion:
 
 ```JSON
 [
