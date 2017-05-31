@@ -125,6 +125,10 @@ public class Tester {
 
     @Test
     public void testAppointmentBookSaveLoad() throws FileNotFoundException {
+        // Check for existence of test folder
+        assert (new File("testFiles/")).exists() : "Directory testFiles/ does not exist.\n"
+            + "Create it by running `mkdir testFiles/`";
+
         AppointmentBook testBook = new AppointmentBook();
         fillAppointmentBook(testBook);
 
