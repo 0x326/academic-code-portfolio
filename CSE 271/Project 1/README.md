@@ -1,5 +1,7 @@
 # CSE 271: Digital Appointment Book
 
+![Demo run of AppointmentBookTester.java](documentation_assets/demoRunOfAppointmentBookTester.webm)
+
 ## Specifications
 
 - Design the following classes as described.
