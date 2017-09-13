@@ -1,6 +1,6 @@
 # CSE 271: Digital Appointment Book
 
-![Demo run of AppointmentBookTester.java](https://cdn.rawgit.com/0x326/academic-code-portfolio/6b436935/CSE%20271/Project%201/documentation_assets/demoRunOfAppointmentBookTester.webm)
+<video src="https://cdn.rawgit.com/0x326/academic-code-portfolio/6b436935/CSE%20271/Project%201/documentation_assets/demoRunOfAppointmentBookTester.webm" controls></video>
 
 ## Specifications
 
