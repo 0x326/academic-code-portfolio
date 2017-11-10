@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class TicTacToeInteraction {
@@ -7,7 +8,7 @@ public class TicTacToeInteraction {
         Scanner keyboard = new Scanner(System.in);
         TicTacToe game = new TicTacToe();
 
-        BoardState[] boardState;
+        List<BoardState> boardState;
         int userInput;
         displayBoard(game.getCurrentBoardState());
         while (game.getWinner() == null) {
@@ -23,12 +24,12 @@ public class TicTacToeInteraction {
         System.out.println(String.format("%s is the winner", game.getWinner()));
     }
 
-    private static void displayBoard(BoardState[] board) {
-        for (int i = 0; i < board.length; i++) {
-            if (board[i] == null) {
+    private static void displayBoard(List<BoardState> board) {
+        for (int i = 0; i < board.size(); i++) {
+            if (board.get(i) == null) {
                 System.out.print("_ ");
             } else {
-                System.out.print(board[i] + " ");
+                System.out.print(board.get(i) + " ");
             }
             if (i % 3 == 2) {
                 System.out.println();

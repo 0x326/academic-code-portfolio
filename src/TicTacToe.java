@@ -1,5 +1,7 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Course:
@@ -10,50 +12,50 @@ import java.util.Iterator;
  * @author John Meyer
  */
 public class TicTacToe {
-    private BoardState[] currentBoardState = new BoardState[9];
-    private DictionaryInterface<BoardState[], Integer> bestMoveDictionary = new HashedDictionary2<>();
+    private List<BoardState> currentBoardState = Arrays.asList(null, null, null, null, null, null, null, null, null);
+    private DictionaryInterface<List<BoardState>, Integer> bestMoveDictionary = new HashedDictionary2<>();
 
     public TicTacToe() {
         generateBoards(currentBoardState);
-        Iterator<BoardState[]> bestMoveDictionaryKeyIterator = bestMoveDictionary.getKeyIterator();
+        Iterator<List<BoardState>> bestMoveDictionaryKeyIterator = bestMoveDictionary.getKeyIterator();
         while (bestMoveDictionaryKeyIterator.hasNext()) {
-            BoardState[] key = bestMoveDictionaryKeyIterator.next();
-            System.out.println(Arrays.toString(key));
+            List<BoardState> key = bestMoveDictionaryKeyIterator.next();
+            System.out.println(key.toString());
             System.out.println(bestMoveDictionary.getValue(key));
         }
     }
     
-    private void generateBoards(BoardState[] board) {
+    private void generateBoards(List<BoardState> board) {
         BoardState playerToMove = getTurn(board);
-        for (int i = 0; i < board.length; i++) {
-            if (board[i] == null) {
+        for (int i = 0; i < board.size(); i++) {
+            if (board.get(i) == null) {
                 // Suppose the player were to move here
-                board[i] = playerToMove;
+                board.set(i, playerToMove);
 
                 if (findWinner(board) == null) {
                     OptimalMove bestMove = computeBestMove(board);
                     if (bestMove != null) {
-                        bestMoveDictionary.add(board.clone(), bestMove.location);
+                        bestMoveDictionary.add(board, bestMove.location);
                     }
 
                     generateBoards(board);
                 }
 
                 // Remove supposition
-                board[i] = null;
+                board.set(i, null);
             }
         }
     }
 
-    private OptimalMove computeBestMove(BoardState[] board) {
+    private OptimalMove computeBestMove(List<BoardState> board) {
         BoardState playerToOptimize = getTurn(board);
         FutureGameEnd bestForeseeableGameEnd = null;
         int moveThatYieldsMinimumTime = 0;
 
-        for (int i = 0; i < board.length; i++) {
-            if (board[i] == null) {
+        for (int i = 0; i < board.size(); i++) {
+            if (board.get(i) == null) {
                 // Suppose the player were to move here
-                board[i] = playerToOptimize;
+                board.set(i, playerToOptimize);
                 // Compute time to winning move
                 FutureGameEnd futureWin = predictGameEnding(board);
 
@@ -79,7 +81,7 @@ public class TicTacToe {
                 }
 
                 // Remove supposition
-                board[i] = null;
+                board.set(i, null);
             }
         }
 
@@ -90,7 +92,7 @@ public class TicTacToe {
         }
     }
 
-    private FutureGameEnd predictGameEnding(BoardState[] board) {
+    private FutureGameEnd predictGameEnding(List<BoardState> board) {
         BoardState winner = findWinner(board);
         if (winner != null) {
             return new FutureGameEnd(winner, 0);
@@ -130,7 +132,7 @@ public class TicTacToe {
         return true;
     }
 
-    private static BoardState getTurn(BoardState[] board) {
+    private static BoardState getTurn(List<BoardState> board) {
         int numberOfXs = 0;
         int numberOfOs = 0;
         for (BoardState state:
@@ -188,38 +190,38 @@ public class TicTacToe {
         return null;
     }
 
-    private static BoardState findWinner(BoardState[] board) {
+    private static BoardState findWinner(List<BoardState> board) {
         // Check rows
         for (int row = 0; row < 3; row++) {
-            if (board[3 * row] != null &&
-                board[3 * row] == board[3 * row + 1] &&
-                board[3 * row + 1] == board[3 * row + 2]) {
-                return board[3 * row];
+            if (board.get(3 * row) != null &&
+                board.get(3 * row) == board.get(3 * row + 1) &&
+                board.get(3 * row + 1) == board.get(3 * row + 2)) {
+                return board.get(3 * row);
             }
         }
         // Check columns
         for (int column = 0; column < 3; column++) {
-            if (board[column] != null &&
-                board[column] == board[column + 3] &&
-                board[column + 3] == board[column + 6]) {
-                return board[column];
+            if (board.get(column) != null &&
+                board.get(column) == board.get(column + 3) &&
+                board.get(column + 3) == board.get(column + 6)) {
+                return board.get(column);
             }
         }
         // Check diagonals
-        if (board[0] != null &&
-            board[0] == board[4] &&
-            board[4] == board[8]) {
-            return board[4];
-        } else if (board[2] != null &&
-            board[2] == board[4] &&
-            board[4] == board[6]) {
-            return board[4];
+        if (board.get(0) != null &&
+            board.get(0) == board.get(4) &&
+            board.get(4) == board.get(8)) {
+            return board.get(4);
+        } else if (board.get(2) != null &&
+            board.get(2) == board.get(4) &&
+            board.get(4) == board.get(6)) {
+            return board.get(4);
         }
         return null;
     }
 
-    public BoardState[] getCurrentBoardState() {
-        return currentBoardState.clone();
+    public List<BoardState> getCurrentBoardState() {
+        return new ArrayList<>(currentBoardState);
     }
 
     public BoardState getWinner() {
@@ -228,18 +230,18 @@ public class TicTacToe {
 
     public void placeX(int position) {
         position--;
-        if (!(0 < position && position <= 9) && currentBoardState[position] != null) {
+        if (!(0 < position && position <= 9) && currentBoardState.get(position) != null) {
             throw new IllegalArgumentException();
         }
-        currentBoardState[position] = BoardState.X;
+        currentBoardState.set(position, BoardState.X);
     }
 
     public void makeOpponentMove() {
         int bestMovePosition = bestMoveDictionary.getValue(currentBoardState);
-        if (currentBoardState[bestMovePosition] != null) {
+        if (currentBoardState.get(bestMovePosition) != null) {
             throw new RuntimeException("Dictionary is not properly constructed");
         }
-        currentBoardState[bestMovePosition] = BoardState.O;
+        currentBoardState.set(bestMovePosition, BoardState.O);
     }
 
     public int getBestMove(String board) {
