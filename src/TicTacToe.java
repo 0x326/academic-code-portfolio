@@ -144,8 +144,17 @@ public class TicTacToe {
             this.movesFromNow = movesFromNow;
         }
 
+    /**
+     * Represents a move that immediately causes a player to win the game.
+     */
     private class WinningMove {
+        /**
+         * Location of a the winning move
+         */
         int location;
+        /**
+         * The player that wins the game as a result of this move
+         */
         BoardState player;
 
         public WinningMove(int location, BoardState player) {
@@ -159,7 +168,14 @@ public class TicTacToe {
      * Optimality can be compared by examining the future it is calculated upon.
      */
     private class OptimalMove {
+        /**
+         * The location of where the player should move
+         */
         int location;
+
+        /**
+         * The best possible future foreseen if this move is made
+         */
         FutureGameEnd future;
 
         OptimalMove(int location, FutureGameEnd future) {
