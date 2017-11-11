@@ -250,6 +250,27 @@ public class TicTacToe {
     }
 
     public int getBestMove(String board) {
-        return 0;
+        if (board.length() != 9) {
+            throw new IllegalArgumentException("Board must have 9 spaces");
+        }
+
+        ArrayList<BoardState> listBoard = new ArrayList<>(9);
+        for (char character : board.toCharArray()) {
+            switch (character) {
+                case 'X':
+                    listBoard.add(BoardState.X);
+                    break;
+                case 'O':
+                    listBoard.add(BoardState.O);
+                    break;
+                case '-':
+                    listBoard.add(null);
+                    break;
+                default:
+                    throw new IllegalArgumentException(String.format("Unrecognized character in string %s", character));
+            }
+        }
+
+        return bestMoveDictionary.getValue(listBoard);
     }
 }
