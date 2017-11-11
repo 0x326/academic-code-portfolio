@@ -46,7 +46,12 @@ public class TicTacToeInteraction {
         }
         boardState = game.getCurrentBoardState();
         displayBoard(boardState);
-        System.out.println(String.format("%s is the winner", game.getWinner()));
+        WinState winner = game.getWinner();
+        if (winner != WinState.SCRATCH) {
+            System.out.println(String.format("%s is the winner", game.getWinner()));
+        } else {
+            System.out.println("Scratch game");
+        }
     }
 
     private static void displayBoard(List board) {

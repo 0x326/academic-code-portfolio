@@ -281,8 +281,19 @@ public class TicTacToe {
         return new ArrayList<>(currentBoardState);
     }
 
-    public BoardState getWinner() {
-        return findWinner(currentBoardState);
+    public WinState getWinner() {
+        BoardState winner = findWinner(currentBoardState);
+        if (winner == null) {
+            return isBoardFull(currentBoardState) ? WinState.SCRATCH : null;
+        }
+        switch (winner) {
+            case X:
+                return WinState.X;
+            case O:
+                return WinState.O;
+            default:
+                return null;
+        }
     }
 
     /**
