@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -15,6 +13,10 @@ public class TicTacToe {
     private ArrayList<BoardState> currentBoardState = new ArrayList<>(9);
     private DictionaryInterface<ArrayList<BoardState>, Integer> bestMoveDictionary = new HashedDictionary2<ArrayList<BoardState>,Integer>();
 
+    public DictionaryInterface<ArrayList<BoardState>, Integer> getBestMoveDictionary() {
+        return bestMoveDictionary;
+    }
+
     public TicTacToe() {
         // Initialize state
         for (int i = 0; i < 9; i++) {
@@ -22,14 +24,8 @@ public class TicTacToe {
         }
 
         generateBoards(currentBoardState);
-        Iterator<ArrayList<BoardState>> bestMoveDictionaryKeyIterator = bestMoveDictionary.getKeyIterator();
-        while (bestMoveDictionaryKeyIterator.hasNext()) {
-            ArrayList<BoardState> key = bestMoveDictionaryKeyIterator.next();
-            System.out.println(key.toString());
-            System.out.println(bestMoveDictionary.getValue(key));
-        }
     }
-    
+
     private void generateBoards(ArrayList<BoardState> board) {
         BoardState playerToMove = getTurn(board);
         for (int i = 0; i < board.size(); i++) {

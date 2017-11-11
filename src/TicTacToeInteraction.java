@@ -1,12 +1,18 @@
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class TicTacToeInteraction {
 
     public static void main(String[] args) {
         Scanner keyboard = new Scanner(System.in);
         TicTacToe game = new TicTacToe();
+
+        Iterator<ArrayList<BoardState>> bestMoveDictionaryKeyIterator = game.getBestMoveDictionary().getKeyIterator();
+        while (bestMoveDictionaryKeyIterator.hasNext()) {
+            ArrayList<BoardState> key = bestMoveDictionaryKeyIterator.next();
+            displayBoard(key);
+            System.out.println(game.getBestMoveDictionary().getValue(key) + 1);
+            System.out.println();
+        }
 
         List<BoardState> boardState;
         int userInput;
@@ -24,7 +30,7 @@ public class TicTacToeInteraction {
         System.out.println(String.format("%s is the winner", game.getWinner()));
     }
 
-    private static void displayBoard(List<BoardState> board) {
+    private static void displayBoard(List board) {
         for (int i = 0; i < board.size(); i++) {
             if (board.get(i) == null) {
                 System.out.print("_ ");
