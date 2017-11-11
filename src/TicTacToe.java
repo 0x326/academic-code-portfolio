@@ -67,23 +67,23 @@ public class TicTacToe {
                 FutureGameEnd futureWin = predictGameEnding(board);
 
                 // Decide whether to update best estimate
-                if (futureWin != null &&
-                    (bestForeseeableGameEnd == null ||
+                if (futureWin != null && (
+                    bestForeseeableGameEnd == null || (
                         // We found a win
-                        (futureWin.winner == playerToOptimize &&
+                        futureWin.winner == playerToOptimize && (
                             // This is a better win than what we knew before
-                            (futureWin.movesFromNow < bestForeseeableGameEnd.movesFromNow ||
+                            futureWin.movesFromNow < bestForeseeableGameEnd.movesFromNow ||
                                 // Or, it's a win when we thought we were doomed to lose
-                                bestForeseeableGameEnd.winner != futureWin.winner)) ||
+                                bestForeseeableGameEnd.winner != futureWin.winner)) || (
                         // We found a scratch
-                        (futureWin.winner == null &&
+                        futureWin.winner == null && ((
                             // If we already foresee a scratch, let's try to postpone it
-                            ((bestForeseeableGameEnd.winner == null &&
-                                futureWin.movesFromNow > bestForeseeableGameEnd.movesFromNow) ||
+                            bestForeseeableGameEnd.winner == null &&
+                                futureWin.movesFromNow > bestForeseeableGameEnd.movesFromNow) || (
                             // However, it we thought we were losing, a scratch is better
-                            (bestForeseeableGameEnd.winner != playerToOptimize))) ||
+                            bestForeseeableGameEnd.winner != playerToOptimize))) || (
                         // We found a loss
-                        (futureWin.winner != playerToOptimize &&
+                        futureWin.winner != playerToOptimize &&
                             // And, we don't know of any way to win
                             bestForeseeableGameEnd.winner != playerToOptimize &&
                             // Is this loss more postponed than the one we already knew about?
