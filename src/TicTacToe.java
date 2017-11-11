@@ -103,7 +103,13 @@ public class TicTacToe {
             return new FutureGameEnd(getTurn(board), 1);
         } else {
             OptimalMove optimalMove = computeBestMove(board);
-            return optimalMove != null ? optimalMove.future : null;
+            if (optimalMove != null) {
+                FutureGameEnd gameEnd = optimalMove.future;
+                gameEnd.movesFromNow++;
+                return gameEnd;
+            } else {
+                return null;
+            }
         }
     }
 
