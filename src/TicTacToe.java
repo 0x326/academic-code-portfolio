@@ -59,7 +59,7 @@ public class TicTacToe {
     private OptimalMove computeBestMove(List<BoardState> board) {
         BoardState playerToOptimize = getTurn(board);
         FutureGameEnd bestForeseeableGameEnd = null;
-        int moveThatYieldsMinimumTime = 0;
+        int moveThatYieldsBestGameEnd = 0;
 
         for (int i = 0; i < board.size(); i++) {
             if (board.get(i) == null) {
@@ -84,9 +84,9 @@ public class TicTacToe {
                             // Is this loss more postponed than the one we already knew about?
                             futureWin.movesFromNow > bestForeseeableGameEnd.movesFromNow))) {
 
-                    // Update best estimate
+                    // Update best estimate of the future
                     bestForeseeableGameEnd = futureWin;
-                    moveThatYieldsMinimumTime = i;
+                    moveThatYieldsBestGameEnd = i;
                 }
 
                 // Remove supposition
@@ -95,7 +95,7 @@ public class TicTacToe {
         }
 
         if (bestForeseeableGameEnd != null) {
-            return new OptimalMove(moveThatYieldsMinimumTime, bestForeseeableGameEnd);
+            return new OptimalMove(moveThatYieldsBestGameEnd, bestForeseeableGameEnd);
         } else {
             return null;
         }
