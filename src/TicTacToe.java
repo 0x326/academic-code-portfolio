@@ -34,12 +34,10 @@ public class TicTacToe {
                 board.set(i, playerToMove);
 
                 // Boards which are already won are invalid - another move cannot be made
-                if (findWinner(board) == null) {
+                if (!isBoardFull(board) && findWinner(board) == null) {
                     OptimalMove bestMove = computeBestMove(board);
-                    if (bestMove != null) {
-                        //noinspection unchecked
-                        bestMoveDictionary.add((ArrayList<BoardState>) board.clone(), bestMove.location);
-                    }
+                    //noinspection unchecked
+                    bestMoveDictionary.add((ArrayList<BoardState>) board.clone(), bestMove.location);
 
                     // Recurse
                     generateBoards(board);
@@ -94,11 +92,7 @@ public class TicTacToe {
             }
         }
 
-        if (bestForeseeableGameEnd != null) {
-            return new OptimalMove(moveThatYieldsBestGameEnd, bestForeseeableGameEnd);
-        } else {
-            return null;
-        }
+        return new OptimalMove(moveThatYieldsBestGameEnd, bestForeseeableGameEnd);
     }
 
     /**
@@ -121,13 +115,9 @@ public class TicTacToe {
             // Since the player takes the best move,
             // the future of this game is equal to that on which the best move is calculated
             OptimalMove optimalMove = computeBestMove(board);
-            if (optimalMove != null) {
-                FutureGameEnd gameEnd = optimalMove.future;
-                gameEnd.movesFromNow++;
-                return gameEnd;
-            } else {
-                return null;
-            }
+            FutureGameEnd gameEnd = optimalMove.future;
+            gameEnd.movesFromNow++;
+            return gameEnd;
         }
     }
 
