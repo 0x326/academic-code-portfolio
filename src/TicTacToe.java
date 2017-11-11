@@ -144,6 +144,12 @@ public class TicTacToe {
             this.movesFromNow = movesFromNow;
         }
 
+        @Override
+        public String toString() {
+            return String.format("%s wins in %d moves", winner, movesFromNow);
+        }
+    }
+
     /**
      * Represents a move that immediately causes a player to win the game.
      */
@@ -160,6 +166,11 @@ public class TicTacToe {
         public WinningMove(int location, BoardState player) {
             this.location = location;
             this.player = player;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("%s wins if he marks %s", player, location);
         }
     }
 
@@ -181,6 +192,11 @@ public class TicTacToe {
         OptimalMove(int location, FutureGameEnd future) {
             this.location = location;
             this.future = future;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("Mark %d for %s win in %d moves", location, future.winner, future.movesFromNow);
         }
     }
 
