@@ -151,41 +151,41 @@ public class TicTacToe {
         return numberOfXs == numberOfOs ? BoardState.X : BoardState.O;
     }
 
-    private Integer findWinningMove(BoardState[] board) {
+    private Integer findWinningMove(List<BoardState> board) {
         // Check rows
         for (int row = 0; row < 3; row++) {
-            if (board[3 * row + 1] != null && board[3 * row + 1] == board[3 * row + 2]) {
+            if (board.get(3 * row + 1) != null && board.get(3 * row + 1) == board.get(3 * row + 2) && board.get(3 * row) == null) {
                 return 3 * row;
-            } else if (board[3 * row] != null && board[3 * row] == board[3 * row + 2]) {
+            } else if (board.get(3 * row) != null && board.get(3 * row) == board.get(3 * row + 2) && board.get(3 * row + 1) == null) {
                 return 3 * row + 1;
-            } else if (board[3 * row] != null && board[3 * row] == board[3 * row + 1]) {
+            } else if (board.get(3 * row) != null && board.get(3 * row) == board.get(3 * row + 1) && board.get(3 * row + 2) == null) {
                 return 3 * row + 2;
             }
         }
         // Check columns
         for (int column = 0; column < 3; column++) {
-            if (board[column + 3] != null && board[column + 3] == board[column + 6]) {
+            if (board.get(column + 3) != null && board.get(column + 3) == board.get(column + 6) && board.get(column) == null) {
                 return column;
-            } else if (board[column] != null && board[column] == board[column + 6]) {
+            } else if (board.get(column) != null && board.get(column) == board.get(column + 6) && board.get(column + 3) == null) {
                 return column + 3;
-            } else if (board[column] != null && board[column] == board[column + 3]) {
+            } else if (board.get(column) != null && board.get(column) == board.get(column + 3) && board.get(column + 6) == null) {
                 return column + 6;
             }
         }
         // Check forward diagonals
-        if (board[4] != null && board[4] == board[8]) {
+        if (board.get(4) != null && board.get(4) == board.get(8) && board.get(0) == null) {
             return 0;
-        } else if (board[0] != null && board[0] == board[8]) {
+        } else if (board.get(0) != null && board.get(0) == board.get(8) && board.get(4) == null) {
             return 4;
-        } else if (board[0] != null && board[0] == board[4]) {
+        } else if (board.get(0) != null && board.get(0) == board.get(4) && board.get(8) == null) {
             return 8;
         }
         // Check backward diagonals
-        if (board[4] != null && board[4] == board[6]) {
+        if (board.get(4) != null && board.get(4) == board.get(6) && board.get(2) == null) {
             return 2;
-        } else if (board[2] != null && board[2] == board[6]) {
+        } else if (board.get(2) != null && board.get(2) == board.get(6) && board.get(4) == null) {
             return 4;
-        } else if (board[2] != null && board[2] == board[4]) {
+        } else if (board.get(2) != null && board.get(2) == board.get(4) && board.get(6) == null) {
             return 6;
         }
         // There is no immediate win
