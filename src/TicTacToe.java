@@ -273,7 +273,7 @@ public class TicTacToe {
     /**
      * Computes the winner of the game.
      * @param board The board
-     * @return The winner, or null if the game is unfinished.
+     * @return The winner, or null if there is no winner.
      */
     private static BoardState findWinner(List<BoardState> board) {
         // Check rows
