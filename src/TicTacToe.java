@@ -109,13 +109,13 @@ public class TicTacToe {
      */
     private FutureGameEnd predictGameEnding(List<BoardState> board) {
         BoardState winner = findWinner(board);
-        Integer winningMove = findWinningMove(board);
+        Move winningMove = findWinningMove(board);
         if (winner != null) {
             // The game is already finished
             return new FutureGameEnd(winner, 0);
         } else if (winningMove != null) {
             // The game is just about to finish
-            return new FutureGameEnd(getTurn(board), 1);
+            return new FutureGameEnd(winningMove.player, 1);
         } else if (isBoardFull(board)) {
             // The game is a scratch
             return new FutureGameEnd(null, 0);
@@ -142,6 +142,15 @@ public class TicTacToe {
         FutureGameEnd(BoardState winner, int movesFromNow) {
             this.winner = winner;
             this.movesFromNow = movesFromNow;
+        }
+
+    private class Move {
+        int location;
+        BoardState player;
+
+        public Move(int location, BoardState player) {
+            this.location = location;
+            this.player = player;
         }
     }
 
@@ -201,45 +210,64 @@ public class TicTacToe {
      * @param board The board
      * @return The position of the move.  Null if not immediately available.
      */
-    private Integer findWinningMove(List<BoardState> board) {
+    private Move findWinningMove(List<BoardState> board) {
+        Integer moveLocation = null;
+        BoardState winningParty = null;
         // Check rows
-        for (int row = 0; row < 3; row++) {
+        for (int row = 0; moveLocation == null && row < 3; row++) {
             if (board.get(3 * row + 1) != null && board.get(3 * row + 1) == board.get(3 * row + 2) && board.get(3 * row) == null) {
-                return 3 * row;
+                moveLocation = 3 * row;
+                winningParty = board.get(3 * row + 1);
             } else if (board.get(3 * row) != null && board.get(3 * row) == board.get(3 * row + 2) && board.get(3 * row + 1) == null) {
-                return 3 * row + 1;
+                moveLocation = 3 * row + 1;
+                winningParty = board.get(3 * row);
             } else if (board.get(3 * row) != null && board.get(3 * row) == board.get(3 * row + 1) && board.get(3 * row + 2) == null) {
-                return 3 * row + 2;
+                moveLocation = 3 * row + 2;
+                winningParty = board.get(3 * row);
             }
         }
         // Check columns
-        for (int column = 0; column < 3; column++) {
+        for (int column = 0; moveLocation == null && column < 3; column++) {
             if (board.get(column + 3) != null && board.get(column + 3) == board.get(column + 6) && board.get(column) == null) {
-                return column;
+                moveLocation = column;
+                winningParty = board.get(column + 3);
             } else if (board.get(column) != null && board.get(column) == board.get(column + 6) && board.get(column + 3) == null) {
-                return column + 3;
+                moveLocation = column + 3;
+                winningParty = board.get(column);
             } else if (board.get(column) != null && board.get(column) == board.get(column + 3) && board.get(column + 6) == null) {
-                return column + 6;
+                moveLocation = column + 6;
+                winningParty = board.get(column);
             }
         }
         // Check forward diagonals
         if (board.get(4) != null && board.get(4) == board.get(8) && board.get(0) == null) {
-            return 0;
+            moveLocation = 0;
+            winningParty = board.get(4);
         } else if (board.get(0) != null && board.get(0) == board.get(8) && board.get(4) == null) {
-            return 4;
+            moveLocation = 4;
+            winningParty = board.get(0);
         } else if (board.get(0) != null && board.get(0) == board.get(4) && board.get(8) == null) {
-            return 8;
+            moveLocation = 8;
+            winningParty = board.get(0);
         }
         // Check backward diagonals
-        if (board.get(4) != null && board.get(4) == board.get(6) && board.get(2) == null) {
-            return 2;
+        else if (board.get(4) != null && board.get(4) == board.get(6) && board.get(2) == null) {
+            moveLocation = 2;
+            winningParty = board.get(4);
         } else if (board.get(2) != null && board.get(2) == board.get(6) && board.get(4) == null) {
-            return 4;
+            moveLocation = 4;
+            winningParty = board.get(2);
         } else if (board.get(2) != null && board.get(2) == board.get(4) && board.get(6) == null) {
-            return 6;
+            moveLocation = 6;
+            winningParty = board.get(2);
         }
-        // There is no immediate win
-        return null;
+
+        if (moveLocation == null) {
+            // There is no immediate win
+            return null;
+        } else {
+            return new Move(moveLocation, winningParty);
+        }
     }
 
     /**
