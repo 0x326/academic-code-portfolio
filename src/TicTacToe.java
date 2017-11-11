@@ -12,20 +12,25 @@ import java.util.List;
  * @author John Meyer
  */
 public class TicTacToe {
-    private List<BoardState> currentBoardState = Arrays.asList(null, null, null, null, null, null, null, null, null);
-    private DictionaryInterface<List<BoardState>, Integer> bestMoveDictionary = new HashedDictionary2<>();
+    private ArrayList<BoardState> currentBoardState = new ArrayList<>(9);
+    private DictionaryInterface<ArrayList<BoardState>, Integer> bestMoveDictionary = new HashedDictionary2<ArrayList<BoardState>,Integer>();
 
     public TicTacToe() {
+        // Initialize state
+        for (int i = 0; i < 9; i++) {
+            currentBoardState.add(null);
+        }
+
         generateBoards(currentBoardState);
-        Iterator<List<BoardState>> bestMoveDictionaryKeyIterator = bestMoveDictionary.getKeyIterator();
+        Iterator<ArrayList<BoardState>> bestMoveDictionaryKeyIterator = bestMoveDictionary.getKeyIterator();
         while (bestMoveDictionaryKeyIterator.hasNext()) {
-            List<BoardState> key = bestMoveDictionaryKeyIterator.next();
+            ArrayList<BoardState> key = bestMoveDictionaryKeyIterator.next();
             System.out.println(key.toString());
             System.out.println(bestMoveDictionary.getValue(key));
         }
     }
     
-    private void generateBoards(List<BoardState> board) {
+    private void generateBoards(ArrayList<BoardState> board) {
         BoardState playerToMove = getTurn(board);
         for (int i = 0; i < board.size(); i++) {
             if (board.get(i) == null) {
