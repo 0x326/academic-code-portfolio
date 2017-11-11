@@ -40,7 +40,8 @@ public class TicTacToe {
                 if (findWinner(board) == null) {
                     OptimalMove bestMove = computeBestMove(board);
                     if (bestMove != null) {
-                        bestMoveDictionary.add(board, bestMove.location);
+                        //noinspection unchecked
+                        bestMoveDictionary.add((ArrayList<BoardState>) board.clone(), bestMove.location);
                     }
 
                     generateBoards(board);
