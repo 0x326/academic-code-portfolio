@@ -96,8 +96,11 @@ public class TicTacToe {
 
     private FutureGameEnd predictGameEnding(List<BoardState> board) {
         BoardState winner = findWinner(board);
+        Integer winningMove = findWinningMove(board);
         if (winner != null) {
             return new FutureGameEnd(winner, 0);
+        } else if (winningMove != null) {
+            return new FutureGameEnd(getTurn(board), 1);
         } else {
             OptimalMove optimalMove = computeBestMove(board);
             return optimalMove != null ? optimalMove.future : null;
