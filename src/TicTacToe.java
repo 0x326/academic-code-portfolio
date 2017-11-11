@@ -124,7 +124,7 @@ public class TicTacToe {
         }
     }
 
-    private static boolean isBoardFull(BoardState[] board) {
+    private static boolean isBoardFull(List<BoardState> board) {
         for (BoardState state:
              board) {
             if (state == null) {
