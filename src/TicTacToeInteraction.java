@@ -14,6 +14,10 @@ public class TicTacToeInteraction {
             System.out.println();
         }
 
+        System.out.println("The board is numbered as follows:");
+        displayBoard(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
+        System.out.println("-----\n");
+
         List<BoardState> boardState;
         int userInput;
         displayBoard(game.getCurrentBoardState());
