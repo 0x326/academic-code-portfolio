@@ -109,7 +109,7 @@ public class TicTacToe {
      */
     private FutureGameEnd predictGameEnding(List<BoardState> board) {
         BoardState winner = findWinner(board);
-        Move winningMove = findWinningMove(board);
+        WinningMove winningMove = findWinningMove(board);
         if (winner != null) {
             // The game is already finished
             return new FutureGameEnd(winner, 0);
@@ -144,11 +144,11 @@ public class TicTacToe {
             this.movesFromNow = movesFromNow;
         }
 
-    private class Move {
+    private class WinningMove {
         int location;
         BoardState player;
 
-        public Move(int location, BoardState player) {
+        public WinningMove(int location, BoardState player) {
             this.location = location;
             this.player = player;
         }
@@ -210,7 +210,7 @@ public class TicTacToe {
      * @param board The board
      * @return The position of the move.  Null if not immediately available.
      */
-    private Move findWinningMove(List<BoardState> board) {
+    private WinningMove findWinningMove(List<BoardState> board) {
         Integer moveLocation = null;
         BoardState winningParty = null;
         // Check rows
@@ -266,7 +266,7 @@ public class TicTacToe {
             // There is no immediate win
             return null;
         } else {
-            return new Move(moveLocation, winningParty);
+            return new WinningMove(moveLocation, winningParty);
         }
     }
 
