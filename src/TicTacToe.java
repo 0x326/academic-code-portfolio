@@ -75,6 +75,13 @@ public class TicTacToe {
                             (futureWin.movesFromNow < bestForeseeableGameEnd.movesFromNow ||
                                 // Or, it's a win when we thought we were doomed to lose
                                 bestForeseeableGameEnd.winner != futureWin.winner)) ||
+                        // We found a scratch
+                        (futureWin.winner == null &&
+                            // If we already foresee a scratch, let's try to postpone it
+                            ((bestForeseeableGameEnd.winner == null &&
+                                futureWin.movesFromNow > bestForeseeableGameEnd.movesFromNow) ||
+                            // However, it we thought we were losing, a scratch is better
+                            (bestForeseeableGameEnd.winner != playerToOptimize))) ||
                         // We found a loss
                         (futureWin.winner != playerToOptimize &&
                             // And, we don't know of any way to win
@@ -109,6 +116,9 @@ public class TicTacToe {
         } else if (winningMove != null) {
             // The game is just about to finish
             return new FutureGameEnd(getTurn(board), 1);
+        } else if (isBoardFull(board)) {
+            // The game is a scratch
+            return new FutureGameEnd(null, 0);
         } else {
             // Recursively compute the best move
             // Suppose the player takes the best move
