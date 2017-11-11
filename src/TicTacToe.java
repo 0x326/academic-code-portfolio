@@ -41,6 +41,7 @@ public class TicTacToe {
                         bestMoveDictionary.add((ArrayList<BoardState>) board.clone(), bestMove.location);
                     }
 
+                    // Recurse
                     generateBoards(board);
                 }
 
@@ -50,6 +51,11 @@ public class TicTacToe {
         }
     }
 
+    /**
+     * Computes the best move given the board.
+     * @param board The board state
+     * @return The best move
+     */
     private OptimalMove computeBestMove(List<BoardState> board) {
         BoardState playerToOptimize = getTurn(board);
         FutureGameEnd bestForeseeableGameEnd = null;
@@ -75,7 +81,7 @@ public class TicTacToe {
                         (futureWin.winner != playerToOptimize &&
                             // And, we don't know of any way to win
                             bestForeseeableGameEnd.winner != playerToOptimize &&
-                            // Is this loss more postponed than the one we knew about?
+                            // Is this loss more postponed than the one we already knew about?
                             futureWin.movesFromNow > bestForeseeableGameEnd.movesFromNow))) {
 
                     // Update best estimate
@@ -95,14 +101,25 @@ public class TicTacToe {
         }
     }
 
+    /**
+     *
+     * @param board The board
+     * @return
+     */
     private FutureGameEnd predictGameEnding(List<BoardState> board) {
         BoardState winner = findWinner(board);
         Integer winningMove = findWinningMove(board);
         if (winner != null) {
+            // The game is already finished
             return new FutureGameEnd(winner, 0);
         } else if (winningMove != null) {
+            // The game is just about to finish
             return new FutureGameEnd(getTurn(board), 1);
         } else {
+            // Recursively compute the best move
+            // Suppose the player takes the best move
+            // Since the player takes the best move,
+            // the future of this game is equal to that on which the best move is calculated
             OptimalMove optimalMove = computeBestMove(board);
             if (optimalMove != null) {
                 FutureGameEnd gameEnd = optimalMove.future;
@@ -114,6 +131,10 @@ public class TicTacToe {
         }
     }
 
+    /**
+     * Represents a foreseeable moment when a player will will the game.
+     * Denotes winner as well as time.
+     */
     private class FutureGameEnd {
         BoardState winner;
         int movesFromNow;
@@ -124,6 +145,10 @@ public class TicTacToe {
         }
     }
 
+    /**
+     * Represents an optimal move.
+     * Optimality can be compared by examining the future it is calculated upon.
+     */
     private class OptimalMove {
         int location;
         FutureGameEnd future;
@@ -134,6 +159,11 @@ public class TicTacToe {
         }
     }
 
+    /**
+     * Computes whether the board is full.
+     * @param board The board
+     * @return Whether it is full
+     */
     private static boolean isBoardFull(List<BoardState> board) {
         for (BoardState state:
              board) {
@@ -144,6 +174,11 @@ public class TicTacToe {
         return true;
     }
 
+    /**
+     * Computes whose turn it is by examining the state of the board.
+     * @param board The board
+     * @return The player who is to go next
+     */
     private static BoardState getTurn(List<BoardState> board) {
         int numberOfXs = 0;
         int numberOfOs = 0;
@@ -161,6 +196,11 @@ public class TicTacToe {
         return numberOfXs == numberOfOs ? BoardState.X : BoardState.O;
     }
 
+    /**
+     * Searches for a move that immediately results in a finished game.
+     * @param board The board
+     * @return The position of the move.  Null if not immediately available.
+     */
     private Integer findWinningMove(List<BoardState> board) {
         // Check rows
         for (int row = 0; row < 3; row++) {
@@ -202,6 +242,11 @@ public class TicTacToe {
         return null;
     }
 
+    /**
+     * Computes the winner of the game.
+     * @param board The board
+     * @return The winner, or null if the game is unfinished.
+     */
     private static BoardState findWinner(List<BoardState> board) {
         // Check rows
         for (int row = 0; row < 3; row++) {
@@ -240,6 +285,10 @@ public class TicTacToe {
         return findWinner(currentBoardState);
     }
 
+    /**
+     * Places an X at the given location.  Ought to be called on behalf of the user.
+     * @param position The position at which to add [1, 9]
+     */
     public void placeX(int position) {
         if (!(0 < position && position <= 9) || currentBoardState.get(position - 1) != null) {
             throw new IllegalArgumentException();
@@ -247,6 +296,10 @@ public class TicTacToe {
         currentBoardState.set(position - 1, BoardState.X);
     }
 
+    /**
+     * Prompts the "computer" to take his turn.
+     * Uses a dictionary to lookup the best move.
+     */
     public void makeOpponentMove() {
         int bestMovePosition = bestMoveDictionary.getValue(currentBoardState);
         if (currentBoardState.get(bestMovePosition) != null) {
@@ -255,6 +308,11 @@ public class TicTacToe {
         currentBoardState.set(bestMovePosition, BoardState.O);
     }
 
+    /**
+     * A public method for testing purposes.  Accepts a String of length 9 consisting of 'X', 'O', or '-' characters.
+     * @param board A String representation of a board
+     * @return The position of the best move [0, 9)
+     */
     public int getBestMove(String board) {
         if (board.length() != 9) {
             throw new IllegalArgumentException("Board must have 9 spaces");
