@@ -127,7 +127,7 @@ public class TicTacToe {
         int location;
         FutureGameEnd future;
 
-        public OptimalMove(int location, FutureGameEnd future) {
+        OptimalMove(int location, FutureGameEnd future) {
             this.location = location;
             this.future = future;
         }
