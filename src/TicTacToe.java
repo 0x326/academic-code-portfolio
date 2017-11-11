@@ -132,7 +132,7 @@ public class TicTacToe {
     }
 
     /**
-     * Represents a foreseeable moment when a player will will the game.
+     * Represents a foreseeable moment when a player will win the game.
      * Denotes winner as well as time.
      */
     private class FutureGameEnd {
