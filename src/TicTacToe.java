@@ -231,11 +231,10 @@ public class TicTacToe {
     }
 
     public void placeX(int position) {
-        position--;
-        if (!(0 < position && position <= 9) || currentBoardState.get(position) != null) {
+        if (!(0 < position && position <= 9) || currentBoardState.get(position - 1) != null) {
             throw new IllegalArgumentException();
         }
-        currentBoardState.set(position, BoardState.X);
+        currentBoardState.set(position - 1, BoardState.X);
     }
 
     public void makeOpponentMove() {
