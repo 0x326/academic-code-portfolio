@@ -33,6 +33,7 @@ public class TicTacToe {
                 // Suppose the player were to move here
                 board.set(i, playerToMove);
 
+                // Boards which are already won are invalid - another move cannot be made
                 if (findWinner(board) == null) {
                     OptimalMove bestMove = computeBestMove(board);
                     if (bestMove != null) {
