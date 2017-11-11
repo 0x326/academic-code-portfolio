@@ -17,16 +17,31 @@ public class TicTacToeInteraction {
         List<BoardState> boardState;
         int userInput;
         displayBoard(game.getCurrentBoardState());
-        while (game.getWinner() == null) {
+        while (true) {
             do {
                 System.out.print("Where would you like to place an X? ");
                 userInput = keyboard.nextInt();
             } while (!(0 < userInput && userInput <= 9));
-            game.placeX(userInput);
-            game.makeOpponentMove();
+
+            try {
+                game.placeX(userInput);
+                if (game.getWinner() != null) {
+                    break;
+                }
+
+                game.makeOpponentMove();
+                if (game.getWinner() != null) {
+                    break;
+                }
+            } catch (IllegalArgumentException error) {
+                System.out.println(String.format("There is already a mark at position %d", userInput));
+            }
+
             boardState = game.getCurrentBoardState();
             displayBoard(boardState);
         }
+        boardState = game.getCurrentBoardState();
+        displayBoard(boardState);
         System.out.println(String.format("%s is the winner", game.getWinner()));
     }
 
