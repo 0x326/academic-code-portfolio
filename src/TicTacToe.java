@@ -84,27 +84,27 @@ public class TicTacToe {
     
     private static boolean isFutureBetter(FutureGameEnd original, FutureGameEnd newFuture, BoardState playerToFavor) {
         return (
-            newFuture != null && (
-                original == null || (
+            (newFuture != null) && (
+                (original == null) || (
                     // We found a win
-                    newFuture.winner == playerToFavor && (
+                    (newFuture.winner == playerToFavor) && (
                         // This is a better win than what we knew before
-                        newFuture.movesFromNow < original.movesFromNow ||
+                        (newFuture.movesFromNow < original.movesFromNow) ||
                             // Or, it's a win when we thought we were doomed to lose
-                            original.winner != newFuture.winner)) || (
+                            (original.winner != newFuture.winner))) || (
                     // We found a scratch
-                    newFuture.winner == null && ((
+                    (newFuture.winner == null) && ((
                         // If we already foresee a scratch, let's try to postpone it
-                        original.winner == null &&
-                            newFuture.movesFromNow > original.movesFromNow) || (
+                        (original.winner == null) &&
+                            (newFuture.movesFromNow > original.movesFromNow)) ||
                         // However, it we thought we were losing, a scratch is better
-                        original.winner != playerToFavor))) || (
+                        (original.winner != playerToFavor))) || (
                     // We found a loss
-                    newFuture.winner != playerToFavor &&
+                    (newFuture.winner != playerToFavor) &&
                         // And, we don't know of any way to win
-                        original.winner != playerToFavor &&
+                        (original.winner != playerToFavor) &&
                         // Is this loss more postponed than the one we already knew about?
-                        newFuture.movesFromNow > original.movesFromNow))
+                        (newFuture.movesFromNow > original.movesFromNow)))
         );
     }
 
