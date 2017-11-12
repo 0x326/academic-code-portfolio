@@ -23,7 +23,7 @@ public class TicTacToe {
             currentBoardState.add(null);
         }
 
-        generateBoards(currentBoardState);
+        generatePossibleBoards(currentBoardState);
     }
 
     /**
@@ -36,7 +36,7 @@ public class TicTacToe {
      *
      * @param board The board (serves as the constraint)
      */
-    private void generateBoards(ArrayList<BoardState> board) {
+    private void generatePossibleBoards(ArrayList<BoardState> board) {
         BoardState playerToMove = getTurn(board);
         for (int i = 0; i < board.size(); i++) {
             if (board.get(i) == null) {
@@ -50,7 +50,7 @@ public class TicTacToe {
                     bestMoveDictionary.add((ArrayList<BoardState>) board.clone(), bestMove.location);
 
                     // Recurse
-                    generateBoards(board);
+                    generatePossibleBoards(board);
                 }
 
                 // Remove supposition
