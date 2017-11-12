@@ -131,12 +131,11 @@ public class TicTacToe {
         } else if (winner != null) {
             // The game is already won
             return new FutureGameEnd(winner, 0);
-        } else if (winningMove != null) {
-            // A player is just about to win the game
+        } else if (winningMove != null && winningMove.player == getTurn(board)) {
+            // The current player is just about to win the game
             return new FutureGameEnd(winningMove.player, 1);
         } else {
-            // Recursively compute the best move
-            // Suppose the player takes the best move
+            // Suppose the next player takes the best move
             // Since the player takes the best move,
             // the future of this game is equal to that on which the best move is calculated
             OptimalMove optimalMove = computeBestMove(board);
