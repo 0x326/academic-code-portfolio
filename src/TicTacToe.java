@@ -356,10 +356,10 @@ public class TicTacToe {
      * @param position The position at which to add [1, 9]
      */
     public void placeX(int position) {
-        if (!(0 < position && position <= 9) || currentBoardState.get(position - 1) != null) {
+        if (!(0 <= position && position < 9) || currentBoardState.get(position) != null) {
             throw new IllegalArgumentException();
         }
-        currentBoardState.set(position - 1, BoardState.X);
+        currentBoardState.set(position, BoardState.X);
     }
 
     /**

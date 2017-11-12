@@ -16,7 +16,7 @@ public class TicTacToeInteraction {
         TicTacToe game = new TicTacToe();
 
         System.out.println("The board is numbered as follows:");
-        displayBoard(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
+        displayBoard(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8));
         System.out.println("-----\n");
 
         List<BoardState> boardState;
@@ -26,7 +26,7 @@ public class TicTacToeInteraction {
             do {
                 System.out.print("Where would you like to place an X? ");
                 userInput = keyboard.nextInt();
-            } while (!(0 < userInput && userInput <= 9));
+            } while (!(0 <= userInput && userInput < 9));
 
             try {
                 game.placeX(userInput);
