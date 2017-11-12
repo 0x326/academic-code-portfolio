@@ -124,15 +124,15 @@ public class TicTacToe {
     private static FutureGameEnd predictGameEnding(List<BoardState> board) {
         BoardState winner = findWinner(board);
         WinningMove winningMove = findWinningMove(board);
-        if (winner != null) {
-            // The game is already finished
-            return new FutureGameEnd(winner, 0);
-        } else if (winningMove != null) {
-            // The game is just about to finish
-            return new FutureGameEnd(winningMove.player, 1);
-        } else if (isBoardFull(board)) {
+        if (isBoardFull(board)) {
             // The game is a scratch
             return new FutureGameEnd(null, 0);
+        } else if (winner != null) {
+            // The game is already won
+            return new FutureGameEnd(winner, 0);
+        } else if (winningMove != null) {
+            // A player is just about to win the game
+            return new FutureGameEnd(winningMove.player, 1);
         } else {
             // Recursively compute the best move
             // Suppose the player takes the best move
