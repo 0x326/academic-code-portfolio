@@ -150,7 +150,13 @@ public class TicTacToe {
      * Denotes winner as well as time.
      */
     private static class FutureGameEnd {
+        /**
+         * The player foreseen to win. Null if a scratch is foreseen
+         */
         BoardState winner;
+        /**
+         * The time at which he is to win
+         */
         int movesFromNow;
 
         FutureGameEnd(BoardState winner, int movesFromNow) {
