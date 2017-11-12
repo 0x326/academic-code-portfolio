@@ -2,10 +2,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Course:
- * Instructor:
- * <p>
  * Project 06
+ * <p>
+ * Course: CSE 274 F
+ * Instructor: Dr. Gani
  *
  * @author John Meyer
  */

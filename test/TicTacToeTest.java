@@ -3,10 +3,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Course:
- * Instructor:
- * <p>
  * Project 06
+ * <p>
+ * Course: CSE 274 F
+ * Instructor: Dr. Gani
  *
  * @author John Meyer
  */

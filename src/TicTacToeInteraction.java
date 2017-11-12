@@ -1,5 +1,13 @@
 import java.util.*;
 
+/**
+ * Project 06
+ * <p>
+ * Course: CSE 274 F
+ * Instructor: Dr. Gani
+ *
+ * @author John Meyer
+ */
 public class TicTacToeInteraction {
 
     public static void main(String[] args) {
