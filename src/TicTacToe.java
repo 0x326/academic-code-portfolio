@@ -26,6 +26,16 @@ public class TicTacToe {
         generateBoards(currentBoardState);
     }
 
+    /**
+     * Generates all possible boards and adds its best move to the dictionary.
+     * <p>
+     * Generates all possible states of a board, under the constraints of the given board
+     * (ex: if the given board has an X at location 0, all possible boards must have an X at location 0).
+     *
+     * For each possible board, its best move is computed and added to the dictionary.
+     *
+     * @param board The board (serves as the constraint)
+     */
     private void generateBoards(ArrayList<BoardState> board) {
         BoardState playerToMove = getTurn(board);
         for (int i = 0; i < board.size(); i++) {
@@ -81,7 +91,14 @@ public class TicTacToe {
 
         return new OptimalMove(moveThatYieldsBestGameEnd, bestForeseeableGameEnd);
     }
-    
+
+    /**
+     * Determines whether a new future is better than an already discovered future.
+     * @param original The already discovered future
+     * @param newFuture The new future
+     * @param playerToFavor The player in whose favor this method should rule (usually the current player)
+     * @return Whether the new future should replace the old
+     */
     private static boolean isFutureBetter(FutureGameEnd original, FutureGameEnd newFuture, BoardState playerToFavor) {
         return (
             // newFuture can't be better if it doesn't exist
@@ -118,9 +135,14 @@ public class TicTacToe {
     }
 
     /**
+     * Computes the end of the game in advance.
+     * <p>
+     * This method acts as an oracle.
+     * It uses recursion to foresee who will win the game, given its current state,
+     * assuming the next player makes the best possible move.
      *
      * @param board The board
-     * @return
+     * @return The foreseen game ending
      */
     private static FutureGameEnd predictGameEnding(List<BoardState> board) {
         BoardState winner = findWinner(board);
@@ -412,6 +434,11 @@ public class TicTacToe {
         return bestMoveDictionary.getValue(toBoard(board));
     }
 
+    /**
+     * Converts a board from the String representation to its internal List representation
+     * @param stringBoard The String representation to parse
+     * @return The List representation
+     */
     public static ArrayList<BoardState> toBoard(String stringBoard) {
         ArrayList<BoardState> board = new ArrayList<>(9);
         for (char character : stringBoard.toCharArray()) {
