@@ -11,11 +11,7 @@ import java.util.List;
  */
 public class TicTacToe {
     private ArrayList<BoardState> currentBoardState = new ArrayList<>(9);
-    private DictionaryInterface<ArrayList<BoardState>, Integer> bestMoveDictionary = new HashedDictionary2<ArrayList<BoardState>,Integer>();
-
-    public DictionaryInterface<ArrayList<BoardState>, Integer> getBestMoveDictionary() {
-        return bestMoveDictionary;
-    }
+    private DictionaryInterface<ArrayList<BoardState>, Integer> bestMoveDictionary = new HashedDictionary2<ArrayList<BoardState>, Integer>();
 
     public TicTacToe() {
         // Initialize state
@@ -31,10 +27,9 @@ public class TicTacToe {
      * <p>
      * Generates all possible states of a board, under the constraints of the given board
      * (ex: if the given board has an X at location 0, all possible boards must have an X at location 0).
-     *
      * For each possible board, its best move is computed and added to the dictionary.
      *
-     * @param board The board (serves as the constraint)
+     * @param board              The board (serves as the constraint)
      * @param bestMoveDictionary The dictionary to which to add the best moves of each possible board
      */
     private static void generatePossibleBoards(ArrayList<BoardState> board,
@@ -63,6 +58,7 @@ public class TicTacToe {
 
     /**
      * Computes the best move given the board.
+     *
      * @param board The board state
      * @return The best move
      */
@@ -96,8 +92,9 @@ public class TicTacToe {
 
     /**
      * Determines whether a new future is better than an already discovered future.
-     * @param original The already discovered future
-     * @param newFuture The new future
+     *
+     * @param original      The already discovered future
+     * @param newFuture     The new future
      * @param playerToFavor The player in whose favor this method should rule (usually the current player)
      * @return Whether the new future should replace the old
      */
@@ -167,6 +164,232 @@ public class TicTacToe {
             gameEnd.movesFromNow++;
             return gameEnd;
         }
+    }
+
+    /**
+     * Computes whether the board is full.
+     *
+     * @param board The board
+     * @return Whether it is full
+     */
+    private static boolean isBoardFull(List<BoardState> board) {
+        for (BoardState state : board) {
+            if (state == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Computes whose turn it is by examining the state of the board.
+     *
+     * @param board The board
+     * @return The player who is to go next
+     */
+    private static BoardState getTurn(List<BoardState> board) {
+        int numberOfXs = 0;
+        int numberOfOs = 0;
+        for (BoardState state : board) {
+            if (state == BoardState.X) {
+                numberOfXs++;
+            } else if (state == BoardState.O) {
+                numberOfOs++;
+            }
+        }
+        if (numberOfXs - numberOfOs != 0 && numberOfXs - numberOfOs != 1) {
+            throw new IllegalStateException();
+        }
+        return numberOfXs == numberOfOs ? BoardState.X : BoardState.O;
+    }
+
+    /**
+     * Searches for a move that immediately results in a finished game.
+     *
+     * @param board The board
+     * @return The position of the move.  Null if not immediately available.
+     */
+    private static WinningMove findWinningMove(List<BoardState> board) {
+        Integer moveLocation = null;
+        BoardState winningParty = null;
+        // Check rows
+        for (int row = 0; moveLocation == null && row < 3; row++) {
+            if (board.get(3 * row + 1) != null && board.get(3 * row + 1) == board.get(3 * row + 2) && board.get(3 * row) == null) {
+                moveLocation = 3 * row;
+                winningParty = board.get(3 * row + 1);
+            } else if (board.get(3 * row) != null && board.get(3 * row) == board.get(3 * row + 2) && board.get(3 * row + 1) == null) {
+                moveLocation = 3 * row + 1;
+                winningParty = board.get(3 * row);
+            } else if (board.get(3 * row) != null && board.get(3 * row) == board.get(3 * row + 1) && board.get(3 * row + 2) == null) {
+                moveLocation = 3 * row + 2;
+                winningParty = board.get(3 * row);
+            }
+        }
+        // Check columns
+        for (int column = 0; moveLocation == null && column < 3; column++) {
+            if (board.get(column + 3) != null && board.get(column + 3) == board.get(column + 6) && board.get(column) == null) {
+                moveLocation = column;
+                winningParty = board.get(column + 3);
+            } else if (board.get(column) != null && board.get(column) == board.get(column + 6) && board.get(column + 3) == null) {
+                moveLocation = column + 3;
+                winningParty = board.get(column);
+            } else if (board.get(column) != null && board.get(column) == board.get(column + 3) && board.get(column + 6) == null) {
+                moveLocation = column + 6;
+                winningParty = board.get(column);
+            }
+        }
+        // Check forward diagonals
+        if (board.get(4) != null && board.get(4) == board.get(8) && board.get(0) == null) {
+            moveLocation = 0;
+            winningParty = board.get(4);
+        } else if (board.get(0) != null && board.get(0) == board.get(8) && board.get(4) == null) {
+            moveLocation = 4;
+            winningParty = board.get(0);
+        } else if (board.get(0) != null && board.get(0) == board.get(4) && board.get(8) == null) {
+            moveLocation = 8;
+            winningParty = board.get(0);
+        }
+        // Check backward diagonals
+        else if (board.get(4) != null && board.get(4) == board.get(6) && board.get(2) == null) {
+            moveLocation = 2;
+            winningParty = board.get(4);
+        } else if (board.get(2) != null && board.get(2) == board.get(6) && board.get(4) == null) {
+            moveLocation = 4;
+            winningParty = board.get(2);
+        } else if (board.get(2) != null && board.get(2) == board.get(4) && board.get(6) == null) {
+            moveLocation = 6;
+            winningParty = board.get(2);
+        }
+
+        if (moveLocation == null) {
+            // There is no immediate win
+            return null;
+        } else {
+            return new WinningMove(moveLocation, winningParty);
+        }
+    }
+
+    /**
+     * Computes the winner of the game.
+     *
+     * @param board The board
+     * @return The winner, or null if there is no winner.
+     */
+    private static BoardState findWinner(List<BoardState> board) {
+        // Check rows
+        for (int row = 0; row < 3; row++) {
+            if (board.get(3 * row) != null &&
+                board.get(3 * row) == board.get(3 * row + 1) &&
+                board.get(3 * row + 1) == board.get(3 * row + 2)) {
+                return board.get(3 * row);
+            }
+        }
+        // Check columns
+        for (int column = 0; column < 3; column++) {
+            if (board.get(column) != null &&
+                board.get(column) == board.get(column + 3) &&
+                board.get(column + 3) == board.get(column + 6)) {
+                return board.get(column);
+            }
+        }
+        // Check diagonals
+        if (board.get(0) != null &&
+            board.get(0) == board.get(4) &&
+            board.get(4) == board.get(8)) {
+            return board.get(4);
+        } else if (board.get(2) != null &&
+            board.get(2) == board.get(4) &&
+            board.get(4) == board.get(6)) {
+            return board.get(4);
+        }
+        return null;
+    }
+
+    /**
+     * Converts a board from the String representation to its internal List representation
+     *
+     * @param stringBoard The String representation to parse
+     * @return The List representation
+     */
+    private static ArrayList<BoardState> toBoard(String stringBoard) {
+        ArrayList<BoardState> board = new ArrayList<>(9);
+        for (char character : stringBoard.toCharArray()) {
+            switch (character) {
+                case 'X':
+                    board.add(BoardState.X);
+                    break;
+                case 'O':
+                    board.add(BoardState.O);
+                    break;
+                case '-':
+                    board.add(null);
+                    break;
+                default:
+                    throw new IllegalArgumentException(String.format("Unrecognized character in string %s", character));
+            }
+        }
+        return board;
+    }
+
+    public DictionaryInterface<ArrayList<BoardState>, Integer> getBestMoveDictionary() {
+        return bestMoveDictionary;
+    }
+
+    public List<BoardState> getCurrentBoardState() {
+        return new ArrayList<>(currentBoardState);
+    }
+
+    public WinState getWinner() {
+        BoardState winner = findWinner(currentBoardState);
+        if (winner == null) {
+            return isBoardFull(currentBoardState) ? WinState.SCRATCH : null;
+        }
+        switch (winner) {
+            case X:
+                return WinState.X;
+            case O:
+                return WinState.O;
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * Places an X at the given location.  Ought to be called on behalf of the user.
+     *
+     * @param position The position at which to add [1, 9]
+     */
+    public void placeX(int position) {
+        if (!(0 < position && position <= 9) || currentBoardState.get(position - 1) != null) {
+            throw new IllegalArgumentException();
+        }
+        currentBoardState.set(position - 1, BoardState.X);
+    }
+
+    /**
+     * Prompts the "computer" to take his turn.
+     * Uses a dictionary to lookup the best move.
+     */
+    public void makeOpponentMove() {
+        int bestMovePosition = bestMoveDictionary.getValue(currentBoardState);
+        if (currentBoardState.get(bestMovePosition) != null) {
+            throw new RuntimeException("Dictionary is not properly constructed");
+        }
+        currentBoardState.set(bestMovePosition, BoardState.O);
+    }
+
+    /**
+     * A public method for testing purposes.  Accepts a String of length 9 consisting of 'X', 'O', or '-' characters.
+     *
+     * @param board A String representation of a board
+     * @return The position of the best move [0, 9)
+     */
+    public int getBestMove(String board) {
+        if (board.length() != 9) {
+            throw new IllegalArgumentException("Board must have 9 spaces");
+        }
+
+        return bestMoveDictionary.getValue(toBoard(board));
     }
 
     /**
@@ -242,222 +465,5 @@ public class TicTacToe {
         public String toString() {
             return String.format("Mark %d for %s win in %d moves", location, future.winner, future.movesFromNow);
         }
-    }
-
-    /**
-     * Computes whether the board is full.
-     * @param board The board
-     * @return Whether it is full
-     */
-    private static boolean isBoardFull(List<BoardState> board) {
-        for (BoardState state:
-             board) {
-            if (state == null) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Computes whose turn it is by examining the state of the board.
-     * @param board The board
-     * @return The player who is to go next
-     */
-    private static BoardState getTurn(List<BoardState> board) {
-        int numberOfXs = 0;
-        int numberOfOs = 0;
-        for (BoardState state:
-             board) {
-            if (state == BoardState.X) {
-                numberOfXs++;
-            } else if (state == BoardState.O) {
-                numberOfOs++;
-            }
-        }
-        if (numberOfXs - numberOfOs != 0 && numberOfXs - numberOfOs != 1) {
-            throw new IllegalStateException();
-        }
-        return numberOfXs == numberOfOs ? BoardState.X : BoardState.O;
-    }
-
-    /**
-     * Searches for a move that immediately results in a finished game.
-     * @param board The board
-     * @return The position of the move.  Null if not immediately available.
-     */
-    private static WinningMove findWinningMove(List<BoardState> board) {
-        Integer moveLocation = null;
-        BoardState winningParty = null;
-        // Check rows
-        for (int row = 0; moveLocation == null && row < 3; row++) {
-            if (board.get(3 * row + 1) != null && board.get(3 * row + 1) == board.get(3 * row + 2) && board.get(3 * row) == null) {
-                moveLocation = 3 * row;
-                winningParty = board.get(3 * row + 1);
-            } else if (board.get(3 * row) != null && board.get(3 * row) == board.get(3 * row + 2) && board.get(3 * row + 1) == null) {
-                moveLocation = 3 * row + 1;
-                winningParty = board.get(3 * row);
-            } else if (board.get(3 * row) != null && board.get(3 * row) == board.get(3 * row + 1) && board.get(3 * row + 2) == null) {
-                moveLocation = 3 * row + 2;
-                winningParty = board.get(3 * row);
-            }
-        }
-        // Check columns
-        for (int column = 0; moveLocation == null && column < 3; column++) {
-            if (board.get(column + 3) != null && board.get(column + 3) == board.get(column + 6) && board.get(column) == null) {
-                moveLocation = column;
-                winningParty = board.get(column + 3);
-            } else if (board.get(column) != null && board.get(column) == board.get(column + 6) && board.get(column + 3) == null) {
-                moveLocation = column + 3;
-                winningParty = board.get(column);
-            } else if (board.get(column) != null && board.get(column) == board.get(column + 3) && board.get(column + 6) == null) {
-                moveLocation = column + 6;
-                winningParty = board.get(column);
-            }
-        }
-        // Check forward diagonals
-        if (board.get(4) != null && board.get(4) == board.get(8) && board.get(0) == null) {
-            moveLocation = 0;
-            winningParty = board.get(4);
-        } else if (board.get(0) != null && board.get(0) == board.get(8) && board.get(4) == null) {
-            moveLocation = 4;
-            winningParty = board.get(0);
-        } else if (board.get(0) != null && board.get(0) == board.get(4) && board.get(8) == null) {
-            moveLocation = 8;
-            winningParty = board.get(0);
-        }
-        // Check backward diagonals
-        else if (board.get(4) != null && board.get(4) == board.get(6) && board.get(2) == null) {
-            moveLocation = 2;
-            winningParty = board.get(4);
-        } else if (board.get(2) != null && board.get(2) == board.get(6) && board.get(4) == null) {
-            moveLocation = 4;
-            winningParty = board.get(2);
-        } else if (board.get(2) != null && board.get(2) == board.get(4) && board.get(6) == null) {
-            moveLocation = 6;
-            winningParty = board.get(2);
-        }
-
-        if (moveLocation == null) {
-            // There is no immediate win
-            return null;
-        } else {
-            return new WinningMove(moveLocation, winningParty);
-        }
-    }
-
-    /**
-     * Computes the winner of the game.
-     * @param board The board
-     * @return The winner, or null if there is no winner.
-     */
-    private static BoardState findWinner(List<BoardState> board) {
-        // Check rows
-        for (int row = 0; row < 3; row++) {
-            if (board.get(3 * row) != null &&
-                board.get(3 * row) == board.get(3 * row + 1) &&
-                board.get(3 * row + 1) == board.get(3 * row + 2)) {
-                return board.get(3 * row);
-            }
-        }
-        // Check columns
-        for (int column = 0; column < 3; column++) {
-            if (board.get(column) != null &&
-                board.get(column) == board.get(column + 3) &&
-                board.get(column + 3) == board.get(column + 6)) {
-                return board.get(column);
-            }
-        }
-        // Check diagonals
-        if (board.get(0) != null &&
-            board.get(0) == board.get(4) &&
-            board.get(4) == board.get(8)) {
-            return board.get(4);
-        } else if (board.get(2) != null &&
-            board.get(2) == board.get(4) &&
-            board.get(4) == board.get(6)) {
-            return board.get(4);
-        }
-        return null;
-    }
-
-    public List<BoardState> getCurrentBoardState() {
-        return new ArrayList<>(currentBoardState);
-    }
-
-    public WinState getWinner() {
-        BoardState winner = findWinner(currentBoardState);
-        if (winner == null) {
-            return isBoardFull(currentBoardState) ? WinState.SCRATCH : null;
-        }
-        switch (winner) {
-            case X:
-                return WinState.X;
-            case O:
-                return WinState.O;
-            default:
-                return null;
-        }
-    }
-
-    /**
-     * Places an X at the given location.  Ought to be called on behalf of the user.
-     * @param position The position at which to add [1, 9]
-     */
-    public void placeX(int position) {
-        if (!(0 < position && position <= 9) || currentBoardState.get(position - 1) != null) {
-            throw new IllegalArgumentException();
-        }
-        currentBoardState.set(position - 1, BoardState.X);
-    }
-
-    /**
-     * Prompts the "computer" to take his turn.
-     * Uses a dictionary to lookup the best move.
-     */
-    public void makeOpponentMove() {
-        int bestMovePosition = bestMoveDictionary.getValue(currentBoardState);
-        if (currentBoardState.get(bestMovePosition) != null) {
-            throw new RuntimeException("Dictionary is not properly constructed");
-        }
-        currentBoardState.set(bestMovePosition, BoardState.O);
-    }
-
-    /**
-     * A public method for testing purposes.  Accepts a String of length 9 consisting of 'X', 'O', or '-' characters.
-     * @param board A String representation of a board
-     * @return The position of the best move [0, 9)
-     */
-    public int getBestMove(String board) {
-        if (board.length() != 9) {
-            throw new IllegalArgumentException("Board must have 9 spaces");
-        }
-
-        return bestMoveDictionary.getValue(toBoard(board));
-    }
-
-    /**
-     * Converts a board from the String representation to its internal List representation
-     * @param stringBoard The String representation to parse
-     * @return The List representation
-     */
-    private static ArrayList<BoardState> toBoard(String stringBoard) {
-        ArrayList<BoardState> board = new ArrayList<>(9);
-        for (char character : stringBoard.toCharArray()) {
-            switch (character) {
-                case 'X':
-                    board.add(BoardState.X);
-                    break;
-                case 'O':
-                    board.add(BoardState.O);
-                    break;
-                case '-':
-                    board.add(null);
-                    break;
-                default:
-                    throw new IllegalArgumentException(String.format("Unrecognized character in string %s", character));
-            }
-        }
-        return board;
     }
 }
