@@ -331,10 +331,6 @@ public class TicTacToe {
         return board;
     }
 
-    public DictionaryInterface<ArrayList<BoardState>, Integer> getBestMoveDictionary() {
-        return bestMoveDictionary;
-    }
-
     public List<BoardState> getCurrentBoardState() {
         return new ArrayList<>(currentBoardState);
     }

@@ -12,15 +12,8 @@ public class TicTacToeInteraction {
 
     public static void main(String[] args) {
         Scanner keyboard = new Scanner(System.in);
+        System.out.println("Setting up...");
         TicTacToe game = new TicTacToe();
-
-        Iterator<ArrayList<BoardState>> bestMoveDictionaryKeyIterator = game.getBestMoveDictionary().getKeyIterator();
-        while (bestMoveDictionaryKeyIterator.hasNext()) {
-            ArrayList<BoardState> key = bestMoveDictionaryKeyIterator.next();
-            displayBoard(key);
-            System.out.println(game.getBestMoveDictionary().getValue(key) + 1);
-            System.out.println();
-        }
 
         System.out.println("The board is numbered as follows:");
         displayBoard(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
