@@ -19,4 +19,9 @@ class TicTacToeTest {
         assertNotEquals(4, game.getBestMove("OOX---X-X") + 1);
     }
 
+    @Test
+    void findWinningMove() {
+
+    }
+
 }

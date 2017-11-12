@@ -54,7 +54,7 @@ public class TicTacToe {
      * @param board The board state
      * @return The best move
      */
-    private OptimalMove computeBestMove(List<BoardState> board) {
+    private static OptimalMove computeBestMove(List<BoardState> board) {
         BoardState playerToOptimize = getTurn(board);
         FutureGameEnd bestForeseeableGameEnd = null;
         int moveThatYieldsBestGameEnd = 0;
@@ -121,7 +121,7 @@ public class TicTacToe {
      * @param board The board
      * @return
      */
-    private FutureGameEnd predictGameEnding(List<BoardState> board) {
+    private static FutureGameEnd predictGameEnding(List<BoardState> board) {
         BoardState winner = findWinner(board);
         WinningMove winningMove = findWinningMove(board);
         if (winner != null) {
@@ -149,7 +149,7 @@ public class TicTacToe {
      * Represents a foreseeable moment when a player will win the game.
      * Denotes winner as well as time.
      */
-    private class FutureGameEnd {
+    private static class FutureGameEnd {
         BoardState winner;
         int movesFromNow;
 
@@ -167,7 +167,7 @@ public class TicTacToe {
     /**
      * Represents a move that immediately causes a player to win the game.
      */
-    private class WinningMove {
+    private static class WinningMove {
         /**
          * Location of a the winning move
          */
@@ -192,7 +192,7 @@ public class TicTacToe {
      * Represents an optimal move.
      * Optimality can be compared by examining the future it is calculated upon.
      */
-    private class OptimalMove {
+    private static class OptimalMove {
         /**
          * The location of where the player should move
          */
@@ -256,7 +256,7 @@ public class TicTacToe {
      * @param board The board
      * @return The position of the move.  Null if not immediately available.
      */
-    private WinningMove findWinningMove(List<BoardState> board) {
+    private static WinningMove findWinningMove(List<BoardState> board) {
         Integer moveLocation = null;
         BoardState winningParty = null;
         // Check rows
