@@ -403,23 +403,26 @@ public class TicTacToe {
             throw new IllegalArgumentException("Board must have 9 spaces");
         }
 
-        ArrayList<BoardState> listBoard = new ArrayList<>(9);
-        for (char character : board.toCharArray()) {
+        return bestMoveDictionary.getValue(toBoard(board));
+    }
+
+    public static ArrayList<BoardState> toBoard(String stringBoard) {
+        ArrayList<BoardState> board = new ArrayList<>(9);
+        for (char character : stringBoard.toCharArray()) {
             switch (character) {
                 case 'X':
-                    listBoard.add(BoardState.X);
+                    board.add(BoardState.X);
                     break;
                 case 'O':
-                    listBoard.add(BoardState.O);
+                    board.add(BoardState.O);
                     break;
                 case '-':
-                    listBoard.add(null);
+                    board.add(null);
                     break;
                 default:
                     throw new IllegalArgumentException(String.format("Unrecognized character in string %s", character));
             }
         }
-
-        return bestMoveDictionary.getValue(listBoard);
+        return board;
     }
 }
