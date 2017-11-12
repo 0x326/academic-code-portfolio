@@ -207,7 +207,7 @@ public class TicTacToe {
          */
         BoardState player;
 
-        public WinningMove(int location, BoardState player) {
+        WinningMove(int location, BoardState player) {
             this.location = location;
             this.player = player;
         }
@@ -441,7 +441,7 @@ public class TicTacToe {
      * @param stringBoard The String representation to parse
      * @return The List representation
      */
-    public static ArrayList<BoardState> toBoard(String stringBoard) {
+    private static ArrayList<BoardState> toBoard(String stringBoard) {
         ArrayList<BoardState> board = new ArrayList<>(9);
         for (char character : stringBoard.toCharArray()) {
             switch (character) {
