@@ -108,11 +108,12 @@ public class TicTacToe {
                             (newFuture.movesFromNow > original.movesFromNow)))) || (
 
                     // Do we already foresee a loss?
-                    (original.winner != playerToFavor) && (
-                        // Does newFuture foresee a loss?
-                        (newFuture.winner != playerToFavor) && (newFuture.winner != null) &&
-                            // Is the new loss later than our loss?
-                            (newFuture.movesFromNow > original.movesFromNow)))))
+                    (original.winner != playerToFavor && original.winner != null) && (
+                        // Is newFuture a win or a scratch?
+                        (newFuture.winner == playerToFavor || newFuture.winner == null) || (
+                            // Or, since newFuture foresees a loss (true by elimination),
+                            // is the new loss later than our loss?
+                            (newFuture.movesFromNow > original.movesFromNow))))))
         );
     }
 
