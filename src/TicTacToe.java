@@ -84,27 +84,35 @@ public class TicTacToe {
     
     private static boolean isFutureBetter(FutureGameEnd original, FutureGameEnd newFuture, BoardState playerToFavor) {
         return (
+            // newFuture can't be better if it doesn't exist
             (newFuture != null) && (
-                (original == null) || (
-                    // We found a win
-                    (newFuture.winner == playerToFavor) && (
-                        // This is a better win than what we knew before
-                        (newFuture.movesFromNow < original.movesFromNow) ||
-                            // Or, it's a win when we thought we were doomed to lose
-                            (original.winner != newFuture.winner))) || (
-                    // We found a scratch
-                    (newFuture.winner == null) && ((
-                        // If we already foresee a scratch, let's try to postpone it
-                        (original.winner == null) &&
-                            (newFuture.movesFromNow > original.movesFromNow)) ||
-                        // However, it we thought we were losing, a scratch is better
-                        (original.winner != playerToFavor))) || (
-                    // We found a loss
-                    (newFuture.winner != playerToFavor) &&
-                        // And, we don't know of any way to win
-                        (original.winner != playerToFavor) &&
-                        // Is this loss more postponed than the one we already knew about?
-                        (newFuture.movesFromNow > original.movesFromNow)))
+                // But anything is better than nothing
+                (original == null) || ((
+                    // Since they both exist, they need to be compared
+
+                    // Do we already foresee a win?
+                    (original.winner == playerToFavor) && (
+                        // Does newFuture foresees a win?
+                        (newFuture.winner == playerToFavor) &&
+                            // Is the new win sooner than our win?
+                            (newFuture.movesFromNow < original.movesFromNow))) || (
+
+                    // Do we already foresee a scratch?
+                    (original.winner == null) && (
+                        // Does newFuture foresee a win?
+                        (newFuture.winner == playerToFavor) || (
+
+                        // Does newFuture foresee a scratch?
+                        (newFuture.winner == null) &&
+                            // Is the new scratch more postponed than our scratch?
+                            (newFuture.movesFromNow > original.movesFromNow)))) || (
+
+                    // Do we already foresee a loss?
+                    (original.winner != playerToFavor) && (
+                        // Does newFuture foresee a loss?
+                        (newFuture.winner != playerToFavor) && (newFuture.winner != null) &&
+                            // Is the new loss later than our loss?
+                            (newFuture.movesFromNow > original.movesFromNow)))))
         );
     }
 
