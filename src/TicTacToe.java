@@ -354,7 +354,7 @@ public class TicTacToe {
      * Places the given mark at the given location.
      *
      * @param position The position at which to add the mark
-     * @param mark The mark to add
+     * @param mark     The mark to add
      */
     private void placeMark(int position, BoardState mark) {
         if (!(0 <= position && position < 9) || currentBoardState.get(position) != null) {
@@ -410,6 +410,7 @@ public class TicTacToe {
          * The player foreseen to win. Null if a scratch is foreseen
          */
         BoardState winner;
+
         /**
          * The time at which he is to win
          */
@@ -434,6 +435,7 @@ public class TicTacToe {
          * Location of a the winning move
          */
         int location;
+
         /**
          * The player that wins the game as a result of this move
          */
