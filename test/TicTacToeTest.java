@@ -15,6 +15,8 @@ class TicTacToeTest {
 
     @Test
     void getBestMove() {
+        assertEquals(8, game.getBestMove("X--XXOOO-"));
+        assertEquals(0, game.getBestMove("--OXXO--X"));
         assertEquals(6, game.getBestMove("-OXOXO-X-"));
         assertEquals(4, game.getBestMove("XO------X"));
         assertNotEquals(4, game.getBestMove("OOX---X-X"));
