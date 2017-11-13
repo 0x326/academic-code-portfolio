@@ -207,7 +207,7 @@ public class TicTacToe {
      * Searches for a move that immediately results in a finished game.
      *
      * @param board The board
-     * @return The position of the move.  Null if not immediately available.
+     * @return The winning move.  Null if not immediately available.
      */
     private static WinningMove findWinningMove(List<BoardState> board) {
         Integer moveLocation = null;
