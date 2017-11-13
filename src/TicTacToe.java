@@ -351,15 +351,28 @@ public class TicTacToe {
     }
 
     /**
+     * Places the given mark at the given location.
+     *
+     * @param position The position at which to add the mark
+     * @param mark The mark to add
+     */
+    private void placeMark(int position, BoardState mark) {
+        if (!(0 <= position && position < 9) || currentBoardState.get(position) != null) {
+            throw new IllegalArgumentException();
+        } else if (getTurn(currentBoardState) != mark) {
+            throw new IllegalStateException(String.format("It's not %s's turn to go", mark));
+        }
+
+        currentBoardState.set(position, mark);
+    }
+
+    /**
      * Places an X at the given location.  Ought to be called on behalf of the user.
      *
      * @param position The position at which to add [1, 9]
      */
     public void placeX(int position) {
-        if (!(0 <= position && position < 9) || currentBoardState.get(position) != null) {
-            throw new IllegalArgumentException();
-        }
-        currentBoardState.set(position, BoardState.X);
+        placeMark(position, BoardState.X);
     }
 
     /**
@@ -371,7 +384,7 @@ public class TicTacToe {
         if (currentBoardState.get(bestMovePosition) != null) {
             throw new RuntimeException("Dictionary is not properly constructed");
         }
-        currentBoardState.set(bestMovePosition, BoardState.O);
+        placeMark(bestMovePosition, BoardState.O);
     }
 
     /**
