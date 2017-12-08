@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -12,13 +13,14 @@ public class HashMap<K, V> {
 
     private int numberOfKeys = 0;
     private Node<K, V>[] hashTable;
+    private ArrayList<K> keys = new ArrayList<>();
 
     public HashMap() {
         this(20);
     }
 
-    public HashMap(Integer initialCapacity) {
-        hashTable = (Node<K, V>[]) new Object[initialCapacity];
+    public HashMap(int initialCapacity) {
+        hashTable = (Node<K, V>[]) new Node[initialCapacity];
     }
 
     public int size() {
@@ -29,17 +31,19 @@ public class HashMap<K, V> {
         return numberOfKeys == 0;
     }
 
-    public V get(Object key) {
+    public V get(K key) {
         if (key == null) {
             return null;
         }
 
-        int hastTableLocation = key.hashCode() % hashTable.length;
+        int hastTableLocation = Math.abs(computeHashCode(key) % hashTable.length);
         Node<K, V> node = hashTable[hastTableLocation];
+        // Search for the right node (linked chaining)
         while (node != null && !node.key.equals(key)) {
             node = node.next;
         }
 
+        // Return the data if it can be found
         return node != null ? node.value : null;
     }
 
@@ -48,7 +52,7 @@ public class HashMap<K, V> {
             return null;
         }
 
-        int hastTableLocation = key.hashCode() % hashTable.length;
+        int hastTableLocation = Math.abs(computeHashCode(key) % hashTable.length);
         Node<K, V> node = hashTable[hastTableLocation];
 
         if (node == null) {
@@ -56,15 +60,18 @@ public class HashMap<K, V> {
             return null;
         }
 
+        // Search for the right node (linked chaining)
         while (node.next != null && !node.key.equals(key)) {
             node = node.next;
         }
 
         if (node.key.equals(key)) {
+            // Replace value in pre-existing node
             V oldValue = node.value;
             node.value = value;
             return oldValue;
         } else {
+            // Create new node
             node.next = new Node<>(key, value);
             return null;
         }
@@ -75,13 +82,14 @@ public class HashMap<K, V> {
             return null;
         }
 
-        int hastTableLocation = key.hashCode() % hashTable.length;
+        int hastTableLocation = Math.abs(computeHashCode(key) % hashTable.length);
         Node<K, V> node = hashTable[hastTableLocation];
 
         if (node == null) {
             return null;
         }
 
+        // Search for the right node (linked chaining)
         while (node.next != null && !node.next.key.equals(key)) {
             node = node.next;
         }
@@ -97,13 +105,26 @@ public class HashMap<K, V> {
     }
 
     public void clear() {
-        hashTable = (Node<K, V>[]) new Object[hashTable.length];
+        hashTable = (Node<K, V>[]) new Node[hashTable.length];
         numberOfKeys = 0;
     }
 
-    public V getOrDefault(Object key, V defaultValue) {
+    public V getOrDefault(K key, V defaultValue) {
         V value = get(key);
         return value != null ? value : defaultValue;
+    }
+
+    private static int computeHashCode(Object object) {
+        if (object instanceof String) {
+            int hashCode = 0;
+            String string = (String) object;
+            for (int i = 0; i < string.length(); i++) {
+                hashCode += string.charAt(i) * Math.pow(31, string.length() - i - 1);
+            }
+            return hashCode;
+        } else {
+            return object.hashCode();
+        }
     }
 
     private static class Node<K, V> {

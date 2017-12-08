@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Project 08 - Speedy Lookups
@@ -20,11 +22,11 @@ public class IntegerRelationSortedSet<T extends Comparable> {
     }
     
     public IntegerRelationSortedSet(int initialCapacity) {
-        relation = (Node<T>[]) new Object[initialCapacity];
+        relation = (Node<T>[]) new Node[initialCapacity];
     }
 
     public void clear() {
-        relation = (Node<T>[]) new Object[relation.length];
+        relation = (Node<T>[]) new Node[relation.length];
         size = 0;
     }
     
@@ -36,11 +38,15 @@ public class IntegerRelationSortedSet<T extends Comparable> {
         return size == 0;
     }
 
-    public ArrayList<Integer> getRelatedIntegers() {
-        return relatedIntegers.inorderTraversal();
+    private void ensureCapacity(int capacity) {
+        if (capacity >= relation.length) {
+            // Array needs to be expanded
+            relation = Arrays.copyOf(relation, 4 * relation.length / 3);
+        }
     }
 
     public boolean add(int integer, T data) {
+        ensureCapacity(integer);
         Node<T> node = relation[integer];
 
         if (node == null) {
@@ -51,6 +57,12 @@ public class IntegerRelationSortedSet<T extends Comparable> {
         } else if (node.data.equals(data)) {
             // Node already exists
             return false;
+        } else if (data.compareTo(node.data) < 0) {
+            // Node is less than first node
+            Node<T> newNode = new Node<>(data);
+            newNode.next = node;
+            relation[integer] = newNode;
+            return true;
         }
 
         // Search for node (linked list is in sorted order)
@@ -108,6 +120,28 @@ public class IntegerRelationSortedSet<T extends Comparable> {
         return null;
     }
 
+    public List<T> toList() {
+        ArrayList<T> relatedData = new ArrayList<>();
+        ArrayList<Integer> integers = relatedIntegers.inorderTraversal();
+        Stack<T> dataStack = new Stack<>();
+        for (Integer integer : integers) {
+            Node<T> dataNode = relation[integer];
+            while (dataNode != null) {
+                dataStack.push(dataNode.data);
+                dataNode = dataNode.next;
+            }
+
+            while (!dataStack.isEmpty()) {
+                relatedData.add(dataStack.pop());
+            }
+        }
+        return relatedData;
+    }
+
+    private ArrayList<Integer> getRelatedIntegers() {
+        return relatedIntegers.inorderTraversal();
+    }
+
     /**
      * A data node
      *
@@ -119,6 +153,11 @@ public class IntegerRelationSortedSet<T extends Comparable> {
 
         private Node(D data) {
             this.data = data;
+        }
+
+        @Override
+        public String toString() {
+            return data.toString();
         }
     }
 }
