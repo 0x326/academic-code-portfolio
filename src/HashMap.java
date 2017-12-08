@@ -14,6 +14,7 @@ public class HashMap<K, V> {
     private int numberOfKeys = 0;
     private Node<K, V>[] hashTable;
     private ArrayList<K> keys = new ArrayList<>();
+    private final double maxLoadFactor = 0.60;
 
     public HashMap() {
         this(20);
@@ -32,6 +33,10 @@ public class HashMap<K, V> {
     }
 
     public V get(K key) {
+        return get(key, hashTable);
+    }
+
+    private static <K, V> V get(K key, Node<K, V>[] hashTable) {
         if (key == null) {
             return null;
         }
@@ -48,6 +53,14 @@ public class HashMap<K, V> {
     }
 
     public V put(K key, V value) {
+        if ((double) numberOfKeys / hashTable.length > maxLoadFactor) {
+            growHashTable();
+        }
+
+        return put(key, value, hashTable);
+    }
+
+    private static <K, V> V put(K key, V value, Node<K, V>[] hashTable) {
         if (key == null) {
             return null;
         }
@@ -112,6 +125,18 @@ public class HashMap<K, V> {
     public V getOrDefault(K key, V defaultValue) {
         V value = get(key);
         return value != null ? value : defaultValue;
+    }
+
+    private void growHashTable() {
+        int newSize = 2 * hashTable.length;
+        Node<K, V>[] newHashTable = (Node<K, V>[]) new Node[newSize];
+
+        for (K key : keys) {
+            V value = get(key);
+            put(key, value, newHashTable);
+        }
+
+        hashTable = newHashTable;
     }
 
     private static int computeHashCode(Object object) {
