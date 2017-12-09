@@ -135,7 +135,7 @@ public class HashMap<K, V> {
      * @param key The key of the value to disassociate
      * @return The disassociated value
      */
-    public V remove(Object key) {
+    public V remove(K key) {
         if (key == null) {
             return null;
         }
