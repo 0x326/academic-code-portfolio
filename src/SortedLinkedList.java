@@ -8,16 +8,21 @@ import java.util.Objects;
  *
  * @author John Meyer
  */
-public class SortedLinkedSet<T extends Comparable> {
+public class SortedLinkedList<T extends Comparable> {
     private Node<T> head = new Node<>(null);
     private int size = 0;
+    private boolean duplicatesPermitted;
+
+    public SortedLinkedList(boolean duplicatesPermitted) {
+        this.duplicatesPermitted = duplicatesPermitted;
+    }
 
     /**
      * Gets the current number of entries in this set.
      *
      * @return The integer number of entries currently in the set.
      */
-    public int getCurrentSize() {
+    public int size() {
         return size;
     }
 
@@ -38,7 +43,7 @@ public class SortedLinkedSet<T extends Comparable> {
      * is in the set.
      */
     public boolean add(T value) {
-        if (!contains(value)) {
+        if (!duplicatesPermitted && !contains(value)) {
             Node<T> nodeBeforeInsertionPoint = head;
             Node<T> nodeAfterInsertionPoint = head.next;
             while (nodeAfterInsertionPoint != null) {
@@ -58,6 +63,17 @@ public class SortedLinkedSet<T extends Comparable> {
             return true;
         }
         return false;
+    }
+
+    public T get(int index) {
+        Node<T> currentNode = head.next;
+        for (int i = 0; currentNode != null; i++) {
+            if (i == index) {
+                return currentNode.data;
+            }
+            currentNode = currentNode.next;
+        }
+        return null;
     }
 
     /**
