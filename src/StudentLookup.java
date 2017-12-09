@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.List;
 
 // Project 08 - Speedy Lookups
@@ -18,7 +19,7 @@ public class StudentLookup implements LookupInterface {
 
     private int numberOfWords = 0;
     private HashMap<String, Integer> wordCounts;
-    private IntegerRelationSortedSet<String> wordPopularity;
+    private HashMap<Integer, SortedLinkedList<String>> wordPopularity;
 
     public StudentLookup() {
         this(10000);
@@ -26,7 +27,7 @@ public class StudentLookup implements LookupInterface {
 
     public StudentLookup(int initialCapacity) {
         this.wordCounts = new HashMap<>(initialCapacity);
-        this.wordPopularity = new IntegerRelationSortedSet<>(initialCapacity);
+        this.wordPopularity = new HashMap<>(initialCapacity);
     }
 
     @Override
@@ -41,13 +42,26 @@ public class StudentLookup implements LookupInterface {
         if (count == 0) {
             // This is a new word
             numberOfWords++;
-        } else {
-            // We've seen this word before
-            wordPopularity.remove(count, string);
         }
+
+        // Remove from old popularity list
+        SortedLinkedList oldPopularityList = wordPopularity.get(count);
+        if (oldPopularityList != null) {
+            oldPopularityList.remove(string);
+        }
+
         count += amount;
+
+        // Add to dictionary
         wordCounts.put(string, count);
-        wordPopularity.add(count, string);
+
+        // Add to new popularity list
+        SortedLinkedList newPopularityList = wordPopularity.get(count);
+        if (newPopularityList == null) {
+            newPopularityList = new SortedLinkedList(false);
+        }
+        newPopularityList.add(string);
+        wordPopularity.put(count, newPopularityList);
     }
 
     @Override
@@ -61,8 +75,21 @@ public class StudentLookup implements LookupInterface {
             return null;
         }
 
-        List<String> wordsByPopularity = wordPopularity.toList();
-        return wordsByPopularity.get(numberOfWords - 1 - n);
+        int mostPopularIndex = 0;
+
+        Iterator<Integer> popularities = wordPopularity.iterKeys();
+        while (popularities.hasNext()) {
+            SortedLinkedList<String> words = wordPopularity.get(popularities.next());
+            int numberOfWords = words.size();
+
+            if (mostPopularIndex == n) {
+                return words.get(mostPopularIndex);
+            } else {
+                mostPopularIndex += numberOfWords;
+            }
+        }
+
+        return null;
     }
 
     @Override
