@@ -279,7 +279,7 @@ public class BinarySearchTree<T extends Comparable> {
         Node<T> left;
         Node<T> right;
 
-        public Node(T data) {
+        Node(T data) {
             this.data = data;
         }
     }

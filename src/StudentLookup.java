@@ -16,9 +16,18 @@ import java.util.List;
  
 public class StudentLookup implements LookupInterface {
 
-    int numberOfWords = 0;
-    HashMap<String, Integer> wordCounts = new HashMap<>();
-    IntegerRelationSortedSet<String> wordPopularity = new IntegerRelationSortedSet<>();
+    private int numberOfWords = 0;
+    private HashMap<String, Integer> wordCounts;
+    private IntegerRelationSortedSet<String> wordPopularity;
+
+    public StudentLookup() {
+        this(10000);
+    }
+
+    public StudentLookup(int initialCapacity) {
+        this.wordCounts = new HashMap<>(initialCapacity);
+        this.wordPopularity = new IntegerRelationSortedSet<>(initialCapacity);
+    }
 
     @Override
     public void addString(int amount, String string) {

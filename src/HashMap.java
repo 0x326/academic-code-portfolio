@@ -32,7 +32,7 @@ public class HashMap<K, V> {
      * @param initialCapacity Entries this dictionary can hold before its first resize
      */
     public HashMap(int initialCapacity) {
-        hashTable = (Node<K, V>[]) new Node[initialCapacity];
+        hashTable = (Node<K, V>[]) new Node[(int) Math.ceil(initialCapacity / maxLoadFactor)];
     }
 
     /**
