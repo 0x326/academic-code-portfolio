@@ -126,7 +126,7 @@ public class IntegerRelationSortedSet<T extends Comparable> {
 
     public List<T> toList() {
         ArrayList<T> relatedData = new ArrayList<>();
-        ArrayList<Integer> integers = relatedIntegers.inorderTraversal();
+        List<Integer> integers = relatedIntegers.inorderTraversal();
         Stack<T> dataStack = new Stack<>();
         for (Integer integer : integers) {
             Node<T> dataNode = relation[integer];
@@ -142,7 +142,7 @@ public class IntegerRelationSortedSet<T extends Comparable> {
         return relatedData;
     }
 
-    private ArrayList<Integer> getRelatedIntegers() {
+    private List<Integer> getRelatedIntegers() {
         return relatedIntegers.inorderTraversal();
     }
 

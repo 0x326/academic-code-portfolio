@@ -243,7 +243,7 @@ public class BinarySearchTree<T extends Comparable> {
         POSTORDER
     }
 
-    private ArrayList<T> traverseTree(Node<T> node, TraversalMode mode) {
+    private List<T> traverseTree(Node<T> node, TraversalMode mode) {
         ArrayList<T> arrayList = new ArrayList<>();
 
         if (node != null) {
@@ -270,7 +270,7 @@ public class BinarySearchTree<T extends Comparable> {
      *
      * @return A list of nodes arranged in traversal order.
      */
-    public ArrayList<T> inorderTraversal() {
+    public List<T> inorderTraversal() {
         return traverseTree(root, TraversalMode.INORDER);
     }
 
