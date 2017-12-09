@@ -1,11 +1,12 @@
 import java.util.ArrayList;
 import java.util.Map;
 
+// Project 08 - Speedy Lookups
+// Course: CSE 274 A
+// Professor: Dr. Gani
+
 /**
- * Project 08
- * <p>
- * Course: CSE 274 A
- * Instructor: Dr. Gani
+ * A HashMap (dictionary) with linked-chaining
  *
  * @author John Meyer
  */
@@ -14,24 +15,49 @@ public class HashMap<K, V> {
     private int numberOfKeys = 0;
     private Node<K, V>[] hashTable;
     private ArrayList<K> keys = new ArrayList<>();
+    /**
+     * loadFactor = (entries)/(tableSize)
+     */
     private final double maxLoadFactor = 0.60;
 
+    /**
+     * Creates a HashMap
+     */
     public HashMap() {
         this(20);
     }
 
+    /**
+     * Creates a HashMap
+     * @param initialCapacity Entries this dictionary can hold before its first resize
+     */
     public HashMap(int initialCapacity) {
         hashTable = (Node<K, V>[]) new Node[initialCapacity];
     }
 
+    /**
+     * @return The number of keys
+     */
     public int size() {
         return numberOfKeys;
     }
 
+    /**
+     * @return Whether this HashMap is empty
+     */
     public boolean isEmpty() {
         return numberOfKeys == 0;
     }
 
+    /**
+     * Gets the value associated with the given key.
+     * <p>
+     * Average case: O(1)
+     * Worst case: O(N)
+     *
+     * @param key The associated key
+     * @return The associated value (or null if non-existent)
+     */
     public V get(K key) {
         return get(key, hashTable);
     }
@@ -52,6 +78,16 @@ public class HashMap<K, V> {
         return node != null ? node.value : null;
     }
 
+    /**
+     * Assigns the key to the given value.
+     * <p>
+     * Average case: O(1)
+     * Worst case: O(N)
+     *
+     * @param key   The key to assign
+     * @param value The value to associate
+     * @return Whether the key-value pair has been added
+     */
     public V put(K key, V value) {
         if ((double) numberOfKeys / hashTable.length > maxLoadFactor) {
             growHashTable();
@@ -90,6 +126,15 @@ public class HashMap<K, V> {
         }
     }
 
+    /**
+     * Removes the value associated with this key.
+     * <p>
+     * Average case: O(1)
+     * Worst case: O(N)
+     *
+     * @param key The key of the value to disassociate
+     * @return The disassociated value
+     */
     public V remove(Object key) {
         if (key == null) {
             return null;
@@ -127,6 +172,11 @@ public class HashMap<K, V> {
         return value != null ? value : defaultValue;
     }
 
+    /**
+     * Rehashes the hash table.
+     * <p>
+     * O(N)
+     */
     private void growHashTable() {
         int newSize = 2 * hashTable.length;
         Node<K, V>[] newHashTable = (Node<K, V>[]) new Node[newSize];

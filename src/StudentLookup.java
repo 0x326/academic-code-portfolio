@@ -1,5 +1,8 @@
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReferenceArray;
+
+// Project 08 - Speedy Lookups
+// Course: CSE 274 A
+// Professor: Dr. Gani
 
 /**
  * Your implementation of the LookupInterface.  The only public methods

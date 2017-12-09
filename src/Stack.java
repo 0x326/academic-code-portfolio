@@ -1,5 +1,9 @@
 import java.util.ArrayList;
 
+// Project 08 - Speedy Lookups
+// Course: CSE 274 A
+// Professor: Dr. Gani
+
 /**
  * Project 08 - Speedy Lookups
  * <p>

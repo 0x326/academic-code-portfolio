@@ -3,6 +3,10 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+// Project 08 - Speedy Lookups
+// Course: CSE 274 A
+// Professor: Dr. Gani
+
 /**
  * Project 08 - Speedy Lookups
  * <p>

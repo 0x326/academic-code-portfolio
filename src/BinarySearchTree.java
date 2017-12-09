@@ -1,10 +1,14 @@
 import java.util.ArrayList;
+import java.util.List;
+
+// Project 08 - Speedy Lookups
+// Course: CSE 274 A
+// Professor: Dr. Gani
 
 /**
- * Project 08 - Speedy Lookups
+ * A binary search tree.
  * <p>
- * Course:
- * Instructor:
+ * Duplicates are not permitted.
  *
  * @author John Meyer
  */
@@ -13,14 +17,30 @@ public class BinarySearchTree<T extends Comparable> {
     private Node<T> root = null;
     private int numberOfNodes = 0;
 
+    /**
+     * @return The number of nodes in this tree.
+     */
     public int size() {
         return numberOfNodes;
     }
 
+    /**
+     * @return Whether this tree is empty
+     */
     public boolean isEmpty() {
         return numberOfNodes == 0;
     }
 
+    /**
+     * Adds the data to this tree
+     * <p>
+     * Note: Duplicates are not permitted
+     * <p>
+     * O(log N)
+     *
+     * @param data The data to add
+     * @return Whether the data is added
+     */
     public boolean add(T data) {
         if (root == null) {
             root = new Node<>(data);
@@ -74,6 +94,7 @@ public class BinarySearchTree<T extends Comparable> {
 
     /**
      * The first child of the parent that passes the test is set to null
+     *
      * @param parent The parent node
      * @param childTest The test to impose on the children
      * @return Whether a child passes the test
@@ -93,6 +114,7 @@ public class BinarySearchTree<T extends Comparable> {
 
     /**
      * Removes the root of a given subtree.
+     *
      * @param subtreeRoot The root of the subtree
      * @param subtreeParent The parent of the subtree root
      * @return Whether the root has been successfully removed
@@ -151,6 +173,7 @@ public class BinarySearchTree<T extends Comparable> {
 
     /**
      * Finds the parent of the node containing the given value
+     *
      * @param searchValue The value to look for
      * @param root The root of the tree (or subtree)
      * @return The parent node (or null if the node cannot be found)
@@ -179,6 +202,9 @@ public class BinarySearchTree<T extends Comparable> {
 
     /**
      * Removes the given value from this Tree.
+     * <p>
+     * O(log N)
+     *
      * @param value The value to remove
      * @return Whether the value was successfully removed
      * (false in the case when it did not exist)
@@ -238,7 +264,11 @@ public class BinarySearchTree<T extends Comparable> {
     }
 
     /**
-     * Prints the inorder traversal of this tree
+     * Traverses this tree using inorder traversal into a List
+     * <p>
+     * O(N)
+     *
+     * @return A list of nodes arranged in traversal order.
      */
     public ArrayList<T> inorderTraversal() {
         return traverseTree(root, TraversalMode.INORDER);
