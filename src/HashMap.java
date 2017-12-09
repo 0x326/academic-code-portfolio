@@ -86,7 +86,7 @@ public class HashMap<K, V> {
      *
      * @param key   The key to assign
      * @param value The value to associate
-     * @return Whether the key-value pair has been added
+     * @return The old value, if applicable
      */
     public V put(K key, V value) {
         if ((double) numberOfKeys / hashTable.length > maxLoadFactor) {
