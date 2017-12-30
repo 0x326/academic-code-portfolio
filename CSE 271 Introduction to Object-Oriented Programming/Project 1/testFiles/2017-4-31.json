@@ -1,0 +1,92 @@
+[
+  {
+    "_objectType": "Daily",
+    "textualDescription": "Academic Work",
+    "date": {
+      "_objectType": "GregorianCalendar",
+      "year": "2017",
+      "month": "0",
+      "day": "23"
+    }
+  },
+  {
+    "_objectType": "Daily",
+    "textualDescription": "Homework",
+    "date": {
+      "_objectType": "GregorianCalendar",
+      "year": "2017",
+      "month": "0",
+      "day": "25"
+    }
+  },
+  {
+    "_objectType": "Monthly",
+    "textualDescription": "Monthly Quiz",
+    "date": {
+      "_objectType": "GregorianCalendar",
+      "year": "2017",
+      "month": "0",
+      "day": "30"
+    }
+  },
+  {
+    "_objectType": "Onetime",
+    "textualDescription": "Spring ICE",
+    "date": {
+      "_objectType": "GregorianCalendar",
+      "year": "2017",
+      "month": "1",
+      "day": "1"
+    }
+  },
+  {
+    "_objectType": "Onetime",
+    "textualDescription": "Winter Mega Fair",
+    "date": {
+      "_objectType": "GregorianCalendar",
+      "year": "2017",
+      "month": "1",
+      "day": "6"
+    }
+  },
+  {
+    "_objectType": "Monthly",
+    "textualDescription": "Start-of-the-month kickoff",
+    "date": {
+      "_objectType": "GregorianCalendar",
+      "year": "2017",
+      "month": "1",
+      "day": "1"
+    }
+  },
+  {
+    "_objectType": "Monthly",
+    "textualDescription": "Org meeting",
+    "date": {
+      "_objectType": "GregorianCalendar",
+      "year": "2017",
+      "month": "2",
+      "day": "4"
+    }
+  },
+  {
+    "_objectType": "Daily",
+    "textualDescription": "Music rehearsal",
+    "date": {
+      "_objectType": "GregorianCalendar",
+      "year": "2017",
+      "month": "1",
+      "day": "13"
+    }
+  },
+  {
+    "_objectType": "Monthly",
+    "textualDescription": "Group Project",
+    "date": {
+      "_objectType": "GregorianCalendar",
+      "year": "2017",
+      "month": "1",
+      "day": "7"
+    }
+  }
+]
