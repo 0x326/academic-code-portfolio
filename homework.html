@@ -101,6 +101,8 @@
       if (typeof userName !== 'string' || userName.length < 3) {
         $('#userError').text('User field must be at least three characters long')
         return false
+      } else {
+        $('#userError').text('')
       }
 
       // Affiliation
