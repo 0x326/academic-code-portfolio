@@ -22,8 +22,6 @@
       // Make sure it is public or set to Anyone with link can view
       const url = `https://ceclnx01.cec.miamioh.edu/~campbest/proxy.php?csurl=https://spreadsheets.google.com/feeds/list/${spreadsheetID}/1/public/values?alt=json`
 
-      console.log(url)
-
       $.getJSON(url, (data) => {
         const entries = data.feed.entry
 
@@ -41,10 +39,8 @@
                 ${entry.gsx$multiplier.$t}
               </td>
             </tr>`)
-          console.log(entry)
         }
       })
-
     }
 
     // Document ready - called when body loaded
