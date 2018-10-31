@@ -41,6 +41,7 @@
           const rowValues = tableHeaderKeys
             .map(key => entry[key].$t)
             .map(val => `<td>${val}</td>`)
+            .join('\n')
           tbody.append(`<tr>${rowValues}</tr>`)
         }
       })
