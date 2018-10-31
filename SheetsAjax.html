@@ -15,15 +15,19 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>
     function populateTableData(elemId, spreadsheetId) {
-      // Make sure it is public or set to Anyone with link can view
       const url = `https://ceclnx01.cec.miamioh.edu/~campbest/proxy.php?csurl=https://spreadsheets.google.com/feeds/list/${spreadsheetId}/1/public/values?alt=json`
 
+      console.log(`Requesting spreadsheet ${spreadsheetId}`)
       $.getJSON(url, (data) => {
+        console.log(`Processing spreadsheet ${spreadsheetId}`)
+        console.time(`Processsing duration for spreadsheet ${spreadsheetId}`)
         const entries = data.feed.entry
 
+        // Assume there is at least one entry
         const tableHeaderKeys = Object.keys(entries[0])
           .filter(property => property.startsWith('gsx$'))
 
+        // Add table headers
         $(elemId).html(`
           <thead>
             <tr>
@@ -35,8 +39,8 @@
           <tbody></tbody>
         `)
 
-        const tbody = $('tbody', $(elemId))
-
+        // Add table rows
+        const tbody = $('tbody', elemId)
         for (const entry of entries) {
           const rowValues = tableHeaderKeys
             .map(key => entry[key].$t)
@@ -44,14 +48,15 @@
             .join('\n')
           tbody.append(`<tr>${rowValues}</tr>`)
         }
+        console.timeEnd(`Processsing duration for spreadsheet ${spreadsheetId}`)
       })
     }
 
-    // Document ready - called when body loaded
     $(document).ready(() => {
       populateTableData('#statistics', '1RajTLsOJ9NxSdVcuc0Ld1nCBUuWSr3_Kk1L6rBSyd64')
       $('#filter-button').click(() =>
         $('#statistics tr')
+          // Assume multipler is the third header
           .filter((index, elem) => Number($('td:nth-child(3)', elem).text()) <= 2)
           .detach())
       populateTableData('#student-data', '1YczAAcsf8deyhT1MjVOZrAO2_Q5wefGNpJK7m14c_vo')
