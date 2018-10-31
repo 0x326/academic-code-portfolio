@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!--
+Scott Campbell
+cse383 - fall 18
+Ajax Calls to google sheets to get spreadsheet data
+-->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content=
+  "width=device-width, initial-scale=1">
+  <title>Spreadsheets</title>
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <!-- jQuery library -->
+
+  <script src=
+  "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+
+  //function to load campbest data into tbody
+  function loadCampbestData() {
+    // ID of the Google Spreadsheet
+    var spreadsheetID = "1RajTLsOJ9NxSdVcuc0Ld1nCBUuWSr3_Kk1L6rBSyd64";
+
+    // Make sure it is public or set to Anyone with link can view 
+    var url="https://cors.io/?https://spreadsheets.google.com/feeds/list/"+spreadsheetID + "/1/public/values?alt=json";
+
+    console.log(url);
+
+    $.getJSON(url,function(data) {
+  var entry = data.feed.entry;
+
+  $(entry).each(function(){
+    //make sure this matches your column labels when you change the source sheet
+    var d = '<tr>';
+    d += '<td>'+this.gsx$drawdate.$t+'<\/td><td>'+this.gsx$winningnumbers.$t+'<\/td>';
+    d +='<td>'+this.gsx$multiplier.$t+'<\/td>';
+    d += '<\/tr>';
+    $('#statistics').append(d);
+    console.log(this);
+    });
+  });
+
+  }
+
+
+  // Document ready - called when body loaded
+
+  $(document).ready(function() { 
+    
+    console.log("ready");
+    loadCampbestData();
+
+
+  });
+
+  </script>
+</head>
+<body class="container">
+  <div class="container">
+    <h2>Campbest Data</h2>
+    <table class="table table-condensed table-striped">
+      <thead>
+        <tr>
+          <th>Draw Date</th>
+          <th>Numbers</th>
+          <th>Multiplier</th>
+        </tr>
+      </thead>
+      <tbody id="statistics"></tbody>
+    </table>
+  </div>
+  <div>
+    <h1>UID</h1>YOUR DATA HERE
+  </div>
+</body>
+</html>
