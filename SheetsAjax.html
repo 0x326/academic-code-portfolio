@@ -53,6 +53,7 @@
         $('#statistics tr')
           .filter((index, elem) => Number($('td:nth-child(3)', elem).text()) <= 2)
           .detach())
+      populateTableData('#student-data', '1YczAAcsf8deyhT1MjVOZrAO2_Q5wefGNpJK7m14c_vo')
     })
   </script>
 </head>
@@ -64,7 +65,8 @@
     <button type="button" class="btn btn-primary" id="filter-button">Filter</button>
   </div>
   <div>
-    <h1>meyerjm</h1>
+    <h1>meyerjm data</h1>
+    <table id="student-data" class="table table-condensed table-striped"></table>
   </div>
 </body>
 
