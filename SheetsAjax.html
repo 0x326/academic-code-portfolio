@@ -47,6 +47,10 @@
     $(document).ready(() => {
       console.log("ready")
       loadCampbestData()
+      $('#filter-button').click(() =>
+        $('#statistics tr')
+          .filter((index, elem) => Number($('td:nth-child(3)', elem).text()) <= 2)
+          .detach())
     })
   </script>
 </head>
@@ -66,7 +70,8 @@
     </table>
   </div>
   <div>
-    <h1>UID</h1>YOUR DATA HERE
+    <h1>meyerjm</h1>
+    <button type="button" class="btn btn-primary" id="filter-button">Filter</button>
   </div>
 </body>
 
