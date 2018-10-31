@@ -14,31 +14,34 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>
-    // Function to load campbest data into tbody
-    function loadCampbestData() {
-      // ID of the Google Spreadsheet
-      const spreadsheetID = '1RajTLsOJ9NxSdVcuc0Ld1nCBUuWSr3_Kk1L6rBSyd64'
-
+    function populateTableData(elemId, spreadsheetId) {
       // Make sure it is public or set to Anyone with link can view
-      const url = `https://ceclnx01.cec.miamioh.edu/~campbest/proxy.php?csurl=https://spreadsheets.google.com/feeds/list/${spreadsheetID}/1/public/values?alt=json`
+      const url = `https://ceclnx01.cec.miamioh.edu/~campbest/proxy.php?csurl=https://spreadsheets.google.com/feeds/list/${spreadsheetId}/1/public/values?alt=json`
 
       $.getJSON(url, (data) => {
         const entries = data.feed.entry
 
-        for (const entry of entries) {
-          // Make sure this matches your column labels when you change the source sheet
-          $('#statistics').append(`
+        const tableHeaderKeys = Object.keys(entries[0])
+          .filter(property => property.startsWith('gsx$'))
+
+        $(elemId).html(`
+          <thead>
             <tr>
-              <td>
-                ${entry.gsx$drawdate.$t}
-              </td>
-              <td>
-                ${entry.gsx$winningnumbers.$t}
-              </td>
-              <td>
-                ${entry.gsx$multiplier.$t}
-              </td>
-            </tr>`)
+              ${tableHeaderKeys
+                .map(property => `<th scope="col">${property.slice(4)}</th>`)
+                .join('\n')}
+            </tr>
+          </thead>
+          <tbody></tbody>
+        `)
+
+        const tbody = $('tbody', $(elemId))
+
+        for (const entry of entries) {
+          const rowValues = tableHeaderKeys
+            .map(key => entry[key].$t)
+            .map(val => `<td>${val}</td>`)
+          tbody.append(`<tr>${rowValues}</tr>`)
         }
       })
     }
@@ -46,7 +49,7 @@
     // Document ready - called when body loaded
     $(document).ready(() => {
       console.log("ready")
-      loadCampbestData()
+      populateTableData('#statistics', '1RajTLsOJ9NxSdVcuc0Ld1nCBUuWSr3_Kk1L6rBSyd64')
       $('#filter-button').click(() =>
         $('#statistics tr')
           .filter((index, elem) => Number($('td:nth-child(3)', elem).text()) <= 2)
@@ -58,16 +61,7 @@
 <body class="container">
   <div class="container">
     <h2>Campbest Data</h2>
-    <table class="table table-condensed table-striped">
-      <thead>
-        <tr>
-          <th scope="col">Draw Date</th>
-          <th scope="col">Numbers</th>
-          <th scope="col">Multiplier</th>
-        </tr>
-      </thead>
-      <tbody id="statistics"></tbody>
-    </table>
+    <table id="statistics" class="table table-condensed table-striped"></table>
   </div>
   <div>
     <h1>meyerjm</h1>
