@@ -7,3 +7,7 @@
 form {
   max-width: 400px;
 }
+
+div#error:empty {
+  display: none;
+}
