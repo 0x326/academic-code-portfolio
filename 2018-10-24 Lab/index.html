@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>meyerjm page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <h1>John Meyer</h1>
+  <div id="content"></div>
+  <div id="clicks"></div>
+  <div id="time"></div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    const quotes = [
+      'There are only two hard things in Computer Science: ' +
+      'cache invalidation and naming things.' +
+      '  —Phil Karlton',
+      'The last thing you wanted any programmer to do is mess with interal state ' +
+      'even if presented figuratively. It is unfortunate that much of what is called ' +
+      '"object-oriented progamming" today is simply old style programming with fancier constructs.' +
+      '  —Alan Kay'
+    ]
+    let shownQuoteNumber = 0
+
+    function updateQuote() {
+      shownQuoteNumber += 1
+      shownQuoteNumber %= quotes.length
+      $('div#content').text(quotes[shownQuoteNumber])
+    }
+
+    function updateTime() {
+      const now = new Date()
+      const hour = ((now.getHours() - 1) % 12) + 1
+      const pm = now.getHours() >= 12 ? 'pm' : 'am'
+      const minutes = now.getMinutes()
+      $('div#time').text(`it is now ${hour}:${minutes}${pm}`)
+    }
+
+    $(document).ready(() => {
+      let timesClicked = 0
+      $('div#clicks').text(`the box has been clicked 0 times`)
+      $('div#content').click(() => {
+        timesClicked += 1
+        $('div#clicks').text(`the box has been clicked ${timesClicked} times`)
+      })
+      window.setInterval(() => {
+        updateQuote()
+        updateTime()
+      }, 5000)
+      updateQuote()
+      updateTime()
+    })
+  </script>
+</body>
+</html>

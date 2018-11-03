@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<!-- John Meyer - 10-24 Assignment -->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.4.0">
+  <title>Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="homework-style.css">
+  <!-- styles, this style hides the error panel if there is no text in it-->
+
+  <style>
+    div.form-error:empty {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <h1>Form example</h1>
+    <div id="formDiv" class="container-fluid center-block">
+      <form method="post" action="/~campbest/cse383/forms1/form-inclass.php" id="form">
+        <div class="form-group">
+          <label for="user">User:</label>
+          <input type="text" name="user" value="DEFAULT INFORMATION" class="form-control" id="user" />
+          <div class="form-error alert alert-danger" id="userError"></div>
+        </div>
+        <div class="form-group">
+          <label for="affiliation">Affiliation</label>
+          <select name="affiliation" class="form-control" id="affiliation">
+            <!-- this is the default option and is blank. the user must make a selection-->
+            <option value="">
+              Choose a value:
+            </option>
+            <option value="student">
+              Student
+            </option>
+            <option value="faculty">
+              Faculty
+            </option>
+            <option value="other">
+              Other
+            </option>
+          </select>
+          <div class="form-error alert alert-danger" id="affiliationError"></div>
+        </div>
+        <div class="form-group">
+          <label for="comment">Comment</label>
+          <textarea name="comment" rows="5" cols="40" class="form-control" id="comment"></textarea>
+          <div class="form-error alert alert-danger" id="commentError"></div>
+        </div>
+        <div class="form-group">
+          <label for="car">What type of car do you drive?</label>
+          <input type="text" name="car" class="form-control" id="car" />
+          <div class="form-error alert alert-danger" id="carError" ></div>
+        </div>
+        <div class="form-group">
+          <label for="color">My favorite color group</label>
+          <select name="color" class="form-control" id="color">
+            <!-- this is the default option and is blank. the user must make a selection-->
+            <option value="">
+              Choose a value:
+            </option>
+            <option value="bright">
+              Bright
+            </option>
+            <option value="blue">
+              Blue
+            </option>
+            <option value="red">
+              Red
+            </option>
+            <option value="darks">
+              Darks
+            </option>
+            <option value="eclectic">
+              Eclectic
+            </option>
+            <option value="other">
+              Other
+            </option>
+          </select>
+          <div class="form-error alert alert-danger" id="colorError"></div>
+        </div>
+        <div class="form-group">
+          <input type="submit" name="submit" value="Submit" class="form-control" />
+        </div>
+      </form>
+    </div><!-- end div id=formDiv-->
+  </div><!-- div class="container-fluid-->
+  <script>
+    function checkForm() {
+      // User
+      const userName = $('#user').val()
+      if (typeof userName !== 'string' || userName.length < 3) {
+        $('#userError').text('User field must be at least three characters long')
+        return false
+      } else {
+        $('#userError').text('')
+      }
+
+      // Affiliation
+      const affiliation = $('#affiliation').val()
+      if (typeof affiliation !== 'string' || affiliation === '') {
+        $('#affiliationError').text('You must select an affiliation value')
+        return false
+      } else {
+        $('#affiliationError').text('')
+      }
+
+      // Comment
+      const comment = $('#comment').val()
+      if (typeof comment !== 'string' || comment.length === 0) {
+        $('#commentError').text('Comment cannot be empty')
+        return false
+      }
+      else if (/(<|>)/.test(comment)) {
+        $('#commentError').text('No < or > characters are allowed')
+        return false
+      } else {
+        $('#commentError').text('')
+      }
+
+      // Car
+      const car = $('#car').val()
+      if (typeof car !== 'string' || car.length === 0) {
+        $('#carError').text('Car cannot be blank')
+        return false
+      } else {
+        $('#carError').text('')
+      }
+
+      // Color
+      const color = $('#color').val()
+      if (typeof color !== 'string' || color.length === 0) {
+        $('#colorError').text('You must choose a color')
+        return false
+      } else {
+        $('#colorError').text('')
+      }
+
+      return true
+    }
+
+    $(document).ready(() => {
+      $('input[type=text], textarea').change(checkForm)
+      $('#form').submit(checkForm)
+    })
+  </script>
+</body>
+
+</html>
