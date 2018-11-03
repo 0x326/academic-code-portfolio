@@ -112,12 +112,6 @@
     </div>
   </div>
   <script>
-    document.getElementById('start-new-form-button').addEventListener('click', () => {
-      $('#formDiv').show()
-      $('#submissions-table-div').hide()
-      $('input[type=text], textarea', '#form').val('')
-    })
-
     async function sendAjaxRequest(ajaxOptions) {
       // Convert jQuery thenables into native Promises
       const data = await Promise.resolve($.ajax(ajaxOptions))
@@ -182,6 +176,11 @@
     }
 
     $(document).ready(() => {
+      $('#start-new-form-button').click(() => {
+        $('#formDiv').show()
+        $('#submissions-table-div').hide()
+        $('input[type=text], textarea', '#form').val('')
+      })
       $('#form').submit((evt) => {
         evt.preventDefault()
         const inputIsValid = myCheckSubmit()
