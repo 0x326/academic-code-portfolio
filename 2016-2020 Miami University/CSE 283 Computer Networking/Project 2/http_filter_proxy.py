@@ -134,7 +134,7 @@ class Proxy:
                         # Censor content
                         self.logger.info('Censoring content based on URL')
                         response = b'HTTP/1.1 302 Found\r\n' \
-                                   b'Location: http://ceclnx01.eas.miamioh.edu/~gomezlin/error.html\r\n' \
+                                   b'Location: https://ceclnx01.cec.miamioh.edu/~gomezlin/error.html\r\n' \
                                    b'\r\n' \
                                    b'\r\n'
                         self.logger.debug('Sending HTTP 302 (URL-caused)')
