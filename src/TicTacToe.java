@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.AbstractMap;
 
 /**
  * Project 06
@@ -11,7 +13,7 @@ import java.util.List;
  */
 public class TicTacToe {
     private ArrayList<BoardState> currentBoardState = new ArrayList<>(9);
-    private DictionaryInterface<ArrayList<BoardState>, Integer> bestMoveDictionary = new HashedDictionary2<ArrayList<BoardState>, Integer>();
+    private AbstractMap<ArrayList<BoardState>, Integer> bestMoveDictionary = new HashMap<>();
 
     public TicTacToe() {
         // Initialize state
@@ -33,7 +35,7 @@ public class TicTacToe {
      * @param bestMoveDictionary The dictionary to which to add the best moves of each possible board
      */
     private static void generatePossibleBoards(ArrayList<BoardState> board,
-                                               DictionaryInterface<ArrayList<BoardState>, Integer> bestMoveDictionary) {
+                                               AbstractMap<ArrayList<BoardState>, Integer> bestMoveDictionary) {
         BoardState playerToMove = getTurn(board);
         for (int i = 0; i < board.size(); i++) {
             if (board.get(i) == null) {
@@ -44,7 +46,7 @@ public class TicTacToe {
                 if (!isBoardFull(board) && findWinner(board) == null) {
                     OptimalMove bestMove = computeBestMove(board);
                     //noinspection unchecked
-                    bestMoveDictionary.add((ArrayList<BoardState>) board.clone(), bestMove.location);
+                    bestMoveDictionary.put((ArrayList<BoardState>) board.clone(), bestMove.location);
 
                     // Recurse
                     generatePossibleBoards(board, bestMoveDictionary);
@@ -380,7 +382,7 @@ public class TicTacToe {
      * Uses a dictionary to lookup the best move.
      */
     public void makeOpponentMove() {
-        int bestMovePosition = bestMoveDictionary.getValue(currentBoardState);
+        int bestMovePosition = bestMoveDictionary.get(currentBoardState);
         if (currentBoardState.get(bestMovePosition) != null) {
             throw new RuntimeException("Dictionary is not properly constructed");
         }
@@ -398,7 +400,7 @@ public class TicTacToe {
             throw new IllegalArgumentException("Board must have 9 spaces");
         }
 
-        return bestMoveDictionary.getValue(toBoard(board));
+        return bestMoveDictionary.get(toBoard(board));
     }
 
     /**
