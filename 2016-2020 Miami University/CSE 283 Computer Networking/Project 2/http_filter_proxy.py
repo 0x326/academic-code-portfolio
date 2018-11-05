@@ -135,7 +135,6 @@ class Proxy:
                         self.logger.info('Censoring content based on URL')
                         response = b'HTTP/1.1 302 Found\r\n' \
                                    b'Location: https://ceclnx01.cec.miamioh.edu/~gomezlin/error.html\r\n' \
-                                   b'\r\n' \
                                    b'\r\n'
                         self.logger.debug('Sending HTTP 302 (URL-caused)')
                         client_socket.send(response)
@@ -146,7 +145,6 @@ class Proxy:
                         # This is a request for us
                         self.logger.info('Sending a PAC file')
                         client_socket.send(b'HTTP/1.1 200 OK\r\n'
-                                           b'\r\n'
                                            b'\r\n'
                                            b'function FindProxyForURL(url, host) {\n'
                                            b'  if (url.startswith("http://") {\n'
@@ -200,7 +198,6 @@ class Proxy:
                                 self.logger.error('Unable to receive server response due to timeout')
                                 self.logger.debug('Sending HTTP 504')
                                 client_socket.send(b'HTTP/1.1 504 Gateway Timeout\r\n'
-                                                   b'\r\n'
                                                    b'\r\n')
                                 continue
 
@@ -243,7 +240,6 @@ class Proxy:
                                     self.logger.info('Censoring content based on content')
                                     response = b'HTTP/1.1 302 Found\r\n' \
                                                b'Location: http://ceclnx01.eas.miamioh.edu/~gomezlin/error2.html\r\n' \
-                                               b'\r\n' \
                                                b'\r\n'
                                     self.logger.debug('Sending HTTP 302 (Content-caused)')
                                     client_socket.send(response)
@@ -282,7 +278,6 @@ class Proxy:
                     # send an HTTP 500 and log the error
                     self.logger.exception(error)
                     client_socket.send(b'HTTP/1.1 500 Internal Server Error\r\n'
-                                       b'\r\n'
                                        b'\r\n')
 
 
