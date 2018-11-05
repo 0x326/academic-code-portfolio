@@ -2,6 +2,7 @@
 ; Prints 'T' if the given variable is a palindrome, 'F' otherwise
 
   JMP start
+
 var:
   DB "able was I ere I saw elba"
   DB 0
@@ -23,12 +24,13 @@ findEnd:
   PUSH B
   PUSH C
   MOV B, 0
-.loop:
+
+.findEndLoop:
   MOV C, [A]
   INC A
 
   CMP C, B
-  JNZ .loop
+  JNZ .findEndLoop
 
   DEC A
   POP C
@@ -43,7 +45,8 @@ computePalindrome:
   PUSH A
   PUSH B
   DEC B
-.loop2:
+
+.computePalindromeLoop:
   CMP A, B ; Check to see whether we have breached the midpoint
   JAE .computePalindromeYes
 
@@ -53,10 +56,11 @@ computePalindrome:
   DEC B
 
   CMP C, D ; Compare values
-  JZ .loop2
+  JZ .computePalindromeLoop
 
   MOV C, 0
   JMP .computePalindromeEnd
+
 .computePalindromeYes:
   MOV C, 1
   ; fall through
