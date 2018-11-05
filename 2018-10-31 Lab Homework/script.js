@@ -47,6 +47,7 @@ async function submitFormData(data, retryLimit = 3) {
       $('#formDiv').hide()
       $('#submissions-table-div').show()
       populateTableData('#submissions-table', data)
+      $('#error').text('')
     })
 }
 
