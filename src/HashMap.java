@@ -202,6 +202,10 @@ public class HashMap<K, V> {
         }
     }
 
+    public K[] keys() {
+        return keys.toArray();
+    }
+
     private static class Node<K, V> {
         K key;
         V value;
