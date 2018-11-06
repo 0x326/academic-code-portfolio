@@ -70,22 +70,22 @@ public class StudentLookup implements LookupInterface {
     }
 
     @Override
-    public String lookupPopularity(int n) {
-        if (n >= numberOfWords || n < 0) {
+    public String lookupPopularity(int popularityRanking) {
+        if (popularityRanking >= numberOfWords || popularityRanking < 0) {
             return null;
         }
 
-        n = numberOfWords - n - 1;
+        popularityRanking = numberOfWords - popularityRanking - 1;
 
         Integer[] popularities = wordPopularity.keys();
         for (Integer count : popularities) {
             SortedLinkedList<String> words = wordPopularity.get(count);
             int numberOfWords = words.size();
 
-            if (n < numberOfWords) {
-                return words.get(n);
+            if (popularityRanking < numberOfWords) {
+                return words.get(popularityRanking);
             } else {
-                n -= numberOfWords;
+                popularityRanking -= numberOfWords;
             }
         }
 
