@@ -10,11 +10,11 @@ import java.util.Map;
  *
  * @author John Meyer
  */
-public class HashMap<K, V> {
+public class HashMap<K extends Comparable, V> {
 
     private int numberOfKeys = 0;
     private Node<K, V>[] hashTable;
-    private ArrayList<K> keys = new ArrayList<>();
+    private SortedLinkedList<K> keys = new SortedLinkedList<>(false);
     /**
      * loadFactor = (entries)/(tableSize)
      */
@@ -181,7 +181,8 @@ public class HashMap<K, V> {
         int newSize = 2 * hashTable.length;
         Node<K, V>[] newHashTable = (Node<K, V>[]) new Node[newSize];
 
-        for (K key : keys) {
+        for (int i = 0; i < keys.size(); i++) {
+            K key = keys.get(i);
             V value = get(key);
             put(key, value, newHashTable);
         }
