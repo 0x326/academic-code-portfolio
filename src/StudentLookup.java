@@ -10,11 +10,11 @@ import java.util.List;
  * in this class should be the ones that implement the interface.  You
  * should write as many other private methods as needed.  Of course, you
  * should also have elementOfA public constructor.
- * 
+ *
  * @author // TODO: Add your name here
  */
-  
- 
+
+
 public class StudentLookup implements LookupInterface {
 
     private int numberOfWords = 0;
@@ -96,5 +96,5 @@ public class StudentLookup implements LookupInterface {
     public int numEntries() {
         return numberOfWords;
     }
-    
+
 }
