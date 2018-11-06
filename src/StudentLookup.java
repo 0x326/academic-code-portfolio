@@ -75,17 +75,17 @@ public class StudentLookup implements LookupInterface {
             return null;
         }
 
-        int mostPopularIndex = 0;
+        n = numberOfWords - n - 1;
 
-        Iterator<Integer> popularities = wordPopularity.iterKeys();
-        while (popularities.hasNext()) {
-            SortedLinkedList<String> words = wordPopularity.get(popularities.next());
+        Integer[] popularities = wordPopularity.keys();
+        for (Integer count : popularities) {
+            SortedLinkedList<String> words = wordPopularity.get(count);
             int numberOfWords = words.size();
 
-            if (mostPopularIndex == n) {
-                return words.get(mostPopularIndex);
+            if (n < numberOfWords) {
+                return words.get(n);
             } else {
-                mostPopularIndex += numberOfWords;
+                n -= numberOfWords;
             }
         }
 

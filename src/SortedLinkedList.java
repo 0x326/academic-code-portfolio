@@ -47,7 +47,7 @@ public class SortedLinkedList<T extends Comparable> {
             Node<T> nodeBeforeInsertionPoint = head;
             Node<T> nodeAfterInsertionPoint = head.next;
             while (nodeAfterInsertionPoint != null) {
-                if (nodeAfterInsertionPoint.data.compareTo(value) > 0) {
+                if (nodeAfterInsertionPoint.data.compareTo(value) < 0) {
                     break;
                 }
 
