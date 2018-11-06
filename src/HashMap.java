@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.Map;
-
 // Project 08 - Speedy Lookups
 // Course: CSE 274 A
 // Professor: Dr. Gani
@@ -29,6 +26,7 @@ public class HashMap<K extends Comparable, V> {
 
     /**
      * Creates a HashMap
+     *
      * @param initialCapacity Entries this dictionary can hold before its first resize
      */
     public HashMap(int initialCapacity) {
