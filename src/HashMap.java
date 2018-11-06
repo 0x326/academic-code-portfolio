@@ -93,6 +93,9 @@ public class HashMap<K extends Comparable, V> {
             growHashTable();
         }
 
+        if (!keys.contains(key)) {
+            keys.add(key);
+        }
         return put(key, value, hashTable);
     }
 
@@ -156,6 +159,8 @@ public class HashMap<K extends Comparable, V> {
             // Remove node
             V removedValue = node.next.value;
             node.next = node.next.next;
+
+            keys.remove(key);
             return removedValue;
         } else {
             return null;
