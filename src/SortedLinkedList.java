@@ -156,7 +156,7 @@ public class SortedLinkedList<T extends Comparable> {
      * size of the array is equal to the number of entries in the set.
      */
     public T[] toArray() {
-        T[] array = (T[]) new Object[size];
+        T[] array = (T[]) new Integer[size];
         Node<T> currentNode = head.next;
         for (int i = 0; currentNode != null; i++) {
             array[i] = currentNode.data;
