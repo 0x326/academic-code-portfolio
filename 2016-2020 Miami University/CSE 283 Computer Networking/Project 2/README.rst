@@ -11,6 +11,8 @@ Running
 -------
 
 ::
+
+   pipenv install
    pipenv run python3 http_filter_proxy.py
 
 Documentation
