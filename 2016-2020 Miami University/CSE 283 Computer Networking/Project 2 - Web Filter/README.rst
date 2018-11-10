@@ -1,8 +1,8 @@
 .. _Pipenv: https://docs.pipenv.org/
 .. _Sphinx: http://www.sphinx-doc.org/en/stable/
 
-HTTP Filter Proxy
-=================
+Web Filter
+==========
 
 | Requires Python 3.6
 | Pipenv_ suggested

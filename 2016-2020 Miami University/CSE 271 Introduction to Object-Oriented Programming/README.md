@@ -1,3 +1,7 @@
+[Project-1]: Project%201/
+[Project-2]: Project%202/
+
 # CSE 271: Introduction to Object-Oriented Programming
 
-A portfolio of code written for labs and projects. The most notable code can be found under [Project1](Project1) and [Project2](Project2).
+- [Project 1][Project-1]
+- [Project 2][Project-2]
