@@ -1,3 +1,10 @@
-# Portfolio of Academic Code
+[Miami-University]: 2016-2020%20Miami%20University
+[Sinclair-Community-College]: 2015%20Sinclair%20Community%20College
 
-This repo houses a sampling of code I have written for courses at Miami University. For my latest work, see my [eight queens puzzle gameplay simulator](CSE%20271/Project%202) and my [digital appointment book](CSE%20271/Project%201).
+# John Meyer – Code Portfolio
+
+This repo is non-exhaustive sample of programs I have built
+over the course of my academic career.
+
+- [Miami University][Miami-University] (2016-2020)
+- [Sinclair Community College][Sinclair-Community-College] (online course in 2015)
