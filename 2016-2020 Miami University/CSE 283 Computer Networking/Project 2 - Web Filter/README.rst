@@ -26,9 +26,3 @@ or build it yourself with::
    cd docs/
    pipenv run make html
    # Open _build\html
-
-Video
------
-
-See ``Recording.webm``.
-This WebM video is playable in any modern web browser.
