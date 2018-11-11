@@ -20,7 +20,7 @@ Documentation
 
 Written with Sphinx_.
 View the documentation at ``docs/_build/html/index.html``
-or build it yourself with::
+by building it with::
 
    pipenv install --dev
    cd docs/
