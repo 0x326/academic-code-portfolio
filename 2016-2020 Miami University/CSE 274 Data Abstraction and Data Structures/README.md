@@ -1,4 +1,4 @@
-[Project-6]: Project%2006%20-%20TicTacToe%20with%20Dictionary
+[Project-6]: Project%2006%20-%20Tic-Tac-Toe%20Computer%20Opponent
 
 # CSE 274: Data Abstraction and Data Structures
 
