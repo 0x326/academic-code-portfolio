@@ -4,16 +4,16 @@
 Web Filter
 ==========
 
-| Requires Python 3.6
-| Pipenv_ suggested
+Requires Python 3.6
 
 Running
 -------
 
 ::
 
+   pip3 install pipenv
    pipenv install
-   pipenv run python3 http_filter_proxy.py
+   pipenv run python http_filter_proxy.py
 
 Documentation
 -------------
@@ -22,8 +22,10 @@ Written with Sphinx_.
 View the documentation at ``docs/_build/html/index.html``
 or build it yourself with::
 
+   pipenv install --dev
    cd docs/
    pipenv run make html
+   # Open _build\html
 
 Video
 -----
