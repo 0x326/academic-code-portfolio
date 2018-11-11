@@ -1,4 +1,5 @@
 ; Written for https://schweigi.github.io/assembler-simulator/
+; Paste into textbox and press "Run"
 ; Prints 'T' if the given variable is a palindrome, 'F' otherwise
 
   JMP start
