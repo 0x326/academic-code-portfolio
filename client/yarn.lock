@@ -1339,7 +1339,7 @@ command-exists@^1.2.6:
   resolved "https://registry.yarnpkg.com/command-exists/-/command-exists-1.2.8.tgz#715acefdd1223b9c9b37110a149c6392c2852291"
   integrity sha512-PM54PkseWbiiD/mMsbvW351/u+dafwTJ0ye2qB60G1aGQP9j3xK2gmMDc+R34L3nDtx4qMCitXT75mkbkGJDLw==
 
-commander@^2.11.0, commander@^2.19.0:
+commander@^2.11.0, commander@^2.12.2, commander@^2.19.0:
   version "2.19.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.19.0.tgz#f6198aa84e5b83c46054b94ddedbfed5ee9ff12a"
   integrity sha512-6tvAOO+D6OENvRAh524Dh9jcfKTYDQAqvqezbCW82xj5X0pSrcpxtvRKHLG0yBY6SD7PSDrJaj+0AiOcKVd1Xg==
@@ -2615,6 +2615,15 @@ html-comment-regex@^1.1.0:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/html-comment-regex/-/html-comment-regex-1.1.2.tgz#97d4688aeb5c81886a364faa0cad1dda14d433a7"
   integrity sha512-P+M65QY2JQ5Y0G9KKdlDpo0zK+/OHptU5AaBwUfAIDJZk1MYf32Frm84EcOytfJE0t5JvkAnKlmjsXDnWzCJmQ==
+
+html-linter@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/html-linter/-/html-linter-1.1.1.tgz#b22d76e229c020f2ecf072fed065c4de65537448"
+  integrity sha512-DJfLevdq+YmY4R7yMdD0zaCAJOvWihg+eCe5o/jeTw86grvgmvSCIwBv1mDi+UdeJP9mDoi5rB6KtcFOn8StrA==
+  dependencies:
+    chalk "^2.4.1"
+    commander "^2.12.2"
+    glob "^7.1.2"
 
 htmlnano@^0.1.9:
   version "0.1.10"
