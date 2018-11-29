@@ -1,2 +1,2 @@
 test:
-	php -l *.php
+	php -l src/*.php
