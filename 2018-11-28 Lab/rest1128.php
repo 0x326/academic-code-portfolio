@@ -4,6 +4,7 @@ $httpBody = file_get_contents('php://input');
 
 require_once('database-credentials.php');
 $database = connectToDatabase('cse383');
+$database->set_charset('utf8');
 
 /**
  * @param string $json
@@ -42,51 +43,137 @@ function encodeSqlResult($mysqliResult)
 function getKeys()
 {
     global $database;
-    $query = $database->query('select keyName from KeyValue');
+    $query = $database->query('select keyName from KeyValue;');
     if ($query) {
-        encodeSqlResult($query);
+        $keys = array_map(function ($elem) {
+            return $elem['keyName'];
+        }, $query->fetch_all(MYSQLI_ASSOC));
+
+        http_response_code(200);
+        header('Content-Type: application/json');
+        echo json_encode(array(
+            'status' => 'OK',
+            'keys' => $keys,
+        ));
     } else {
-        // TODO: Send error
+        http_response_code(500);
+        header('Content-Type: application/json');
+        echo json_encode(array(
+            'status' => 'FAIL',
+            'keys' => array(),
+        ));
     }
 }
 
 /**
- * @param string $httpBody
+ * @param string key
  * @return void
  */
-function getValue($httpBody)
+function getValue($key)
 {
-    $key = $httpBody;
+    $key = urldecode($key);
 
     global $database;
-    $query = $database->prepare('select value from KeyValue where keyName = ?');
+    $query = $database->prepare('select KeyValue.value from KeyValue where keyName = ?;');
     $query->bind_param('s', $key);
     $query->execute();
     $query = $query->get_result();
     if ($query) {
-        encodeSqlResult($query);
+        $value = $query->fetch_assoc()['value'];
+
+        if ($value !== null) {
+            http_response_code(200);
+            header('Content-Type: application/json');
+            echo json_encode(array(
+                'status' => 'OK',
+                'value' => $value,
+            ));
+        } else {
+            http_response_code(404);
+            header('Content-Type: application/json');
+            echo json_encode(array(
+                'status' => 'FAIL',
+                'value' => '',
+            ));
+        }
     } else {
-        // TODO: Send error
+        http_response_code(500);
+        header('Content-Type: application/json');
+        echo json_encode(array(
+            'status' => 'FAIL',
+            'value' => '',
+        ));
     }
 }
 
 /**
  * @param string $httpBody
+ * @param string $mediaType
  * @return void
  */
-function addKeyValue($httpBody)
+function addKeyValue($httpBody, $mediaType)
 {
-//    $key, $value
+    $mediaType = strtolower($mediaType);
+    if ($mediaType !== 'application/json') {
+        http_response_code(415);
+    } else {
+        $entry = json_decode($httpBody);
+
+        try {
+            if ($entry === null) {
+                throw new InvalidArgumentException();
+            }
+
+            if (!isset($entry['keyName']) || !isset($entry['value'])) {
+                throw new InvalidArgumentException();
+            }
+
+            $key = $entry['keyName'];
+            $value = $entry['value'];
+
+            if (gettype($key) !== 'string' || gettype($value) !== 'string') {
+                throw new InvalidArgumentException();
+            }
+
+            global $database;
+            $query = $database->prepare('insert into KeyValue (keyName, value) values (?, ?);');
+            $query->bind_param('ss', $key, $value);
+            $query->execute();
+            $query = $query->get_result();
+
+            if ($query) {
+                http_response_code(200);
+                header('Content-Type: application/json');
+                echo json_encode(array(
+                    'status' => 'OK',
+                ));
+            } else {
+                http_response_code(500);
+                header('Content-Type: application/json');
+                echo json_encode(array(
+                    'status' => 'FAIL',
+                ));
+            }
+        } catch (InvalidArgumentException $error) {
+            http_response_code(400);
+            header('Content-Type: application/json');
+            echo json_encode(array(
+                'status' => 'FAIL',
+            ));
+        }
+    }
 }
 
 /**
  * @param string $path
  * @param string $method
  * @param string $httpBody
+ * @param string $mediaType
  * @return void
  */
-function processRestApi($path, $method, $httpBody)
+function processRestApi($path, $method, $httpBody, $mediaType)
 {
+    $path = trim($path, '/');
     $pathParts = explode('/', $path);
     $pathDepth = count($pathParts);
 
@@ -101,18 +188,17 @@ function processRestApi($path, $method, $httpBody)
                         // /v1/keys
                         case 'keys':
                             if ($pathDepth === 2) {
-                                // TODO: Add part 1 and 3
                                 switch ($method) {
                                     case 'GET':
                                         getKeys();
                                         break;
 
                                     case 'POST':
-                                        addKeyValue();
+                                        addKeyValue($httpBody, $mediaType);
                                         break;
 
                                     default:
-                                        // TODO: Send error
+                                        http_response_code(405);
                                         break;
                                 }
                             } else if ($pathDepth === 3) {
@@ -126,7 +212,13 @@ function processRestApi($path, $method, $httpBody)
                             http_response_code(404);
                             break;
                     }
+                } else {
+                    http_response_code(404);
                 }
+                break;
+
+            case '':
+                http_response_code(404);
                 break;
 
             default:
@@ -137,6 +229,8 @@ function processRestApi($path, $method, $httpBody)
 
 }
 
-//isset($_SERVER['CONTENT_TYPE']);
-
-processRestApi($_SERVER['PATH_INFO'], $_SERVER['REQUEST_METHOD'], $httpBody);
+if ($database->connect_errno) {
+    http_response_code(500);
+} else {
+    processRestApi($_SERVER['PATH_INFO'] ?? '', $_SERVER['REQUEST_METHOD'], $httpBody, $_SERVER['CONTENT_TYPE'] ?? '');
+}
