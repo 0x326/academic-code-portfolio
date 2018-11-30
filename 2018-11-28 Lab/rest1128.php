@@ -191,7 +191,15 @@ function processRestApi($path, $method, $httpBody, $mediaType)
                                         break;
                                 }
                             } else if ($pathDepth === 3) {
-                                getValue($pathParts[2]);
+                                switch ($method) {
+                                    case 'GET':
+                                        getValue($pathParts[2]);
+                                        break;
+
+                                    default:
+                                        http_response_code(405);
+                                        break;
+                                }
                             } else {
                                 http_response_code(404);
                             }
