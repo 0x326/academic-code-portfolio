@@ -27,17 +27,6 @@ function decodeJson($json, $mediaType)
 }
 
 /**
- * @param mysqli_result $mysqliResult
- * @return array
- */
-function encodeSqlResult($mysqliResult)
-{
-    // TODO: Fix
-    var_dump($mysqliResult->fetch_all(MYSQLI_ASSOC));
-    return array();
-}
-
-/**
  * @return void
  */
 function getKeys()
