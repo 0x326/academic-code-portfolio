@@ -7,26 +7,6 @@ $database = connectToDatabase('cse383');
 $database->set_charset('utf8');
 
 /**
- * @param string $json
- * @param string $mediaType
- * @return mixed
- */
-function decodeJson($json, $mediaType)
-{
-    if ($mediaType !== 'application/json') {
-        http_response_code(406);
-        return null;
-    }
-
-    $obj = json_decode($json);
-    if ($obj == null) {
-        http_response_code(400);
-        return null;
-    }
-    return $obj;
-}
-
-/**
  * @return void
  */
 function getKeys()
