@@ -6,4 +6,7 @@ require('bootstrap')
 
 $(document).ready(() => {
   // TODO: Add event handlers
+  $('userForm').submit(() => {
+    // TODO: Add code here
+  })
 })
