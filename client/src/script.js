@@ -16,4 +16,7 @@ xmlhttp.open("POST", "http://ceclnx01.cec.miamioh.edu/~kauchaaj/cse383/cse-383-f
 
 $(document).ready(() => {
   // TODO: Add event handlers
+  $('userForm').submit(() => {
+    // TODO: Add code here
+  })
 })
