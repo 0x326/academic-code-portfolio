@@ -23,8 +23,8 @@
   },
   "scripts": {
     "start": "parcel src/index.html",
-    "lint": "eslint 'src/**/*.js' && html-linter --config .html-linter-rc.json",
-    "lint:fix": "eslint 'src/**/*.js' --fix && html-linter --config .html-linter-rc.json",
+    "lint": "eslint src/*.js && html-linter --config .html-linter-rc.json",
+    "lint:fix": "eslint src/*.js --fix && html-linter --config .html-linter-rc.json",
     "build": "parcel build src/index.html"
   },
   "author": "John Meyer, Alex Kauchak",
