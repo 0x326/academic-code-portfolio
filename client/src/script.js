@@ -22,10 +22,10 @@ async function submitCredentials (username, password) {
     url: `${apiBaseUri}/v1/user`,
     data: JSON.stringify({
       user: username,
-      password
+      password,
     }),
     contentType: 'application/json',
-    dataType: 'json'
+    dataType: 'json',
   }
 
   const userToken = await sendAjaxRequest(ajaxOptions)
@@ -175,7 +175,7 @@ $(document).ready(() => {
     }
     const {
       username,
-      password
+      password,
     } = formData
 
     const errorMessageElem = $('#error-message')
