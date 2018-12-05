@@ -1,0 +1,3 @@
+[submodule "database/mysql-vagrant"]
+	path = database/development-database-vm
+	url = https://github.com/0x326/mysql-vagrant
