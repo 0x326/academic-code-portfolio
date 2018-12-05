@@ -2,7 +2,7 @@
 
 import $ from 'jquery'
 import 'bootstrap/dist/css/bootstrap.min.css'
-require('bootstrap')
+import 'bootstrap'
 
 async function sendAjaxRequest (ajaxOptions) {
   // Convert jQuery thenables into native Promises
