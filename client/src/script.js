@@ -24,10 +24,10 @@ async function submitCredentials (username, password, retryLimit = 3) {
     url: 'https://ceclnx01.cec.miamioh.edu/~campbest/cse383/forms1/form-ajax.php',
     data: JSON.stringify({
       username,
-      password
+      password,
     }),
     contentType: 'application/json',
-    dataType: 'json'
+    dataType: 'json',
   }
 
   let ajaxSubmission = sendAjaxRequest(ajaxOptions)
@@ -59,7 +59,7 @@ $(document).ready(() => {
     }
     const {
       username,
-      password
+      password,
     } = formData
     submitCredentials(username, password)
       .catch(() => console.log('TODO: Tell the user his password is wrong'))
