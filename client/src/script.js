@@ -1,8 +1,8 @@
 // @flow
 
-import $ from 'jquery'
-import 'bootstrap/dist/css/bootstrap.min.css'
-require('bootstrap')
+ import $ from 'jquery'
+ import 'bootstrap/dist/css/bootstrap.min.css'
+ require('bootstrap')
 
 async function sendAjaxRequest (ajaxOptions) {
   // Convert jQuery thenables into native Promises
@@ -20,8 +20,8 @@ async function submitCredentials (username, password, retryLimit = 3) {
 
   const ajaxOptions = {
     method: 'POST',
-    url: 'https://ceclnx01.cec.miamioh.edu/~campbest/cse383/forms1/form-ajax.php',
-    data: JSON.stringify({
+    url: '/home/kauchaaj/public_html/cse383/cse-383-final-group-project/server/src/index.php'    
+data: JSON.stringify({
       username,
       password
     }),
