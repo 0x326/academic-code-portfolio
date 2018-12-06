@@ -101,7 +101,7 @@ async function getItemSummary() {
   const {
 status,
     msg,
-    items[item, count =0]
+ //   items[item, count =0]
 
   } = summarizedCollection
   return summarizedCollection
