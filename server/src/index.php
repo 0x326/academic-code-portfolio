@@ -237,6 +237,7 @@ function processRestApiV1($pathParts, $method, $httpBody, $mediaType)
     }
 
     if ($responseObject !== null) {
+        header('Content-Type: application/json');
         echo json_encode($responseObject);
     }
 }
