@@ -28,13 +28,13 @@ async function submitCredentials (username, password) {
     dataType: 'json',
   }
 
-  const userToken = await sendAjaxRequest(ajaxOptions)
+  const response = await sendAjaxRequest(ajaxOptions)
 
   const {
     status,
     msg,
-    token
-  } = userToken
+    token,
+  } = response
 
   if (status !== 'OK') {
     throw new Error(msg)
@@ -44,122 +44,91 @@ async function submitCredentials (username, password) {
 }
 
 async function getItems () {
-  const itemDemand = {
+  const ajaxOptions = {
     method: 'GET',
     url: `${apiBaseUri}/v1/items`,
     contentType: 'application/json',
-    dataType: 'json'
+    dataType: 'json',
   }
-  const holder = sendAjaxRequest(itemDemand)
+  const response = await sendAjaxRequest(ajaxOptions)
 
   const {
     status,
     msg,
-    pk,
-    item,
-    items = [pk, item]
-  } = holder
+    items,
+  } = response
 
   if (status !== 'OK') {
     throw new Error(msg)
   }
-  if (msg !== 'OK') {
 
-  }
-  if(items !== 'OK'){
-
-  }
-
-  return holder
+  return items
 }
 
-async function getConsumedItems () {
-  const itemsConsumed = {
+async function getConsumedItems (token) {
+  const ajaxOptions = {
     method: 'GET',
-    url: `${apiBaseUri}/items/token`,
+    url: `${apiBaseUri}/items/${token}`,
     contentType: 'application/json',
-    dataType: 'json'
+    dataType: 'json',
   }
-  const consumed = sendAjaxRequest(itemsConsumed)
+  const response = sendAjaxRequest(ajaxOptions)
 
   const {
     status,
-    pk,
     msg,
-    timestamp,
-    items = [pk, item, timestamp]
-  } = consumed
-  if (consumed !== 'OK') {
-    throw new Error(msg)
-  }
+    items,
+  } = response
+
   if (status !== 'OK') {
     throw new Error(msg)
   }
-  if (pk !== 'OK') {
 
-  }
-
-  if (msg !== 'OK') {
-  }
-  if (status !== 'OK') {
-  }
-  if (items !== 'OK') {
-  }
-  if (timestamp !== 'OK') {
-
-  }
-  return consumed
+  return items
 }
 
-async function getItemSummary () {
-  const itemsSummarized = {
+async function getItemSummary (token) {
+  const ajaxOptions = {
     method: 'GET',
-    url: `${apiBaseUri}/v1/itemsSummary/token`,
+    url: `${apiBaseUri}/v1/itemsSummary/${token}`,
     contentType: 'application/json',
-    dataType: 'json'
+    dataType: 'json',
   }
 
-  const summarized = sendAjaxRequest(itemsSummarized)
+  const response = sendAjaxRequest(ajaxOptions)
 
   const {
-    status = '',
-    msg = '',
-    item = '',
-    count,
-    items =[item, count]
+    status,
+    msg,
+    items,
+  } = response
 
-  } = summarized
   if (status !== 'OK') {
-
+    throw new Error(msg)
   }
-  if (msg !== 'OK') {
 
-  }
-  if(items !== 'OK'){
-
-  }
-  return summarized
+  return items
 }
 
-async function updateItem () {
-  const token = ''
-  const itemFK = ''
-  const itemsUpdated = {
+async function updateItem (itemKey, token) {
+  const ajaxOptions = {
     method: 'POST',
     url: `${apiBaseUri}/v1/items`,
     data: JSON.stringify({
       token,
-      itemFK
+      itemFK: itemKey,
     }),
     contentType: 'application/json',
-    dataType: 'json'
+    dataType: 'json',
   }
 
-  const updated = sendAjaxRequest(itemsUpdated)
+  const response = sendAjaxRequest(ajaxOptions)
+
   const {
     status,
-    msg
-  } = updated
+    msg,
+  } = response
+
   if (status !== 'OK') {
     throw new Error(msg)
   }
@@ -167,7 +136,7 @@ async function updateItem () {
 
 $(document).ready(() => {
   // TODO: Add event handlers
-  $('#login-form').submit((evt) => {
+  $('#login-form').submit(async (evt) => {
     evt.preventDefault()
     const formData = {}
     for (const { name, value } of $('#login-form').serializeArray()) {
@@ -180,21 +149,59 @@ $(document).ready(() => {
 
     const errorMessageElem = $('#error-message')
 
-    const login = submitCredentials(username, password)
-      .catch(() => errorMessageElem.text('Invalid login').show())
-      .then(() => errorMessageElem.hide())
-    Promise.all([
-      login.then(() => getItems())
-      // append to the following line.
-        .then(items => items.forEach(({ pk, item }) => $('<button></button>').text(item).click(() => updateItem(pk))).append(item[0])),
-      login.then(() => getConsumedItems())
-        .then((items => items.forEach(({item, count}) => items[count] > 0))),
-      login.then(() => getItemSummary())
-        .then((items => items.forEach(({pk, item})=> $(items[item])))),
-      login.then(() => updateItem())
-        .then(items => (items.forEach(({item, count}) =>
-          $('<button></button>').text(item).click(() =>(item[count] = item[count]+1)))))
-    ])
-      .catch(() => errorMessageElem.text('Error getting data').show())
+    try {
+      const token = await submitCredentials(username, password)
+      errorMessageElem.hide()
+
+      return Promise.all([
+        Promise.resolve().then(() => getItems())
+          .then(items =>
+            $('#FoodButton').append(
+              items.map(({ pk, item }) =>
+                $('<button/>')
+                  .text(item)
+                  .click(() => updateItem(pk, token))))), // TODO: Update table
+
+        Promise.resolve().then(() => getConsumedItems())
+          .then((items) =>
+            $('#DiaryEntry').append(
+              $('<table class="table" />').append(
+                '<thead>' +
+                '<td>Item</td>' +
+                '<td>Timestamp</td>' +
+                '</thead>',
+                $('<tbody />').append(
+                  items
+                    .slice(-20)
+                    .map(({ item, timestamp }) =>
+                      $('<tr />').append(
+                        $('<td />').text(item),
+                        $('<td />').text(timestamp),
+                      )))))),
+
+        Promise.resolve().then(() => getItemSummary())
+          .then(items =>
+            $('#DiarySummary').append(
+              $('<table class="table" />').append(
+                '<thead>' +
+                '<td>Item</td>' +
+                '<td>Count</td>' +
+                '</thead>',
+                $('<tbody />').append(
+                  items
+                    .map(({ item, count }) =>
+                      $('<tr />').append(
+                        $('<td />').text(item),
+                        $('<td />').text(count),
+                      )))))),
+      ])
+        .catch(() => errorMessageElem
+          .text('Error getting data')
+          .show())
+    } catch (error) {
+      errorMessageElem
+        .text('Invalid login')
+        .show()
+    }
   })
 })
