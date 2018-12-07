@@ -8,6 +8,11 @@ $database->set_charset('utf8');
 
 require_once('data-model.php');
 
+class MalformedRequestObjectException extends Exception
+{
+
+}
+
 /**
  * @param string $path
  * @param string $method
@@ -52,6 +57,14 @@ function processRestApiV1($pathParts, $method, $httpBody, $mediaType)
 {
     $pathDepth = count($pathParts);
 
+    switch ($mediaType) {
+        case 'application/json':
+        default:
+            // Default to json encoding
+            $requestObject = json_decode($httpBody);
+            break;
+    }
+
     // Object to send back to client
     $responseObject = null;
 
@@ -61,6 +74,13 @@ function processRestApiV1($pathParts, $method, $httpBody, $mediaType)
                 switch ($method) {
                     case 'POST':
                         try {
+                            $username = (string) $requestObject['user'] ?? null;
+                            $password = (string) $requestObject['password'] ?? null;
+
+                            if ($username === null || $password === null) {
+                                throw new MalformedRequestObjectException();
+                            }
+
                             http_response_code(200);
                             $token = getToken($httpBody, $mediaType);
                             $responseObject = [
@@ -78,6 +98,13 @@ function processRestApiV1($pathParts, $method, $httpBody, $mediaType)
                             ];
                         } catch (DatabaseException $e) {
                             http_response_code(500);
+                            $responseObject = [
+                                'status' => 'FAIL',
+                                'msg' => '',
+                                'items' => [],
+                            ];
+                        } catch (MalformedRequestObjectException $e) {
+                            http_response_code(415);
                             $responseObject = [
                                 'status' => 'FAIL',
                                 'msg' => '',
@@ -123,8 +150,16 @@ function processRestApiV1($pathParts, $method, $httpBody, $mediaType)
 
                         case 'POST':
                             try {
+                                $token = (string) $requestObject['token'] ?? null;
+                                // TODO: check
+                                $itemKey = (string) $requestObject['ItemFK'] ?? null;
+
+                                if ($token === null || $itemKey === null) {
+                                    throw new MalformedRequestObjectException();
+                                }
+
                                 http_response_code(200);
-                                updateItem($httpBody, $mediaType);
+                                updateItem($token, $itemKey);
                                 $responseObject = [
                                     'status' => 'OK',
                                     'msg' => '',
@@ -138,6 +173,12 @@ function processRestApiV1($pathParts, $method, $httpBody, $mediaType)
                                 ];
                             } catch (DatabaseException $e) {
                                 http_response_code(500);
+                                $responseObject = [
+                                    'status' => 'FAIL',
+                                    'msg' => '',
+                                ];
+                            } catch (MalformedRequestObjectException $e) {
+                                http_response_code(415);
                                 $responseObject = [
                                     'status' => 'FAIL',
                                     'msg' => '',
