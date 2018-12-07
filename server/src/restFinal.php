@@ -82,7 +82,7 @@ function processRestApiV1($pathParts, $method, $httpBody, $mediaType)
                             }
 
                             http_response_code(200);
-                            $token = getToken($httpBody, $mediaType);
+                            $token = getToken($username, $password);
                             $responseObject = [
                                 'status' => 'OK',
                                 'msg' => '',
