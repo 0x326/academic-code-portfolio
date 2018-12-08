@@ -1,6 +1,6 @@
 <?php
 
-const tokenByteLength = 1024;
+const tokenByteLength = 16;
 
 class AuthenticationException extends Exception
 {
