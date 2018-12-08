@@ -1,1 +1,7 @@
 database-credentials.php
+
+# Integration testing
+*.html
+*.css
+*.js
+*.map
