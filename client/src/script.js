@@ -138,7 +138,7 @@ async function createButtons(token) {
   const errorMessageElem = $('#error-message')
 
   const items = await getItems()
-  $('#FoodButton')
+  $('#buttons')
     .empty()
     .append(
       items.map(({pk, item}) =>
