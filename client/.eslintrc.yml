@@ -1,4 +1,4 @@
-extends: standard
+extends: airbnb-base
 rules:
   semi:
     - error
@@ -6,3 +6,8 @@ rules:
   comma-dangle:
     - error
     - always-multiline
+  no-use-before-define:
+    - error
+    - functions: false
+  no-restricted-syntax:
+    - off

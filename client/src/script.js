@@ -141,19 +141,18 @@ async function createButtons(token) {
   $('#buttons')
     .empty()
     .append(
-      items.map(({pk, item}) =>
-        $('<button type="button" class="btn btn-primary" />')
-          .text(item)
-          .click(() =>
-            updateItem(pk, token)
-              .then(Promise.all([
-                updateSummary(token),
-                updateLog(token),
-              ]))
-              .then(() => errorMessageElem.hide())
-              .catch(() => errorMessageElem
-                .text('Error getting data')
-                .show()))))
+      items.map(({ pk, item }) => $('<button type="button" class="btn btn-primary" />')
+        .text(item)
+        .click(() => updateItem(pk, token)
+          .then(Promise.all([
+            updateSummary(token),
+            updateLog(token),
+          ]))
+          .then(() => errorMessageElem.hide())
+          .catch(() => errorMessageElem
+            .text('Error getting data')
+            .show())))
+    )
 }
 
 async function updateSummary(token) {
@@ -162,11 +161,11 @@ async function updateSummary(token) {
     .empty()
     .append(
       items
-        .map(({item, count}) =>
-          $('<tr />').append(
-            $('<td />').text(item),
-            $('<td />').text(count),
-          )))
+        .map(({ item, count }) => $('<tr />').append(
+          $('<td />').text(item),
+          $('<td />').text(count),
+        ))
+    )
 }
 
 async function updateLog(token) {
@@ -176,19 +175,20 @@ async function updateLog(token) {
     .append(
       items
         .slice(0, 20)
-        .map(({item, timestamp}) =>
-          $('<tr />').append(
-            $('<td />').text(item),
-            $('<td />').text(timestamp),
-          )))
+        .map(({ item, timestamp }) => $('<tr />').append(
+          $('<td />').text(item),
+          $('<td />').text(timestamp),
+        ))
+    )
 }
 
-$(document).ready(() => {
-  $('#login-form').submit(async (evt) => {
+// eslint-disable-next-line no-undef
+$(document).ready(() => $('#login-form')
+  .submit(async (evt) => {
     evt.preventDefault()
 
     const formData = {}
-    for (const {name, value} of $('#login-form').serializeArray()) {
+    for (const { name, value } of $('#login-form').serializeArray()) {
       formData[name] = value
     }
     const {
@@ -217,6 +217,6 @@ $(document).ready(() => {
       errorMessageElem
         .text('Invalid login')
         .show()
+      return Promise.resolve()
     }
-  })
-})
+  }))
