@@ -5,7 +5,7 @@ import $ from 'jquery'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap'
 
-const apiBaseUri = 'http://localhost:8080/restFinal.php'
+const apiBaseUri = './restFinal.php'
 
 async function sendAjaxRequest(ajaxOptions) {
   // Convert jQuery thenables into native Promises
