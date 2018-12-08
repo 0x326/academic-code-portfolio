@@ -72,7 +72,7 @@ async function getConsumedItems(token) {
     contentType: 'application/json',
     dataType: 'json',
   }
-  const response = sendAjaxRequest(ajaxOptions)
+  const response = await sendAjaxRequest(ajaxOptions)
 
   const {
     status,
@@ -95,7 +95,7 @@ async function getItemSummary(token) {
     dataType: 'json',
   }
 
-  const response = sendAjaxRequest(ajaxOptions)
+  const response = await sendAjaxRequest(ajaxOptions)
 
   const {
     status,
@@ -122,7 +122,7 @@ async function updateItem(itemKey, token) {
     dataType: 'json',
   }
 
-  const response = sendAjaxRequest(ajaxOptions)
+  const response = await sendAjaxRequest(ajaxOptions)
 
   const {
     status,
