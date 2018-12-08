@@ -41,7 +41,7 @@ function processRestApi($path, $method, $httpBody, $mediaType)
 
             default:
                 // http_response_code(501);
-                processRestApiV1(array_slice($pathParts,1), $method, $httpBody, $mediaType);
+                processRestApiV1($pathParts, $method, $httpBody, $mediaType);
                 break;
         }
     }
