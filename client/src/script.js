@@ -134,6 +134,29 @@ async function updateItem(itemKey, token) {
   }
 }
 
+async function updateSummary(token) {
+  const items = await getItemSummary(token)
+  $('#diary-summary').append(
+    items
+      .map(({item, count}) =>
+        $('<tr />').append(
+          $('<td />').text(item),
+          $('<td />').text(count),
+        )))
+}
+
+async function updateLog(token) {
+  const items = await getConsumedItems(token)
+  $('#diary-log').append(
+    items
+      .slice(-20)
+      .map(({item, timestamp}) =>
+        $('<tr />').append(
+          $('<td />').text(item),
+          $('<td />').text(timestamp),
+        )))
+}
+
 $(document).ready(() => {
   // TODO: Add event handlers
   $('#login-form').submit(async (evt) => {
@@ -157,35 +180,27 @@ $(document).ready(() => {
       $('#content').show()
 
       return Promise.all([
-        Promise.resolve().then(() => getItems())
+        getItems()
           .then(items =>
             $('#FoodButton').append(
               items.map(({pk, item}) =>
                 $('<button type="button" class="btn btn-primary" />')
                   .text(item)
-                  .click(() => updateItem(pk, token))))), // TODO: Update table
+                  .click(() =>
+                    updateItem(pk, token)
+                      .then(Promise.all([
+                        updateSummary(token),
+                        updateLog(token),
+                      ]))
+                      .then(() => errorMessageElem.hide())
+                      .catch(() => errorMessageElem
+                        .text('Error getting data')
+                        .show()))))),
 
-        Promise.resolve().then(() => getConsumedItems(token))
-          .then((items) =>
-            $('#diary-log').append(
-              items
-                .slice(-20)
-                .map(({item, timestamp}) =>
-                  $('<tr />').append(
-                    $('<td />').text(item),
-                    $('<td />').text(timestamp),
-                  )))),
-
-        Promise.resolve().then(() => getItemSummary(token))
-          .then(items =>
-            $('#diary-summary').append(
-              items
-                .map(({item, count}) =>
-                  $('<tr />').append(
-                    $('<td />').text(item),
-                    $('<td />').text(count),
-                  )))),
+        updateSummary(token),
+        updateLog(token),
       ])
+        .then(() => errorMessageElem.hide())
         .catch(() => errorMessageElem
           .text('Error getting data')
           .show())
