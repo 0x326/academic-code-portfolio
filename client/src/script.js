@@ -160,7 +160,7 @@ $(document).ready(() => {
         Promise.resolve().then(() => getItems())
           .then(items =>
             $('#FoodButton').append(
-              items.map(({ pk, item }) =>
+              items.map(({pk, item}) =>
                 $('<button/>')
                   .text(item)
                   .click(() => updateItem(pk, token))))), // TODO: Update table
