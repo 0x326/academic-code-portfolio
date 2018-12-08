@@ -26,9 +26,9 @@ function authorizeToken($token, $username)
         values (?, ?);');
     $query->bind_param('ss', $username, $token);
     $query->execute();
-    $query = $query->get_result();
+    $query->get_result();
 
-    if (!$query) {
+    if ($database->errno) {
         throw new DatabaseException();
     }
 }
