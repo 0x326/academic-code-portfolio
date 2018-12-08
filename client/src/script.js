@@ -149,8 +149,8 @@ async function createButtons(token) {
             updateLog(token),
           ]))
           .then(() => errorMessageElem.hide())
-          .catch(() => errorMessageElem
-            .text('Error getting data')
+          .catch(error => errorMessageElem
+            .text(`Error getting data. Reason: ${error.message}`)
             .show())))
     )
 }
@@ -210,8 +210,8 @@ $(document).ready(() => $('#login-form')
         updateLog(token),
       ])
         .then(() => errorMessageElem.hide())
-        .catch(() => errorMessageElem
-          .text('Error getting data')
+        .catch(error => errorMessageElem
+          .text(`Error getting data. Reason: ${error.message}`)
           .show())
     } catch (error) {
       errorMessageElem
