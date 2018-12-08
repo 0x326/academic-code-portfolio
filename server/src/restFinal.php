@@ -93,21 +93,21 @@ function processRestApiV1($pathParts, $method, $httpBody, $mediaType)
                             http_response_code(403);
                             $responseObject = [
                                 'status' => 'AUTH_FAIL',
-                                'msg' => '',
+                                'msg' => 'Invalid credentials',
                                 'items' => [],
                             ];
                         } catch (DatabaseException $e) {
                             http_response_code(500);
                             $responseObject = [
                                 'status' => 'FAIL',
-                                'msg' => '',
+                                'msg' => 'Database error',
                                 'items' => [],
                             ];
                         } catch (MalformedRequestObjectException $e) {
                             http_response_code(415);
                             $responseObject = [
                                 'status' => 'FAIL',
-                                'msg' => '',
+                                'msg' => 'Bad request parameters',
                                 'items' => [],
                             ];
                         } catch (Exception $e) {
@@ -142,7 +142,7 @@ function processRestApiV1($pathParts, $method, $httpBody, $mediaType)
                                 http_response_code(500);
                                 $responseObject = [
                                     'status' => 'FAIL',
-                                    'msg' => '',
+                                    'msg' => 'Database error',
                                     'items' => [],
                                 ];
                             }
@@ -168,19 +168,19 @@ function processRestApiV1($pathParts, $method, $httpBody, $mediaType)
                                 http_response_code(403);
                                 $responseObject = [
                                     'status' => 'AUTH_FAIL',
-                                    'msg' => '',
+                                    'msg' => 'Invalid token',
                                 ];
                             } catch (DatabaseException $e) {
                                 http_response_code(500);
                                 $responseObject = [
                                     'status' => 'FAIL',
-                                    'msg' => '',
+                                    'msg' => 'Database error',
                                 ];
                             } catch (MalformedRequestObjectException $e) {
                                 http_response_code(415);
                                 $responseObject = [
                                     'status' => 'FAIL',
-                                    'msg' => '',
+                                    'msg' => 'Bad request parameters',
                                 ];
                             }
                             break;
@@ -206,14 +206,14 @@ function processRestApiV1($pathParts, $method, $httpBody, $mediaType)
                                 http_response_code(403);
                                 $responseObject = [
                                     'status' => 'AUTH_FAIL',
-                                    'msg' => '',
+                                    'msg' => 'Invalid token',
                                     'items' => [],
                                 ];
                             } catch (DatabaseException $e) {
                                 http_response_code(500);
                                 $responseObject = [
                                     'status' => 'FAIL',
-                                    'msg' => '',
+                                    'msg' => 'Database error',
                                     'items' => [],
                                 ];
                             }
@@ -246,14 +246,14 @@ function processRestApiV1($pathParts, $method, $httpBody, $mediaType)
                                 http_response_code(403);
                                 $responseObject = [
                                     'status' => 'AUTH_FAIL',
-                                    'msg' => '',
+                                    'msg' => 'Invalid token',
                                     'items' => [],
                                 ];
                             } catch (DatabaseException $e) {
                                 http_response_code(500);
                                 $responseObject = [
                                     'status' => 'FAIL',
-                                    'msg' => '',
+                                    'msg' => 'Database error',
                                     'items' => [],
                                 ];
                             }
