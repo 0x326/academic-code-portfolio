@@ -156,25 +156,29 @@ async function createButtons(token) {
 
 async function updateSummary(token) {
   const items = await getItemSummary(token)
-  $('#diary-summary').append(
-    items
-      .map(({item, count}) =>
-        $('<tr />').append(
-          $('<td />').text(item),
-          $('<td />').text(count),
-        )))
+  $('#diary-summary')
+    .empty()
+    .append(
+      items
+        .map(({item, count}) =>
+          $('<tr />').append(
+            $('<td />').text(item),
+            $('<td />').text(count),
+          )))
 }
 
 async function updateLog(token) {
   const items = await getConsumedItems(token)
-  $('#diary-log').append(
-    items
-      .slice(-20)
-      .map(({item, timestamp}) =>
-        $('<tr />').append(
-          $('<td />').text(item),
-          $('<td />').text(timestamp),
-        )))
+  $('#diary-log')
+    .empty()
+    .append(
+      items
+        .slice(-20)
+        .map(({item, timestamp}) =>
+          $('<tr />').append(
+            $('<td />').text(item),
+            $('<td />').text(timestamp),
+          )))
 }
 
 $(document).ready(() => {
