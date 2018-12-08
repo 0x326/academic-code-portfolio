@@ -178,7 +178,6 @@ async function updateLog(token) {
 }
 
 $(document).ready(() => {
-  // TODO: Add event handlers
   $('#login-form').submit(async (evt) => {
     evt.preventDefault()
 
