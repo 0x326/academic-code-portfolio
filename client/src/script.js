@@ -175,7 +175,7 @@ async function updateLog(token) {
     .empty()
     .append(
       items
-        .slice(-20)
+        .slice(0, 20)
         .map(({item, timestamp}) =>
           $('<tr />').append(
             $('<td />').text(item),
