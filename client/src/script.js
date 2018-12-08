@@ -167,36 +167,24 @@ $(document).ready(() => {
 
         Promise.resolve().then(() => getConsumedItems(token))
           .then((items) =>
-            $('#DiaryEntry').append(
-              $('<table class="table" />').append(
-                '<thead>' +
-                '<td>Item</td>' +
-                '<td>Timestamp</td>' +
-                '</thead>',
-                $('<tbody />').append(
-                  items
-                    .slice(-20)
-                    .map(({ item, timestamp }) =>
-                      $('<tr />').append(
-                        $('<td />').text(item),
-                        $('<td />').text(timestamp),
-                      )))))),
+            $('#diary-log').append(
+              items
+                .slice(-20)
+                .map(({item, timestamp}) =>
+                  $('<tr />').append(
+                    $('<td />').text(item),
+                    $('<td />').text(timestamp),
+                  )))),
 
         Promise.resolve().then(() => getItemSummary(token))
           .then(items =>
-            $('#DiarySummary').append(
-              $('<table class="table" />').append(
-                '<thead>' +
-                '<td>Item</td>' +
-                '<td>Count</td>' +
-                '</thead>',
-                $('<tbody />').append(
-                  items
-                    .map(({ item, count }) =>
-                      $('<tr />').append(
-                        $('<td />').text(item),
-                        $('<td />').text(count),
-                      )))))),
+            $('#diary-summary').append(
+              items
+                .map(({item, count}) =>
+                  $('<tr />').append(
+                    $('<td />').text(item),
+                    $('<td />').text(count),
+                  )))),
       ])
         .catch(() => errorMessageElem
           .text('Error getting data')

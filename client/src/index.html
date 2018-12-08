@@ -31,9 +31,31 @@
 </div>
 
 <div id="content" style="display: none;">
-  <div id="DiarySummary" class="container"></div>
-  <div id="DiaryEntry" class="container"></div>
   <div id="FoodButton" class="container"></div>
+  <div class="container">
+    <table class="table">
+      <thead class="thead-dark">
+      <tr>
+        <td scope="col">Item</td>
+        <td scope="col">Count</td>
+      </tr>
+      </thead>
+      <!--suppress CheckTagEmptyBody -->
+      <tbody id="diary-summary"></tbody>
+    </table>
+  </div>
+  <div class="container">
+    <table class="table">
+      <thead class="thead-dark">
+      <tr>
+        <td scope="col">Item</td>
+        <td scope="col">Timestamp</td>
+      </tr>
+      </thead>
+      <!--suppress CheckTagEmptyBody -->
+      <tbody id="diary-log"></tbody>
+    </table>
+  </div>
 </div>
 
 <script src="script.js"></script>
