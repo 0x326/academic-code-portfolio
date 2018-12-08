@@ -153,6 +153,8 @@ $(document).ready(() => {
     try {
       const token = await submitCredentials(username, password)
       errorMessageElem.hide()
+      $('#login').hide()
+      $('#content').show()
 
       return Promise.all([
         Promise.resolve().then(() => getItems())
