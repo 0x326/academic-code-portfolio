@@ -140,7 +140,8 @@ function getConsumedItems($token)
         where diary.userFK = users.pk
           and diary.itemFK = diaryItems.pk
           and users.user = ?
-        order by diary.timestamp desc;');
+        order by diary.timestamp desc
+        limit 30;');
     $query->bind_param('s', $authenticatedUsername);
     $query->execute();
     $query = $query->get_result();
