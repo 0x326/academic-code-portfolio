@@ -83,7 +83,7 @@ function getToken($username, $password)
     $query->execute();
     $query = $query->get_result();
     if ($query) {
-        foreach ($query->fetch_all() as $rowNumber => $row) {
+        foreach ($query->fetch_all(MYSQLI_ASSOC) as $rowNumber => $row) {
             if (password_verify($password, $row['passwordHash']) === true) {
                 $authenticatedUsername = $row['username'];
                 break;
