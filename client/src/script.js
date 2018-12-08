@@ -138,20 +138,22 @@ async function createButtons(token) {
   const errorMessageElem = $('#error-message')
 
   const items = await getItems()
-  $('#FoodButton').append(
-    items.map(({pk, item}) =>
-      $('<button type="button" class="btn btn-primary" />')
-        .text(item)
-        .click(() =>
-          updateItem(pk, token)
-            .then(Promise.all([
-              updateSummary(token),
-              updateLog(token),
-            ]))
-            .then(() => errorMessageElem.hide())
-            .catch(() => errorMessageElem
-              .text('Error getting data')
-              .show()))))
+  $('#FoodButton')
+    .empty()
+    .append(
+      items.map(({pk, item}) =>
+        $('<button type="button" class="btn btn-primary" />')
+          .text(item)
+          .click(() =>
+            updateItem(pk, token)
+              .then(Promise.all([
+                updateSummary(token),
+                updateLog(token),
+              ]))
+              .then(() => errorMessageElem.hide())
+              .catch(() => errorMessageElem
+                .text('Error getting data')
+                .show()))))
 }
 
 async function updateSummary(token) {
