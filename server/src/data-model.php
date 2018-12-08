@@ -24,6 +24,9 @@ function authorizeToken($token, $username)
     $query = $database->prepare('
         insert into tokens(user, token)
         values (?, ?);');
+    if ($query === false) {
+        throw new DatabaseException();
+    }
     $query->bind_param('ss', $username, $token);
     $query->execute();
     $query->get_result();
@@ -47,6 +50,9 @@ function validateToken($token)
         select user as username
         from tokens
         where token = ?;');
+    if ($query === false) {
+        throw new DatabaseException();
+    }
     $query->bind_param('s', $token);
     $query->execute();
     $query = $query->get_result();
@@ -79,6 +85,9 @@ function getToken($username, $password)
         select user as username, password as passwordHash
         from users
         where user = ?;');
+    if ($query === false) {
+        throw new DatabaseException();
+    }
     $query->bind_param('s', $username);
     $query->execute();
     $query = $query->get_result();
@@ -142,6 +151,9 @@ function getConsumedItems($token)
           and users.user = ?
         order by diary.timestamp desc
         limit 30;');
+    if ($query === false) {
+        throw new DatabaseException();
+    }
     $query->bind_param('s', $authenticatedUsername);
     $query->execute();
     $query = $query->get_result();
@@ -173,6 +185,9 @@ function computeItemSummary($token)
           and users.user = ?
         group by item
         order by diary.timestamp desc;');
+    if ($query === false) {
+        throw new DatabaseException();
+    }
     $query->bind_param('s', $authenticatedUsername);
     $query->execute();
     $query = $query->get_result();
@@ -202,6 +217,9 @@ function updateItem($token, $itemKey)
         from diaryItems, users
         where diaryItems.pk = ? 
           and users.user = ?;');
+    if ($query === false) {
+        throw new DatabaseException();
+    }
     $query->bind_param('ss', $itemKey, $authenticatedUsername);
     $query->execute();
     $query->get_result();
