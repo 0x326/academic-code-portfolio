@@ -161,7 +161,7 @@ $(document).ready(() => {
           .then(items =>
             $('#FoodButton').append(
               items.map(({pk, item}) =>
-                $('<button/>')
+                $('<button type="button" class="btn btn-primary" />')
                   .text(item)
                   .click(() => updateItem(pk, token))))), // TODO: Update table
 
