@@ -7,7 +7,7 @@ import 'bootstrap'
 
 const apiBaseUri = 'http://localhost:8080/restFinal.php'
 
-async function sendAjaxRequest (ajaxOptions) {
+async function sendAjaxRequest(ajaxOptions) {
   // Convert jQuery thenables into native Promises
   const data = await Promise.resolve($.ajax(ajaxOptions))
   // if (data.status !== 'OK') {
@@ -16,7 +16,7 @@ async function sendAjaxRequest (ajaxOptions) {
   return data
 }
 
-async function submitCredentials (username, password) {
+async function submitCredentials(username, password) {
   const ajaxOptions = {
     method: 'POST',
     url: `${apiBaseUri}/v1/user`,
@@ -43,7 +43,7 @@ async function submitCredentials (username, password) {
   return token
 }
 
-async function getItems () {
+async function getItems() {
   const ajaxOptions = {
     method: 'GET',
     url: `${apiBaseUri}/v1/items`,
@@ -65,7 +65,7 @@ async function getItems () {
   return items
 }
 
-async function getConsumedItems (token) {
+async function getConsumedItems(token) {
   const ajaxOptions = {
     method: 'GET',
     url: `${apiBaseUri}/items/${token}`,
@@ -87,7 +87,7 @@ async function getConsumedItems (token) {
   return items
 }
 
-async function getItemSummary (token) {
+async function getItemSummary(token) {
   const ajaxOptions = {
     method: 'GET',
     url: `${apiBaseUri}/v1/itemsSummary/${token}`,
@@ -110,7 +110,7 @@ async function getItemSummary (token) {
   return items
 }
 
-async function updateItem (itemKey, token) {
+async function updateItem(itemKey, token) {
   const ajaxOptions = {
     method: 'POST',
     url: `${apiBaseUri}/v1/items`,
@@ -138,8 +138,9 @@ $(document).ready(() => {
   // TODO: Add event handlers
   $('#login-form').submit(async (evt) => {
     evt.preventDefault()
+
     const formData = {}
-    for (const { name, value } of $('#login-form').serializeArray()) {
+    for (const {name, value} of $('#login-form').serializeArray()) {
       formData[name] = value
     }
     const {
