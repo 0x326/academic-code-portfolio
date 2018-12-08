@@ -74,10 +74,10 @@ function processRestApiV1($pathParts, $method, $httpBody, $mediaType)
                 switch ($method) {
                     case 'POST':
                         try {
-                            $username = (string) $requestObject['user'] ?? null;
-                            $password = (string) $requestObject['password'] ?? null;
+                            $username = (string) $requestObject->user;
+                            $password = (string) $requestObject->password;
 
-                            if ($username === null || $password === null) {
+                            if ($username === '' || $password === '') {
                                 throw new MalformedRequestObjectException();
                             }
 
@@ -150,11 +150,11 @@ function processRestApiV1($pathParts, $method, $httpBody, $mediaType)
 
                         case 'POST':
                             try {
-                                $token = (string) $requestObject['token'] ?? null;
+                                $token = (string) $requestObject->token;
                                 // TODO: check
-                                $itemKey = (string) $requestObject['ItemFK'] ?? null;
+                                $itemKey = (string) $requestObject->ItemFK;
 
-                                if ($token === null || $itemKey === null) {
+                                if ($token === '' || $itemKey === '') {
                                     throw new MalformedRequestObjectException();
                                 }
 
