@@ -165,7 +165,7 @@ function computeItemSummary($token)
 
     // Not including diary.pk because professor's implementation doesn't
     $query = $database->prepare('
-        select item, count(*) as itemCount
+        select item, count(*) as count
         from diary, diaryItems, users
         where diary.userFK = users.pk
           and diary.itemFK = diaryItems.pk
