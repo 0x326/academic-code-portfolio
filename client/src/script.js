@@ -7,13 +7,9 @@ import 'bootstrap'
 
 const apiBaseUri = './restFinal.php'
 
-async function sendAjaxRequest(ajaxOptions) {
+function sendAjaxRequest(ajaxOptions) {
   // Convert jQuery thenables into native Promises
-  const data = await Promise.resolve($.ajax(ajaxOptions))
-  // if (data.status !== 'OK') {
-  //   throw new Error('Server status !== OK')
-  // }
-  return data
+  return Promise.resolve($.ajax(ajaxOptions))
 }
 
 async function submitCredentials(username, password) {
