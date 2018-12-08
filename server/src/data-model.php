@@ -203,9 +203,9 @@ function updateItem($token, $itemKey)
           and users.user = ?;');
     $query->bind_param('ss', $itemKey, $authenticatedUsername);
     $query->execute();
-    $query = $query->get_result();
+    $query->get_result();
 
-    if (!$query) {
+    if ($database->errno) {
         throw new DatabaseException();
     }
 }
