@@ -10,6 +10,9 @@ const apiBaseUri = './restFinal.php'
 function sendAjaxRequest(ajaxOptions) {
   // Convert jQuery thenables into native Promises
   return Promise.resolve($.ajax(ajaxOptions))
+    .catch(({ responseJSON: { msg } }) => {
+      throw new Error(msg)
+    })
 }
 
 async function submitCredentials(username, password) {
