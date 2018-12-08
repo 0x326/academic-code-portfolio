@@ -21,15 +21,16 @@ function authorizeToken($token, $username)
 {
     global $database;
 
-    $query = $database->prepare('
+    $preparedQuery = $database->prepare('
         insert into tokens(user, token)
         values (?, ?);');
-    if ($query === false) {
+    if ($preparedQuery === false) {
         throw new DatabaseException();
     }
-    $query->bind_param('ss', $username, $token);
-    $query->execute();
-    $query->get_result();
+    $preparedQuery->bind_param('ss', $username, $token);
+    $preparedQuery->execute();
+    $preparedQuery->get_result();
+    $preparedQuery->close();
 
     if ($database->errno) {
         throw new DatabaseException();
@@ -46,16 +47,17 @@ function validateToken($token)
 {
     global $database;
 
-    $query = $database->prepare('
+    $preparedQuery = $database->prepare('
         select user as username
         from tokens
         where token = ?;');
-    if ($query === false) {
+    if ($preparedQuery === false) {
         throw new DatabaseException();
     }
-    $query->bind_param('s', $token);
-    $query->execute();
-    $query = $query->get_result();
+    $preparedQuery->bind_param('s', $token);
+    $preparedQuery->execute();
+    $query = $preparedQuery->get_result();
+    $preparedQuery->close();
     if ($query) {
         // Assume there is only one username for a given token (although database schema does not guarantee this)
         $authenticatedUsername = $query->fetch_assoc()['username'] ?? null;
@@ -81,16 +83,17 @@ function getToken($username, $password)
     $authenticatedUsername = null;
 
     global $database;
-    $query = $database->prepare('
+    $preparedQuery = $database->prepare('
         select user as username, password as passwordHash
         from users
         where user = ?;');
-    if ($query === false) {
+    if ($preparedQuery === false) {
         throw new DatabaseException();
     }
-    $query->bind_param('s', $username);
-    $query->execute();
-    $query = $query->get_result();
+    $preparedQuery->bind_param('s', $username);
+    $preparedQuery->execute();
+    $query = $preparedQuery->get_result();
+    $preparedQuery->close();
     if ($query) {
         foreach ($query->fetch_all(MYSQLI_ASSOC) as $rowNumber => $row) {
             if (password_verify($password, $row['passwordHash']) === true) {
@@ -143,7 +146,7 @@ function getConsumedItems($token)
     global $database;
 
     // Not including diary.pk because professor's implementation doesn't
-    $query = $database->prepare('
+    $preparedQuery = $database->prepare('
         select item, diary.timestamp
         from diary, diaryItems, users
         where diary.userFK = users.pk
@@ -151,12 +154,13 @@ function getConsumedItems($token)
           and users.user = ?
         order by diary.timestamp desc
         limit 30;');
-    if ($query === false) {
+    if ($preparedQuery === false) {
         throw new DatabaseException();
     }
-    $query->bind_param('s', $authenticatedUsername);
-    $query->execute();
-    $query = $query->get_result();
+    $preparedQuery->bind_param('s', $authenticatedUsername);
+    $preparedQuery->execute();
+    $query = $preparedQuery->get_result();
+    $preparedQuery->close();
 
     if ($query) {
         return $query->fetch_all(MYSQLI_ASSOC);
@@ -177,7 +181,7 @@ function computeItemSummary($token)
     global $database;
 
     // Not including diary.pk because professor's implementation doesn't
-    $query = $database->prepare('
+    $preparedQuery = $database->prepare('
         select item, count(*) as count
         from diary, diaryItems, users
         where diary.userFK = users.pk
@@ -185,12 +189,13 @@ function computeItemSummary($token)
           and users.user = ?
         group by item
         order by diary.timestamp desc;');
-    if ($query === false) {
+    if ($preparedQuery === false) {
         throw new DatabaseException();
     }
-    $query->bind_param('s', $authenticatedUsername);
-    $query->execute();
-    $query = $query->get_result();
+    $preparedQuery->bind_param('s', $authenticatedUsername);
+    $preparedQuery->execute();
+    $query = $preparedQuery->get_result();
+    $preparedQuery->close();
 
     if ($query) {
         return $query->fetch_all(MYSQLI_ASSOC);
@@ -211,18 +216,19 @@ function updateItem($token, $itemKey)
     $authenticatedUsername = validateToken($token);
     global $database;
 
-    $query = $database->prepare('
+    $preparedQuery = $database->prepare('
         insert into diary(userFK, itemFK)
         select users.pk, diaryItems.pk 
         from diaryItems, users
         where diaryItems.pk = ? 
           and users.user = ?;');
-    if ($query === false) {
+    if ($preparedQuery === false) {
         throw new DatabaseException();
     }
-    $query->bind_param('ss', $itemKey, $authenticatedUsername);
-    $query->execute();
-    $query->get_result();
+    $preparedQuery->bind_param('ss', $itemKey, $authenticatedUsername);
+    $preparedQuery->execute();
+    $preparedQuery->get_result();
+    $preparedQuery->close();
 
     if ($database->errno) {
         throw new DatabaseException();
