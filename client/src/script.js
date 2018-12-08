@@ -2,7 +2,7 @@
 
 import 'babel-polyfill'
 import $ from 'jquery'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap'
 
 const apiBaseUri = 'http://localhost:8080/restFinal.php'
