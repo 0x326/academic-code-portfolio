@@ -68,7 +68,7 @@ async function getItems() {
 async function getConsumedItems(token) {
   const ajaxOptions = {
     method: 'GET',
-    url: `${apiBaseUri}/items/${token}`,
+    url: `${apiBaseUri}/v1/items/${token}`,
     contentType: 'application/json',
     dataType: 'json',
   }
