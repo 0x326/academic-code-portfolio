@@ -165,7 +165,7 @@ $(document).ready(() => {
                   .text(item)
                   .click(() => updateItem(pk, token))))), // TODO: Update table
 
-        Promise.resolve().then(() => getConsumedItems())
+        Promise.resolve().then(() => getConsumedItems(token))
           .then((items) =>
             $('#DiaryEntry').append(
               $('<table class="table" />').append(
@@ -182,7 +182,7 @@ $(document).ready(() => {
                         $('<td />').text(timestamp),
                       )))))),
 
-        Promise.resolve().then(() => getItemSummary())
+        Promise.resolve().then(() => getItemSummary(token))
           .then(items =>
             $('#DiarySummary').append(
               $('<table class="table" />').append(
