@@ -151,8 +151,7 @@ function processRestApiV1($pathParts, $method, $httpBody, $mediaType)
                         case 'POST':
                             try {
                                 $token = (string) $requestObject->token;
-                                // TODO: check
-                                $itemKey = (string) $requestObject->ItemFK;
+                                $itemKey = (string) $requestObject->itemFK;
 
                                 if ($token === '' || $itemKey === '') {
                                     throw new MalformedRequestObjectException();
