@@ -29,5 +29,10 @@
     "build": "parcel build src/index.html --public-url ./"
   },
   "author": "John Meyer, Alex Kauchak",
-  "license": "MIT"
+  "license": "MIT",
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run lint"
+    }
+  }
 }
