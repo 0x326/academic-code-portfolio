@@ -1,0 +1,24 @@
+root = true
+
+[*]
+indent_size = 4
+indent_style = space
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+end_of_line = lf
+
+# 3-space indentation
+[*.rst]
+indent_size = 3
+
+# 2-space indentation
+[*.{s,html}]
+indent_size = 2
+
+# Tab indentation
+[Makefile]
+indent_style = tab
+
+[*.bat]
+indent_style = tab
