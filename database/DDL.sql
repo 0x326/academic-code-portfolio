@@ -1,5 +1,6 @@
-create schema cse383;
+-- Instructor's schema
 
+create schema cse383;
 use cse383;
 
 create table users
@@ -36,4 +37,3 @@ create table tokens
   token tinytext null,
   timestamp timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP
 );
-
