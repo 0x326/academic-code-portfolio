@@ -32,7 +32,7 @@
   "license": "MIT",
   "husky": {
     "hooks": {
-      "pre-push": "npm run lint"
+      "pre-push": "git diff --quiet && npm run lint"
     }
   }
 }
