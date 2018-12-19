@@ -1,0 +1,38 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "description": "",
+  "private": true,
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "bootstrap": "^4.1.3",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.5"
+  },
+  "devDependencies": {
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "flow-bin": "^0.86.0",
+    "html-linter": "^1.1.1",
+    "husky": "^1.2.0",
+    "parcel-bundler": "^1.10.3"
+  },
+  "scripts": {
+    "start": "parcel src/index.html",
+    "lint": "eslint src/*.js && html-linter --config .html-linter-rc.json",
+    "lint:fix": "eslint src/*.js --fix && html-linter --config .html-linter-rc.json",
+    "build": "parcel build src/index.html --public-url ./"
+  },
+  "author": "John Meyer, Alex Kauchak",
+  "license": "MIT",
+  "husky": {
+    "hooks": {
+      "pre-push": "git diff --quiet && npm run lint"
+    }
+  }
+}
