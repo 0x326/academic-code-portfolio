@@ -1,0 +1,36 @@
+body {
+  --border-width: 2px;
+}
+
+h1 {
+  color: red;
+  text-align: center;
+  font-family: 'Trebuchet MS';
+  font-size: 2em;
+  border-width: var(--border-width);
+  border-style: solid;
+  border-color: #ef5350;
+  border-radius: 5px;
+}
+
+div:last-child > ul {
+  border-top-width: var(--border-width);
+  border-bottom-width: var(--border-width);
+  border-left-width: 0px;
+  border-right-width: 0px;
+  border-color: #ef5350;
+  border-style: solid;
+}
+
+div:last-child ul a:visited {
+  color: purple;
+}
+
+div:last-child ul a:hover {
+  color: red;
+}
+
+div:last-child p {
+  font-size: 9pt;
+  text-align: center;
+}

@@ -1,0 +1,37 @@
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+#index-html-Miami-photo {
+  width: 80%;
+}
+
+#about-html-bio-photo {
+  float: left;
+  max-width: 50%;
+  height: 20em;
+}
+
+.centered {
+  text-align: center;
+}
+
+#page2-html-p1 {
+  margin-left: 5em;
+  margin-right: 5em;
+  border: solid 2px #ef5350;
+  border-radius: 2px;
+}
+
+#page2-html-p2 {
+  border: solid 2px #ab47bc;
+  border-radius: 2px;
+}
+
+#page2-html-p3 {
+  margin-left: 2em;
+  margin-right: 2em;
+  border: solid 2px #66bb6a;
+  border-radius: 2px;
+}
