@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="7dafe38d-3727-4bcd-9e25-c9c3758e5cb4" name="ceclnx01" url="http://ceclnx01.cec.miamioh.edu/~meyerjm/">
+        <fileTransfer host="ceclnx01.cec.miamioh.edu" port="22" rootFolder="/home/meyerjm/public_html" accessType="SFTP" authAgent="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

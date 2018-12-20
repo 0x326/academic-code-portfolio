@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.4.0">
+  <title>Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+  <script src="script.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+  <div class="container-fluid">
+    <h1>10/17 Lab &ndash; MEYERJM</h1>
+    <div>
+      <button id="start-new-form-button" type="button" class="btn btn-default">
+        Start new form
+      </button>
+    </div>
+    <div id="form-div">
+      <div class="alert alert-danger" id="error" role="alert"></div>
+      <form id="form">
+        <div class="form-group">
+          <label for="user">User</label>
+          <input class="form-control" id="user" name="user" type="text" />
+        </div>
+        <div class="form-group">
+          <label for="affiliation">Affiliation</label>
+          <select class="form-control" id="affiliation" name="affiliation">
+            <option value="student">
+              Student
+            </option>
+            <option value="faculty">
+              Faculty
+            </option>
+            <option value="other">
+              Other
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="comment">Comment</label>
+          <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="question6-car">Car</label>
+          <input class="form-control" id="question6-car" name="car" type="text" />
+        </div>
+        <div class="form-group" id="question6-div">
+          <label for="question6-colors">Favorite color</label>
+          <select id="question6-colors" class="form-control" name="color">
+            <option value="">
+              My favorite colors are:
+            </option>
+            <option value="bright">
+              Bright
+            </option>
+            <option value="blue">
+              Blues
+            </option>
+            <option value="red">
+              Reds
+            </option>
+            <option value="darks">
+              Dark colors
+            </option>
+            <option value="eclectic">
+              Eclectic
+            </option>
+            <option value="other">
+              Other
+            </option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    <div id="submissions-table-div">
+      <table id="submissions-table" class="table table-condensed table-striped"></table>
+    </div>
+  </div>
+</body>
+
+</html>
