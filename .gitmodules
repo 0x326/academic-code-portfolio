@@ -4,3 +4,6 @@
 [submodule "CSE 201 Introduction to Software Engineering/Final Project"]
 	path = 2016-2020 Miami University/CSE 201 Introduction to Software Engineering/Semester-long Project - Pac-Man™ for the Web
 	url = https://github.com/0x326/miami-university-cse-201-group-project
+[submodule "2016-2020 Miami University/CSE 464 Algorithms/miami-university-cse-464-group-project"]
+	path = 2016-2020 Miami University/CSE 464 Algorithms/miami-university-cse-464-group-project
+	url = https://github.com/0x326/miami-university-cse-464-group-project
