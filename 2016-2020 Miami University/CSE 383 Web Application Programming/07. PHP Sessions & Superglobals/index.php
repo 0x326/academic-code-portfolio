@@ -11,8 +11,7 @@ $numVisits = $_SESSION['$numVisits'] ?? 0;
 $numVisits++;
 $_SESSION['$numVisits'] = $numVisits;
 
-// htmlspecialchars is unnecessary since $cmd is not going to be sent back to the user as HTML
-$cmd = htmlspecialchars($_GET['cmd'] ?? '');
+$cmd = $_GET['cmd'] ?? '';
 
 $_SESSION['user'] = $_POST['user'] ?? $_SESSION['user'] ?? '';
 $user = $_SESSION['user'];
