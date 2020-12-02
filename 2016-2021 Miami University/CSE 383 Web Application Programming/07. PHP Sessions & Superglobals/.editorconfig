@@ -1,0 +1,5 @@
+[*.{html,htm}]
+indent_size = 4
+
+[*.php]
+indent_size = 4

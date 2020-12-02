@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+mtgsdk = "*"
+pyyaml = "*"
+
+[dev-packages]
+colorful = "*"
+hypothesis = "*"
+pycodestyle = "*"
+autopep8 = "*"
+pytest = "*"
+pygments = "*"
+
+[requires]
+python_version = "3"

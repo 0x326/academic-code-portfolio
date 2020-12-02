@@ -1,0 +1,1094 @@
+\documentclass[12pt, letterpaper]{article}
+
+% Document metadata
+\title{Magic: The Gathering Tournament Deck Evaluation}
+\date{April 30, 2019}
+\author{John Meyer, Scott Harris, Jacob Freedman, Bryan Hayes}
+
+% Required packages
+\usepackage[autostyle, english=american]{csquotes}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{commath}
+\usepackage{amsmath}
+\usepackage[section]{minted}
+
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,bookmarksopen=true]{hyperref}
+
+% Define subsections down to \subsubsubsection
+\usepackage{titlesec}
+\setcounter{secnumdepth}{4}
+
+\titleclass{\subsubsubsection}{straight}[\subsection]
+\newcounter{subsubsubsection}[subsubsection]
+
+\renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
+\renewcommand\theparagraph{\thesubsubsubsection.\arabic{paragraph}}
+
+\titleformat{\subsubsubsection}
+{\normalfont\normalsize\bfseries}
+{\thesubsubsubsection}
+{1em}
+{}
+
+\titlespacing*{\subsubsubsection}
+{0pt}
+{3.25ex plus 1ex minus .2ex}
+{1.5ex plus .2ex}
+
+% Packages configuration
+\setminted{linenos, autogobble, breakautoindent, breaklines, breakindentnchars=4,
+    fontsize=\footnotesize}
+\setminted[python]{python3}
+
+\doublespacing
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+Magic the Gathering is a popular card game that has withstood the test of time,
+boasting of twenty million players as of 2015.
+Its sustained interest over the years has lead to organized tournaments
+and has even attracted the interest of academic research and scholarly articles.
+The game hinges on both strategy and uncertainty.
+In a tournament style known as \enquote{limited, sealed-deck,}
+players must pre-select 40 or more cards from a set of 90 cards given to them.
+Players must consider the strengths and weaknesses of each card,
+the synergies that may exist between them,
+and forecast their utility during gameplay,
+given that their opponent is doing the same.
+We propose to help these participants by authoring an objective function for this
+domain to score potential card combinations according to its strategic utility
+as illuminated by common play-styles and professional strategies.
+We also plan to implement an optimization algorithm to maximize this function
+so that players can play with the most effective deck.
+This algorithm could help professionals as well as novices to have better odds of success
+and a more enjoyable experience.
+
+The implementation of our objective function is located on
+\href{https://github.com/0x326/miami-university-cse-464-group-project}{GitHub}
+
+\section{Definition}
+
+Magic the Gathering consists of a finite set $ C $ of distinct cards.
+$ C $ can be partitioned into sets $ S_1, S_2, ..., S_n $, each called a Magic the Gathering \enquote{set}.
+$ C $ can also be partitioned into two sets $ L $ and $ L_0 $, where $ L $ are \enquote{basic lands} and $ L_0 $ are not.
+
+Recall: A \enquote{multiset} $ M $ is a 2-tuple $ (A, m) $
+where $ A $ is a set and $ m: A \rightarrow \{x \in \mathbb{N} \mid x \ge 1 \} $.
+$ A $ is called the \enquote{support} of $ M $ and
+a set $ U $ is a \enquote{universe} of $ M $ if and only if $ A \subseteq U $.
+The \enquote{sum} of multisets $ M_1 $ and $ M_2 $ is defined as
+$ (A_1 \cup A_2, \{ x \in (A_1 \cup A_2) \mid (x, m_1(x) + m_2(x)) \} $.
+
+Let $ P $ denote probability.
+
+In a limited, sealed-deck tournament style, a partition $ S $ is chosen and used for play.
+Each participant is provided a multiset $ B $ of cards whose universe is $ S $
+as well as a multiset $ B_L $ whose universe is $ L $.
+$ B $ is constrained to contain $ 90 $ cards
+whereas $ B_L $ contains an infinite amount of cards.
+
+Given participants must select a multiset $ D, \ |D| \ge 40 $ from the sum of $ B $ and $ B_L $,
+we want to choose $ D $ such that we maximize $ P(\text{game success} \mid D) $.
+
+\section{Literature Review}
+
+\subsection{\enquote{Ensemble Determinization in Monte Carlo Tree Search for the Imperfect Information Card Game Magic: The Gathering.}}
+\label{sec:3.1}
+
+This article discusses how the Monte Carlo Tree Search (MCTS) algorithm
+has been applied to create AI's for games in the
+past and how it can be applied with the game Magic: the Gathering.
+Due to Magic's core element of having incomplete information while playing the game
+due to the fact that both players have hidden hands of cards that were drawn from
+shuffled decks makes the Monte Carlo Tree Search approach quite effective.
+In addition,
+since each player gets to create their own deck to play in the manner of their choice,
+this adds further hidden information as well as an interesting challenge to the game.
+Other key elements of Magic: the Gathering such as the ability of a player to
+interrupt another player during their turn,
+interact with other player's resources, and predicting how an opponent
+react to different plays makes this game an interesting field of study.
+The MCTS algorithm provides the advantage over
+other algorithms since it is not required for a terminal game state to be reached for a result to be calculated
+but instead can be stopped at any point to evaluate the current state.
+This paper details all of the core rules of Magic such that they compare the advantages of the
+MCTS algorithm over a strictly rule based approach.
+By pruning different kinds of moves to be added to the tree,
+the ability to formulate the best move is much more efficient.
+By using multiple trees,
+the authors compensate for incomplete information allowing for the ideal course of action based on the known information.
+
+\subsection{\enquote{Rarity and Power: Balance in Collectible Object Games.}}
+\label{sec:3.2}
+
+Mr. Ham details the issues that come along with the collectable card game format.
+The main issue involves the game both being fun as well as balanced.
+In the game Magic: the Gathering,
+there were 9 cards within the first sets that were significantly more powerful than their counterparts.
+The game designers did not intend for these cards to so
+significantly impact the game that each player would own and use two or so copies of these cards in roughly every deck.
+By these cards being so overpowered, the balancing of the game was completely out of whack.
+Other games such as Sanctum have tried their hardest to not create cards
+that were so good that they could individually break the gameplay of
+Sanctum, especially if the reason they were so good is that they were hard to obtain.
+These applications also apply to trading baseball card games.
+In the game you can play with baseball cards, all of the baseball players all can be reduced to a statistical value.
+This allows for many different strategies such that a player can accomplish the same
+goals with many different strategies/collections of cards.
+With this versatility Suitcase players are not put at as much
+of an advantage in the baseball card game as they are in games such as Magic: the Gathering.
+
+\subsection{\enquote{BOA: Bayesian Optimization Algorithm.}}
+\label{sec:3.3}
+
+This paper describes how a bayesian optimization algorithm can be used to increase the efficiency of genetic algorithms.
+It describes how genetic algorithms are optimization programs
+based on artificial selection and genetic recombination operators
+and how the two most important factors to a genetic algorithms success, proper growth and mixing, are often not achieved.
+The paper describes how a bayesian algorithm functions.
+It selects the best options from a population using any searching method.
+Than the new options are added to the old population, replacing some of the old options.
+This generates a bayesian network, where each node is one variable.
+This method could be helpful for creating our optimization algorithm because it is fast.
+As shown in the paper, the algorithm runs in close to linear time.
+This method could also be useful because it selects the best from a network,
+which would be an optimal way of selecting the best cards for the deck.
+
+\subsection{\enquote{Surprising strategies obtained by stochastic optimization in partially observable games.}}
+\label{sec:3.4}
+
+This paper takes a different approach to optimization.
+The authors use a evolutionary algorithm and a stochastic optimization algorithm
+to find optimal outputs for partially observable games.
+They use 5 different algorithms, one naïve evolutionary algorithm, two coevolutionary algorithms,
+an iterative evolutionary algorithm, and a seed method.
+These algorithms are tested by playing multiple different games, batawaf, war, cheat, battleship and guess who.
+The results found that these algorithms found strategies for games that seem entirely luck based.
+This type of algorithm could be useful for finding the optimal deck against different styles of play.
+
+\subsection{\enquote{Active Set Methods with Reoptimization for Convex Quadratic Integer Programming}}
+\label{sec:3.5}
+
+\enquote{Active Set Methods with Reoptimization for Convex Quadratic Integer Programming}
+proposes a new algorithm to solve \enquote{unconstrained convex quadratic integer}
+problems with linear constraints.
+The algorithm they propose is a generalized branch-and-bound approach,
+which is the most effective method to solve problems of this type (quadratic integer programming problems),
+and it has wide application as many real-world problems can be represented in this fashion.
+It consists of a preprocessing phase and an iterative main phase,
+which uses an optimization known as a \enquote{warmstart.}
+For this optimization,
+each iteration of the main phase uses knowledge of the previous iteration to inform its next guess.
+If the number of constraints are held constant,
+the algorithm runs in linear time with respect to the problem size.
+It was tested with 200 random problem instances and it was found to outperform IBM CPLEX by a moderate measure.
+
+\subsection{\enquote{Approximating the k-Set Packing Problem by Local Improvements}}
+\label{sec:3.6}
+
+\enquote{Approximating the k-Set Packing Problem by Local Improvements}
+proposes a more efficient variant of many algorithms already created to solve the k-set packing problem.
+The k-set packing problem, given a universe $ U $ and a collection $ S \subset U $ with $ |S| \le k $,
+seeks to find the maximum number of sets $ \subset S $ which are mutually disjoint.
+Prior work has improved solving this problem from $ \frac{k}{2} $ to $ \frac{k + 2}{3} $
+then $ \frac{k + 1}{3} + \epsilon $ and $ \frac{1}{\epsilon} $.
+The changes they propose further reduce it to $ \frac{1}{\epsilon^2} $.
+They suggest that their contribution is possibly the best improvement that can be made for the problem,
+since it matches a theoretical lower bound.
+They use a local search strategy,
+which is the most widely used approach for this problem.
+Their algorithm, which they call \enquote{Algorithm CITC,}
+uses a color-coding technique to make a logarithmic-time improvement with a polynomial-time algorithm.
+They construct a \enquote{bipartite conflict graph}
+and search it for what they call \enquote{colorful tail changes} for every $ 3 \ge $ degree vertex.
+For each one they find,
+they build a multigraph and continue computation.
+To conclude, they use various strategies to squeeze out better performance from an already efficient solution
+and do so perhaps for the last time.
+
+\subsection{\enquote{Magic: The Gathering, A Literary Text.}}
+\label{sec:3.7}
+
+This reading starts off by talking about Magic: The Gathering and a bit of its history.
+It compares the card game to the popular role-playing game
+Dungeons \& Dragons in terms of its lore and overall aesthetic,
+then goes on to talk about its impact on pop culture.
+After this, the reading explains some of the rules of Magic,
+and some of the different ways the game is played such as arranging the deck based on color of the card or
+limiting the total size of the deck.
+The main argument of this article is then presented;
+that Magic is a form of literary work.
+The author is arguing that,
+while each card on its own presents little context,
+the cards together paint a picture of a world filled with rich lore.
+The author backs this up using the fact that works of interactive fiction,
+such as graphic novels or motion comics,
+are themselves considered works of literature by today's standards.
+It is argued that Magic can be viewed as a form of interactive fiction.
+In addition to this, the point is brought up that the Magic: The Gathering website
+has a large collection of written pieces about the characters and lore of the Magic mythos.
+All of these arguments, and the fact that Magic is a wildly popular and acclaimed game,
+lead the author to claim that the card game is a \enquote{dynamic literary text.}
+
+\subsection{\enquote{The Complexity of Deciding Legality of a Single Step of Magic: The Gathering.}}
+\label{sec:3.8}
+
+The reading begins with a short introduction on Magic: The Gathering,
+where it explains the general circumstances and goals of the game.
+It then moves on to discuss the purpose of the reading;
+deciding the complexity of the legality of a single move in Magic.
+The general rules and types of cards and what do they are then explained in detail.
+The concepts of the deck, the player's hand, the stack, the battlefield,
+and the graveyard are briefly discussed, and the types of cards included are instants/sorceries,
+artifacts/enchantments, planeswalkers, creatures, and lands.
+Some of the variants of the game are discussed,
+including one of the single player variants known as Goldfish.
+It then moves on to discuss the mathematical implications of
+deciding the time complexity of the legality of a single move.
+The reading discusses the ideas of min-cost flow,
+the base case of having no requirements or restrictions on a move,
+and the types of possible restrictions.
+These restrictions include local restrictions, local counting restrictions,
+global counting restrictions, blocker capacity restrictions, and attack capacity restrictions.
+The complexity of the base case is then discussed,
+as well as the complexities of special cases.
+The reading concludes with a more in depth analysis of restriction one, the local restriction.
+
+\subsection{Literary Analysis Conclusion}
+
+In these scholarly readings regarding the game Magic: The Gathering and optimization algorithms,
+we have gained a greater understanding of both how the game functions
+as well as how we can accomplish our goal of optimizing the creation of competitive decks
+based on a set of randomly generated cards.
+Some possible strategies that we have read about include
+using a Monte Carlo Search Tree approach, genetic programming, as well as active set methods.
+
+\section{Algorithm Design}
+
+In order to determine an optimal deck of cards that can be created from a given card pool,
+we must define a way of evaluating each candidate deck
+such that an optimization algorithm can determine
+the subset of the card pool would perform most optimally.
+For this we have defined an objective function that will analyze a proposed deck
+and calculate a penalty for it, which an optimization algorithm can try to minimize.
+
+\subsection{Objective Function}
+
+In order to calculate the penalty on a single deck,
+we have identified 6 sub-objectives, each considering
+important aspects of previously successful decks that we want every deck to share.
+% Some of the specified penalty values have not yet been fully tested and may change in the future.
+
+\subsubsection{Deck Size}
+\label{objective:Deck Size}
+
+In the sealed format of Magic: The Gathering,
+players are given 6 booster packs, each containing 15 cards,
+and are able to build a deck out of whichever cards they get out of the packs.
+The player can also add as many basic lands as they desire,
+which are used to activate and play other cards.
+When it is all said and done,
+the ideal number of cards to have in a deck is the minimum allowed, 40 cards.
+The reasoning behind this is that, when drawing a card,
+having a smaller deck size will increase odds of the player drawing a useful card.
+The larger the deck is,
+the more likely it is filled with \enquote{bloat} cards,
+or cards that are not very useful.
+As such we will penalize for excess cards using the following quadratic function:
+
+$$
+f(n) = (40 - n) ^ 2
+$$
+
+with $ n $ being the actual number of cards in a constructed deck.
+
+\subsubsection{Mana Curve}
+\label{objective:Mana Curve}
+
+Magic: The Gathering cards require certain amounts of \enquote{mana} in order to be played.
+This mana cost is denoted on the top-right corner of every card.
+Ignoring the specific mana \enquote{color} required,
+each card can be categorized by the amount of mana required to play it.
+For example, a card with \{1\}\{R\} would have an overall cost of 2 mana
+where as a card with just \{R\} would have an overall cost of 1.
+This overall cost is known as the \enquote{converted mana cost} or CMC.
+
+Looking at the converted mana cost can be particularly useful in evaluating a deck.
+A card's strength is generally directly correlated to its converted mana cost.
+So, 8-CMC cards tend to be very powerful
+whereas 1-CMC cards tend to be not as strong.
+However, since a player's mana pool only slowly increases throughout the game,
+someone who stocks up on the more-powerful cards may not be able to play them until late in the game.
+On the flip side, if a deck is primarily filled with weaker 1-CMC cards,
+then he can be very active in the beginning of the game
+but may lack the more-powerful cards needed for the end-game.
+So there exists a fine balance between how many cards of each CMC a deck should have.
+This balance is what players refer to as an ideal \enquote{mana curve}.
+
+If one were to count the converted mana cost of each card in the deck and store it in a vector,
+the relative frequency graph of that vector is the \enquote{mana curve}.
+Specifically, the ideal mana curve can be represented with the following R code:
+
+\begin{minted}{R}
+
+ideal.mana.curve <- c(
+    1,
+    2, 2, 2, 2, 2,
+    3, 3, 3, 3,
+    4, 4, 4, 4,
+    5, 5, 5,
+    6, 6)
+relative.frequency <- table(ideal.mana.curve) / length(ideal.mana.curve)
+
+\end{minted}
+
+To differentiate an optimal mana curve from a suboptimal one,
+let us first recall cumulative distribution functions (CDFs) from statistics.
+Given a discrete random variable $ X $ and a probability mass function $ f $,
+a CDF $ F $ is defined as:
+
+$$
+F(x) = P(X \le x) = \sum_{t \le x} f(t).
+$$
+
+We can use the CDF to describe our mana curve as follows:
+
+\begin{tabular}{|l|l|}
+\hline
+
+$ F(1) $ & $ \frac{1}{19} $ \\ \hline
+$ F(2) $ & $ (\frac{1}{19}) + \frac{5}{19} = \frac{6}{19} $ \\ \hline
+$ F(3) $ & $ (\frac{6}{19}) + \frac{4}{19} = \frac{10}{19} $ \\ \hline
+$ F(4) $ & $ (\frac{10}{19}) + \frac{4}{19} = \frac{14}{19} $ \\ \hline
+$ F(5) $ & $ (\frac{14}{19}) + \frac{3}{19} = \frac{17}{19} $ \\ \hline
+$ F(6) $ & $ (\frac{17}{19}) + \frac{2}{19} = \frac{19}{19} $ \\ \hline
+$ F(7) $ & $ (\frac{19}{19}) + \frac{0}{19} = \frac{19}{19} $ \\ \hline
+$ F(8) $ & $ (\frac{19}{19}) + \frac{0}{19} = \frac{19}{19} $ \\ \hline
+
+\end{tabular}
+
+Now that we have a definition of the ideal mana curve,
+let us contrast it to a suboptimal mana curve
+so we can develop a quantitative measure for how the two differ.
+For example, take the following mana curve:
+
+
+\begin{minted}{R}
+
+bad.mana.curve <- c(
+    1,
+    2,
+    3,
+    4, 4, 4, 4,
+    5, 5, 5, 5, 5, 5,
+    6, 6,
+    7, 7,
+    8, 8, 8, 8, 8, 8)
+
+bad.relative.frequency <- table(bad.mana.curve) / length(bad.mana.curve)
+
+\end{minted}
+
+Using its CDF $ F' $, we can describe this mana curve with the following table:
+
+\begin{tabular}{|l|l|}
+\hline
+
+$ F'(1) $ & $ \frac{1}{23} $ \\ \hline
+$ F'(2) $ & $ (\frac{1}{23}) + \frac{1}{23} = \frac{2}{23} $ \\ \hline
+$ F'(3) $ & $ (\frac{2}{23}) + \frac{1}{23} = \frac{3}{23} $ \\ \hline
+$ F'(4) $ & $ (\frac{3}{23}) + \frac{4}{23} = \frac{7}{23} $ \\ \hline
+$ F'(5) $ & $ (\frac{7}{23}) + \frac{6}{23} = \frac{13}{23} $ \\ \hline
+$ F'(6) $ & $ (\frac{13}{23}) + \frac{2}{23} = \frac{15}{23} $ \\ \hline
+$ F'(7) $ & $ (\frac{15}{23}) + \frac{2}{23} = \frac{17}{23} $ \\ \hline
+$ F'(8) $ & $ (\frac{17}{23}) + \frac{6}{23} = \frac{23}{23} $ \\ \hline
+
+\end{tabular}
+
+We can define the difference between the two mana curves in the following manner:
+
+\begin{tabular}{|l|l|}
+\hline
+
+$ \abs{F(1) - F'(1)} $ & $ \abs{(\frac{1}{19}) - (\frac{1}{23})} = \frac{4}{437} \approx 0.92\% $ \\ \hline
+$ \abs{F(2) - F'(2)} $ & $ \abs{(\frac{6}{19}) - (\frac{2}{23})} = \frac{100}{437} \approx 23\% $ \\ \hline
+$ \abs{F(3) - F'(3)} $ & $ \abs{(\frac{10}{19}) - (\frac{3}{23})} = \frac{173}{437} \approx 40\% $ \\ \hline
+$ \abs{F(4) - F'(4)} $ & $ \abs{(\frac{14}{19}) - (\frac{7}{23})} = \frac{189}{437} \approx 43\% $ \\ \hline
+$ \abs{F(5) - F'(5)} $ & $ \abs{(\frac{17}{19}) - (\frac{13}{23})} = \frac{144}{437} \approx 33\% $ \\ \hline
+$ \abs{F(6) - F'(6)} $ & $ \abs{(\frac{19}{19}) - (\frac{15}{23})} = \frac{8}{23} \approx 35\% $ \\ \hline
+$ \abs{F(7) - F'(7)} $ & $ \abs{(\frac{19}{19}) - (\frac{17}{23})} = \frac{6}{23} \approx 26\% $ \\ \hline
+$ \abs{F(8) - F'(8)} $ & $ \abs{(\frac{19}{19}) - (\frac{23}{23})} = 0\% $ \\ \hline
+
+\end{tabular}
+
+Using this approach,
+we can define a penalty for being different from our ideal mana curve.
+Namely,
+\scalebox{0.5}{
+$$
+penalty(F') = \abs{5\% - F'(1)} + \abs{31\% - F'(2)} + \abs{52\% - F'(3)}
+    + \abs{73\% - F'(4)} + \abs{89\% - F'(5)} + \abs{100\% - F'(6)}
+    + \abs{100\% - F'(7)} + \abs{100\% - F'(8)}
+$$}
+
+Using this function, the penalty for the suboptimal mana curve would be
+$ penalty(F') \approx 2.00 $.
+
+\subsubsection{Land Percentage}
+\label{objective:Land Percentage}
+
+During gameplay,
+players pay the cost for these cards in terms of a special card type known as a land.
+Lands have a 0 CMC (so they are free to play)
+and have a specific color corresponding to the kind of mana cost they can satisfy.
+As with the previous sub-objective,
+there exists another fine balance between having powerful non-land cards and lands to support them.
+Having too few lands means not having enough mana to play the non-land cards
+but, at the same time, having too many lands means not having enough non-land cards to play.
+Experts recommend having a 17:23 lands-to-non-land ratio in a 40-card deck,
+which is about 42.5\% lands,
+but also permit 16:24 and 18:22 ratios.
+
+In either case,
+we want this ratio to be below 50\% since if it were 50\%,
+then there would be a 50/50 chance every time the player draws a card that the card would be a land.
+A ratio higher than 50\% would yield even more lands.
+This many lands is not practical in-game,
+so we want the ratio to be lower.
+We will calculate the penalty for having a higher
+or lower ratio of lands to non-lands with the following function:
+
+$$
+f(r) = \begin{cases}
+    0 & \frac{16}{40} <= r <= \frac{18}{40} \\
+    \abs{\frac{17}{40} - r} * 1000 & r > 0.75 \\
+    \abs{\frac{17}{40} - r} & otherwise
+\end{cases}
+$$
+
+with $ r $ being our ratio of lands to non-lands.
+
+\subsubsection{Land Color Percentage}
+\label{objective:Land Color Percentage}
+
+As mentioned previously,
+most cards in Magic: The Gathering require mana in order to be played
+and the mana cost is denoted with mana symbols in the top-right corner.
+Some mana symbols require a specific color of mana, such as black or red,
+whereas others accept any color.
+We want to craft the color ratio of our lands such that it is equal to
+the ratio of the mana cost of the cards in our deck.
+For example,
+if we take the cards in our deck and count all the red mana symbols on them,
+we can find the ratio of red mana symbols to the total number of mana symbols
+and we should strive to make ratio of our red lands to the total number of lands equal to it.
+
+Say we count 19 red mana symbols of 35 mana symbols in total.
+The ratio of red mana symbols is $ \frac{19}{35} $ or about $ 54\% $.
+Lets say that in this example we want to have 16 lands total.
+Given this ratio,
+we would want $ \frac{19}{35} * 16 \approx 9 $ of our lands to be red lands.
+
+By comparing the deck being analyzed's ratio of each land and the total number of lands
+to the ratio of mana symbols of the color that land would produce and the total number of mana symbols,
+we can analyze how ideal our landbase is. For each color of mana symbol used within the deck,
+we apply this function to calculate the penalty for the incorrectness of the manabase
+
+$f(w,u,b,r,g)=|w'-w|+|u'-u|+|b'-b|+|r'-r|+|g'-g|$
+
+where w, u, b, r, and g denote the land color ratio for each color within the deck
+while their prime counterparts represent the corresponding mana symbol ratio for the deck.
+
+\subsubsection{Color Identity}
+\label{objective:Color Identity}
+
+The ideal deck primarily consists of two mana colors.
+Any other color underneath a certain threshold is considered to be a \enquote{splash}.
+We define a splash to be a color with a relative frequency less than 10\%.
+The best case scenario is a deck that is solely two color deck, with no splashes,
+so our function will penalize any colors that do not count as the dominant two.
+% It will also make sure that if a splash does occur, it only occurs once.
+The penalty would be determined by a linear function such as:
+
+$$
+f(colors, splashes) = c_1 * \abs{2 - colors} + c_2 * splashes
+$$
+
+where `colors' denotes the number of dominant colors,
+`splashes' denotes the number of splashed colors,
+and $ c_1 $ \& $ c_2 $ are separate values to weight the results.
+
+\subsubsection{Card Archetypes}
+\label{objective:Card Archetypes}
+
+In the card game Magic: The Gathering there are many \enquote{archetypes} of cards that are
+important to keep in mind when creating a sealed deck.
+The acronym BREAD is used to describe some of these archetypes.
+This acronym stands for Bombs, Removal, Evasion, Aggro, and Duds.
+In addition to the archetypes described,
+I believe that there are other archetypes such as
+mana-fixing and combat tricks,
+which are also key in creating a successful sealed Magic: The Gathering deck.
+
+Bombs refer to cards with such powerful effects or strength that they can potentially turn
+the tide of the game in your favor just by playing them.
+In a general context, we would ideally have one or more bombs.
+So, in calculating the score of the deck,
+if the deck contains a bomb
+then no deduction will be made in this regard.
+Otherwise, there will be a deduction of $ 10 $.
+The penalty for bombs can be represented as:
+
+$$
+b(bombs) = \begin{cases}
+    0 & bombs \ge 1 \\
+    10 & otherwise
+\end{cases}
+$$
+
+where `bombs' denotes the number of bombs present within the deck.
+
+\enquote{Removals} are
+cards that remove your opponent's cards through mechanisms such as
+damage, destruction, removal from the game, or preventing your opponent from even playing the threat.
+In the context of our chosen tournament type,
+removals are those that generally deal damage to creatures,
+as access to good
+artifacts, enchantments, and planeswalkers tend to be very few and far between.
+As this category is a key element in many successful limited decks,
+we want at least $ 2 $ removal spells to stop our opponent from progressing their own board state.
+The penalty for removal can be represented as
+
+$$
+r(removal) = \begin{cases}
+    0 & removal \ge 2 \\
+    c(2-removal) & otherwise
+\end{cases}
+$$
+
+where `removal' denotes the number of removal spells present within the deck
+and $ c $ denoting a constant to weigh the result.
+
+\enquote{Evasive} cards are
+more difficult for an opponent to block.
+They require the opponent to use a removal spell or have creatures that meet a specific criterion.
+Some examples of evasive cards are creatures
+with flying or that are unblockable by other means.
+Evasion is important as it allows you to damage an opponent
+in a fashion that he would otherwise not have to deal with.
+Since evasive creatures do not always present in every color,
+we will only penalize decks whose dominant colors contain the possibility for an evasive.
+Only if an evasive card in one of those colors is provided as an option,
+will we penalize the deck if it does not include at least $ 2 $ of them.
+The penalty for removal can be represented as
+
+$$
+e(evasive) = \begin{cases}
+    c(2 - evasive) & evasive < 2 \land \text{evasive is an option in the deck's dominant colors} \\
+    0 & otherwise
+\end{cases}
+$$
+
+where `evasive' denotes the number of evasive creatures present within the deck
+and $ c $ denoting a constant to weigh the result.
+
+\enquote{Aggro} is the archetype describing aggressive creatures or spells,
+which limited decks tend to be primarily comprised of.
+These cards allow for constant pressure to be placed upon opponents
+and potentially allow you to win the game.
+They do not have the sheer strength or board presence of a bomb
+but instead act as smaller, yet constant, nuisances that your opponent
+has to handle or risk losing the game.
+As this is a good portion of limited decks,
+the quantity of these types of cards will likely be greater than those of other archetypes.
+
+When creating a sealed deck,
+there will ultimately be cards that are in the pool of cards
+that can be potentially put into a deck that will be near unusable due to multiple reasons.
+there can be cards that are nearly unusable for multiple reasons.
+Some of these reasons include cards of different colors or
+cards that are simply just too bad to utilize.
+These cards are of the final letter in the BREAD acronym called \enquote{duds}.
+In a sealed deck,
+card quality is very important to the success of the deck,
+so we want to prioritize the better cards to increase its quality.
+Decks containing these \enquote{duds} will receive a penalty of $ 5 $ per dud card
+as they are virtually unplayable.
+The penalty for including duds within a deck can be represented as
+
+$$
+d(duds) = 5 * duds
+$$
+
+where `duds' denotes the number of dud cards within the deck.
+
+In a game of Magic: The Gathering,
+in order to cast a spell one needs access to certain colors of mana to pay for the cost of each spell.
+Since there are 5 different colors of mana,
+the more colors that one chooses for their deck to contain
+then the harder it will be to obtain all of the mana in the right color combinations
+in order for them to cast their spells.
+Mana-fixing cards allow for one to usually choose one of multiple colors of mana
+to allow for flexibility in how they play their spells.
+If a deck is running multiple colors
+it is highly recommended to use cards that allow for you to fix your
+mana supply with the colors that you need.
+In the case that a play decides to play more than two colors,
+they almost need to have mana fixing
+otherwise in some games they will just sit there hoping
+they get the land to provide them with the
+mana they need to do anything, putting them at a severe disadvantage.
+If a deck is playing 2 colors then usually only 1
+mana-fixer is needed but any more than two colors and you definitely want two or three.
+The deduction due to mana-fixing would be if a three or more color deck
+has less than $ 2 $ mana-fixers then the deduction would be based on the difference of
+2 and the number of mana-fixers that reside within the deck.
+The mana-fixing deduction can be represented as
+
+$$
+m(mana) = \begin{cases}
+    0 & x \ge 2 \\
+    c(2 - mana) & otherwise
+\end{cases}
+$$
+
+where `mana' denotes the number of mana-fixers within the deck
+and $ c $ being a constant to weight the results.
+
+During combat in Magic: The Gathering
+the active player chooses which of their creatures to attack with
+and then the defending player decides how they would like to block the attacking creatures.
+Then the attacking creatures deal damage to the blocking creatures and vice-versa.
+By a creature reaching 0 toughness or due to another ability,
+creatures die and enter the graveyard where they usually lie until the end of the game.
+By killing off your opponent's creatures,
+you usually are given an advantage.
+One way of accomplishing this is by using \enquote{combat tricks}.
+Since your opponent does not know the cards in your hand,
+they are unaware of what your plans are.
+Combat tricks are cards or abilities that allow for interaction
+with the attacking or blocking creatures.
+This allows you to mess up your opponent's plans in your favor.
+
+To calculate the complete value of penalties within this subsection,
+we take the sum of all of the deductions made,
+represented by:
+
+$$
+TP(deck) = b(bombs) + r(removal) + e(evasive) + d(duds) + m(mana)
+$$
+
+\subsection{Optimization}
+\label{sec:Optimization}
+
+
+Through our research, we have found three possible optimization algorithms
+that we could use to select the cards for our objective function to grade.
+These are ant colony optimization, particle swarm optimization,
+and compartmentalized knapsack optimization.
+
+\phantomsection
+\label{paragraph:Ant colony}
+Ant colony optimization is based off of the way ants move around.
+When an ant finds a path leading to food,
+they release a pheromone to attract other ants to tell they are headed the right way.
+In this optimization algorithm, artificial `ants' move through a tree
+containing all possible solutions to locate the optimal ones.
+The ants record their positions and the quality of the solution to direct each other.
+Since we can evaluate how good each card with the objective function described above,
+the use of this algorithm
+would allow us to find the best cards to use from the pool.
+
+\phantomsection
+\label{paragraph:Particle Swarm}
+The second optimization algorithm we are considering is particle swarm optimization,
+specifically the set-based variant.
+This method simulates birds flocking to food.
+It works by having all particles follow the two \enquote{best} values.
+These two bests are the local best and the global best.
+After each iteration the velocities of each particle is updated.
+The set-based variant allows for a discrete search space,
+as well as the velocity being defined as a set with possibilities.
+While this form of optimization may not be the best in its normal state,
+if we can modify it, this method would be preferable.
+This is because we would be able to account for card synergies.
+This would allow for the best deck to be selected given the cards
+in the pool based off of more situational factors.
+
+\phantomsection
+\label{paragraph:Knapsack}
+The third algorithm is a variation of the knapsack algorithm discussed during class.
+It uses the same idea of maximizing the value of a \enquote{knapsack,}
+which contains some elements.
+This variation stores elements of the same type in compartments within the knapsack.
+The compartments each have flexible capacities, but are lower and upper bounded.
+The goal is to maximize the total value of all of the items in the knapsack
+minus the cost of the compartments.
+
+
+While searching for an efficient optimization algorithm that would suit our needs,
+we discovered a project similar to ours that a grad student
+named Troy Hernandez developed while working toward's his Master's degree.
+This project took the cards from the booster packs the player's received
+and returned the highest rated deck.
+Similar to our project, though our project can currently be used for any Magic: The Gathering
+Ravnica Allegiance deck, while Hernandez's project can only be used in the sealed format.
+Our project could be modified to accept cards from any Magic: The Gathering set,
+given more time.
+Hernandez's optimization algorithm was written entirely in R,
+and while we searched for a method of integrating an R function
+into Python, we ended up not going with this method.
+
+\section{Implementation}
+
+\subsection{Data Sets}
+
+To implement the objective function we designed,
+we require a comprehensive description of the Magic: The Gathering
+set of which a candidate solution of cards are members.
+To this end,
+we query a publicly available database containing all MTG cards to date.
+% TODO: Add link or citation
+The database contains information such as:
+
+\begin{itemize}
+    \item Set id
+    \item Card number
+    \item Card rarity
+    \item Converted mana cost as well as individual cost components
+    \item Card type
+\end{itemize}
+
+Using this data,
+we can account for mana curve (\ref{objective:Mana Curve}),
+land percentage (\ref{objective:Land Percentage}),
+land color percentage (\ref{objective:Land Color Percentage}),
+as well as color identity (\ref{objective:Color Identity}).
+The deck size objective (\ref{objective:Deck Size})
+can be trivially implemented independently of the above data
+but accounting for card archetypes (\ref{objective:Card Archetypes}) requires additional data.
+So, we decided to handcraft our own database using as much pre-existing data as possible.
+We decided to keep the above columns and add the following:
+
+\begin{itemize}
+    \item Archetypes (Bomb, Removal, Combat trick, Evasive, Counter, Card draw, Mana fixing)
+    \item Rating
+\end{itemize}
+
+To give an example of what this looks like in practice,
+we represented the \enquote{Angel of Grace} card in the following fashion:
+
+\begin{itemize}
+    \item Set id: \enquote{RNA}
+    \item Card number: $ 1 $
+    \item Card rarity: \enquote{Mythic rare}
+    \item Converted mana cost: $ 5 $
+    \item Mana cost: \enquote{\{3\}\{W\}\{W\}}
+    \item Card type: \enquote{Creature}
+\end{itemize}
+
+For mana cost,
+we use a commonly-understood notation.
+In this example,
+\enquote{\{3\}\{W\}\{W\}} means $ 2 $ white mana symbols
+and $ 3 $ additional mana symbols of any color
+are required to play the card.
+
+However, we found that this schema was not enough.
+Additional complexities arise due to the fact that
+some cards effectively have two faces.
+These cards are essentially two cards printed on one piece
+of paper.
+However, due to their inseparability,
+they share some properties in common
+(such as rating or converted mana cost).
+To accommodate for this inconsistency,
+we decided to store both faces in the same data entry
+using the same fields,
+using the special value \enquote{ // } to separate unshared properties.
+
+To demonstrate,
+let's look at card 224 from the RNA set.
+The card is divided in two and on one side it reads \enquote{Consecrate},
+on the other it reads \enquote{Consume}.
+It shares a converted mana cost of $ 6 $
+while the left side is an \enquote{Instant} card type
+and the right side is a \enquote{Sorcery}.
+We represent such a card in the following manner:
+
+\begin{itemize}
+    \item Set id: \enquote{RNA}
+    \item Card number: $ 224 $
+    \item Card rarity: \enquote{Uncommon}
+    \item Converted mana cost: $ 6 $
+    \item Mana cost: \enquote{\{1\}\{W/B\}//\{2\}\{W\}\{B\}}
+    \item Card type: \enquote{Instant // Sorcery}
+\end{itemize}
+
+Furthermore,
+this card demonstrates another exception the game provides.
+\enquote{Consecrate}'s mana cost is \enquote{\{1\}\{W/B\}},
+meaning that it requires $ 2 $ mana symbols,
+one of which can be of any color and the other must either be white or black.
+Since the \enquote{W/B} notation greatly resembles how the mana symbols appear
+on the card,
+we internally represent the construct in this manner as well.
+
+\subsection{Time complexity}
+
+\subsubsection{Database parsing}
+
+Before running our application,
+we export our database to a single CSV file.
+
+Then, at run time,
+we read it in and process it in its entirety.
+Since we process each card,
+this phase is at least $ \Omega(n) $
+
+During processing,
+we convert each card into the following data structures:
+
+% CardFace definition
+\inputminted[firstline=161, lastline=165]{python}{../src/algorithm.py}
+
+% Card definition
+\inputminted[firstline=168, lastline=175]{python}{../src/algorithm.py}
+
+For each card,
+we split on the string \enquote{//} and create a CardFace for each half.
+If the sentinal string is absent (the card is monolithic),
+we just create a single instance of CardFace.
+In Card,
+we store the attributes common to the card faces.
+
+Note that we are defining forward relations from a Card instance
+to an instance of Rarity, Archetype, etc.
+It will be useful, as we will later find,
+to reverse the relation so we can go from Rarity, etc. to appropriate Card instances.
+To this end,
+we create another data structure SetInfo and it stores such reverse relations:
+
+% SetInfo definition
+\inputminted[firstline=188, lastline=194]{python}{../src/algorithm.py}
+
+Finally,
+we create a CardTypes data structure to store additional properties that are
+specific card types.
+For example,
+\enquote{creature} cards have an additional power and toughness value
+while \enquote{land} cards have an additional attribute \enquote{color}.
+
+% CardTypes definition
+\inputminted[firstline=178, lastline=185]{python}{../src/algorithm.py}
+
+% Land, Enchantment, ..., Instant
+\inputminted[firstline=122, lastline=151]{python}{../src/algorithm.py}
+
+% parse_cards_csv(...) definition
+% \inputminted[firstline=430, lastline=592]{python}{../src/algorithm.py}
+
+% \subsubsection{Booster pack generation}
+
+% To generate a pool of cards for use in an optimization algorithm,
+% we have defined the following function.
+% It generates a booster pack from a given Magic: The Gathering set
+% and would be called $ 6 $ times to generate the entire card pool:
+
+% % generate_booster_pack(...) definition
+% \inputminted[firstline=219, lastline=252]{python}{../src/algorithm.py}
+
+% Before each call to random.sample(\dots),
+% each entry in set_info.rarities is first converted
+% from a set type to a tuple type.
+% Though perhaps dependent on the Python interpreter,
+% this operation can be at worst $ O(n) $.
+% We perform is type conversion due to the API contract of the random module.
+% It requires a so-called \enquote{subscriptable} type.
+% However,
+% we want to use the set data type because it removes duplicates during the CSV parsing.
+
+\subsubsection{Objective function}
+
+The objective function loops over each card in a candidate deck of $ n $ cards.
+In this loop,
+it loops over $ f $ card faces with $ m $ mana symbols each.
+It also loops over $ a $ archetypes present in the cards
+as well as $ c $ distinct converted mana cost values.
+
+So,
+the time complexity can be said to be $ O(nmfc + nma) $.
+However, $ 1 \le f \le 2 $, $ 0 \le a \le 7 $, and $ 0 \le c \le 5 $.
+so these variables can be seen as constants, even in their worst case.
+As a result,
+we can more accurately say the time complexity to be $ O(nm) $.
+
+\subsection{Test Cases}
+
+\subsubsection{Deck 1: Good Deck}
+
+In this test deck, from the test card pool we created an above average deck that is 2 colors with a splash of a third
+and less dominant color. The color combination adds a penalty of $ 3 $ due to the addition of the third color.
+The mana curve of this deck is pretty good so it only adds a penalty of $ 1 $ . In this deck there are 17 lands to
+23 non-lands totalling to 40 cards. Since we are at the ideal deck size there is no penalty. Since the ratio of lands
+to nonlands is also very close to ideal the penalty is only $ 1.5 $ . Due to the mana symbol ratio being very close
+to ideal, the penalty is only $ 0.58666 $ . Finally the archetypes represented in the deck lead to a penalty of 55.
+This deck's total penalty adds up to be $ 61.17 $ .
+
+\subsubsection{Deck 2: Somewhat Bad Deck}
+
+In this test deck we created a somewhat bad 5 color deck. The color penalty in this case is $ 3 $ .
+Due to this deck's better mana curve than Deck 1 the mana curve penalty is $ 0.4999 $ which is lower than
+Deck 1's mana curve penalty. Due to this deck only containing 9 land cards, the land ratio penalty is $ 7 $
+which is significantly higher than Deck 1's. Due to this deck's 5 color nature, the mana symbol penalty
+is $ 0.9356 $ . Finally this deck's archetype penalty is $ 60 $ . This deck's total penalty is $ 71.4356 $ which is
+greater than Deck 1's total penalty. This result is to be expected due to this deck's contents.
+
+\subsubsection{Deck 3: Bad Deck}
+
+This test case was created to show that our objective function works to accurately grade decks
+where even though they are so bad that they are extremely suboptimal but they still could be played
+and in extremely rare situations could win. This deck contains 39 lands and a single creature. This leads to a
+huge penalty in the land ratio penalty of $ 11000 $ . Overall the total penalty is $ 11084.975 $ .
+
+\subsubsection{Deck 4: Very Bad Deck}
+
+This deck is similar to Deck 3 in terms of being extraordinarily. It differs from the previous
+deck in the fact that it is entirely lands and therefore will never win. The land ratio penalty for this
+deck shows that since it is $ 11500 $ which is 500 greater than Deck 3. This deck's total penalty is $ 11554.5 $ .
+
+\subsubsection{Test Case Conclusions}
+
+These test cases illustrate that the objective function grades decks to an acceptable degree. However the influence
+of each of the individual penalties are not all equivalent and therefore future work should include weighting
+these penalties to obtain a more accurate and detailed result.
+
+\section{Contributions}
+
+\begin{itemize}
+
+\item Scott Harris
+
+\begin{itemize}
+
+    \item Literary Review Sections \ref{sec:3.1} \& \ref{sec:3.2}
+    \item Archetypes Sub-objective (\ref{objective:Card Archetypes})
+    \item Magic: The Gathering Consultant/Researcher
+	\item PowerPoint slides
+    \item Test Case Creation, Analysis, and Description
+    \item Contribution: 25\%
+
+\end{itemize}
+
+\item John Meyer
+
+\begin{itemize}
+
+    \item Literary Review Sections \ref{sec:3.5} \& \ref{sec:3.6}
+    \item Mana-Curve Sub-objective (\ref{objective:Mana Curve})
+    \item Project Lead
+	\item Powerpoint slides
+    \item Data Structure Creation and Implementation
+    \item Implementation of Objective Function Lead
+    \item Contribution: 35\%
+
+\end{itemize}
+
+\item Bryan Hayes
+
+\begin{itemize}
+
+    \item Literary Review Sections \ref{sec:3.7} \& \ref{sec:3.8}
+    \item Deck-size (\ref{objective:Deck Size}) \&
+        Land Ratio (\ref{objective:Land Percentage}, \ref{objective:Land Color Percentage}) Sub-Objectives
+    \item Ant Colony Optimization Paragraph (\ref{paragraph:Ant colony})
+	\item Knapsack Optimization Paragraph (\ref{paragraph:Knapsack})
+	\item Booster pack generation
+	\item Knapsack problem research
+	\item PowerPoint slides
+    \item Contribution: 20\%
+
+\end{itemize}
+
+\item Jacob Freedman
+
+\begin{itemize}
+
+    \item Literary Review Sections \ref{sec:3.3} \& \ref{sec:3.4}
+    \item Color Identity (\ref{objective:Color Identity}) Sub-objective
+    \item Researched Optimization
+    \item Particle Swarm Optimization Paragraph (\ref{paragraph:Particle Swarm})
+	\item Booster pack generation
+	\item Knapsack problem research
+	\item PowerPoint slides
+    \item Contribution: 20\%
+
+\end{itemize}
+
+\end{itemize}
+
+\begin{thebibliography}{9}
+
+% Scott's
+
+\bibitem{Cowling2012}
+Peter I. Cowling, Colin D. Ward, and Edward J. Powley. 2012.
+\enquote{Ensemble Determinization in Monte Carlo Tree Search for the Imperfect Information Card Game Magic: The
+Gathering.}
+(June 2012). Retrieved March 4, 2019 from https://ieeexplore.ieee.org/document/6218176/
+
+\bibitem{Ham2010}
+Ethan Ham. 2010. (April 2010).
+\enquote{Rarity and Power: Balance in Collectible Object Games.}
+Retrieved March 4, 2019 from http://gamestudies.org/1001/articles/ham
+
+% Jacob's
+
+\bibitem{Pelikan1999}
+Martin Pelikan, David Goldburg, Erick Cantú-Paz. 1999. BOA: Bayesian Optimization Algorithm. Illinois Genetic Algorithms
+Laboratory. University of Illinois at Urbana-Champaign,Urbana IL.
+
+\bibitem{Saint-Etienne2018}
+Marie-Liesse Cauwet Mines Saint-Etienne, Olivier Teytaud. 2018. Surprising strategies obtained by stochastic
+optimization in partially observable games. Univ Clermont Auvergne, CNRS, UMR 6158 LIMOS, Institut Henri Fayol,
+Departement GMI, France
+
+% John's:
+
+\bibitem{Buchheim2014}
+% ACM citation style
+Christoph Buchheim and Long Trieu. 2014.
+Active Set Methods with Reoptimization for Convex Quadratic Integer Programming.
+In \textit{Combinatorial Optimization: Third International Symposium,
+ISCO 2014 Lisbon, Portugal, March 5–7, 2014 Revised Selected Papers}.
+Springer International Publishing Switzerland.
+DOI: 10.1007/978-3-319-09174-7.
+
+\bibitem{Furer2014}
+% ACM citation style
+Martin Fürer and Huiwen Yu. 2014.
+Approximating the k-Set Packing Problem by Local Improvements.
+In \textit{Combinatorial Optimization: Third International Symposium,
+ISCO 2014 Lisbon, Portugal, March 5–7, 2014 Revised Selected Papers}.
+Springer International Publishing Switzerland.
+DOI: 10.1007/978-3-319-09174-7.
+
+% Bryan's:
+
+\bibitem{Chatterjee}
+Krishnendu Chatterjee and Rasmus Ibsen-Jensen.
+The Complexity of Deciding Legality of a Single Step of Magic: The Gathering.
+
+\bibitem{Crutcher2017}
+Paul A. Crutcher. 2017. Magic: The Gathering, A Literary Text.
+\textit{Americana: The Journal of American Popular Culture} 16, 1 (2017).
+
+\end{thebibliography}
+
+\end{document}
