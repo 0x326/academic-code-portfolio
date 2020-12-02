@@ -1,0 +1,19 @@
+#!/usr/bin/env -S bash -l
+
+cat /proc/cpuinfo | grep 'model name' | uniq | head -n 1
+cat /proc/meminfo | grep 'MemTotal' | uniq | head -n 1
+
+LAB_NUM=Lab03
+TIME_FORMAT=$'%U\t%S\t%e'
+
+cpplint.py "${LAB_NUM}-good.cpp"
+cpplint.py "${LAB_NUM}-bad.cpp"
+
+g++ -g -O2 --std=c++17 -Wall "${LAB_NUM}-good.cpp" -o "${LAB_NUM}-good"
+g++ -g -O2 --std=c++17 -Wall "${LAB_NUM}-bad.cpp" -o "${LAB_NUM}-bad"
+
+echo "Running ${LAB_NUM}-good..."
+perf stat -d -d -d "./${LAB_NUM}-good" 2> "${LAB_NUM}-good.perfstat"
+
+echo "Running ${LAB_NUM}-bad..."
+perf stat -d -d -d "./${LAB_NUM}-bad" 2> "${LAB_NUM}-bad.perfstat"
