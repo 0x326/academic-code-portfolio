@@ -1,4 +1,4 @@
-#!/usr/bin/env -S bash -l
+#!/usr/bin/env bash
 
 cat /proc/cpuinfo | grep 'model name' | uniq | head -n 1
 cat /proc/meminfo | grep 'MemTotal' | uniq | head -n 1
