@@ -14,22 +14,22 @@ g++ -g -O2 --std=c++17 -funroll-loops -Wall unroll.cpp -o unroll-with-funroll
 
 for ITERATION_COUNT in {1..5}; do
     echo "Run ${ITERATION_COUNT}: ./unroll standard"
-    perf stat -e "${PERF_STAT_EVENTS}" ./unroll standard 2>> "${LAB_NUM}-standard.perfstat"
-done
+    perf stat -e "${PERF_STAT_EVENTS}" ./unroll standard
+done 2> "${LAB_NUM}-standard.perfstat"
 
 for ITERATION_COUNT in {1..5}; do
     echo "Run ${ITERATION_COUNT}: ./unroll unrolled"
-    perf stat -e "${PERF_STAT_EVENTS}" ./unroll unrolled 2>> "${LAB_NUM}-unrolled.perfstat"
-done
+    perf stat -e "${PERF_STAT_EVENTS}" ./unroll unrolled
+done 2> "${LAB_NUM}-unrolled.perfstat"
 
 for ITERATION_COUNT in {1..5}; do
     echo "Run ${ITERATION_COUNT}: ./unroll-with-funroll standard"
-    perf stat -e "${PERF_STAT_EVENTS}" ./unroll-with-funroll standard 2>> "${LAB_NUM}-standard-with-funroll.perfstat"
-done
+    perf stat -e "${PERF_STAT_EVENTS}" ./unroll-with-funroll standard
+done 2> "${LAB_NUM}-standard-with-funroll.perfstat"
 
 for ITERATION_COUNT in {1..5}; do
     echo "Run ${ITERATION_COUNT}: ./unroll auto_unrolled"
-    perf stat -e "${PERF_STAT_EVENTS}" ./unroll auto_unrolled 2>> "${LAB_NUM}-auto_unrolled.perfstat"
-done
+    perf stat -e "${PERF_STAT_EVENTS}" ./unroll auto_unrolled
+done 2> "${LAB_NUM}-auto_unrolled.perfstat"
 
 echo "${LAB_NUM} done"
