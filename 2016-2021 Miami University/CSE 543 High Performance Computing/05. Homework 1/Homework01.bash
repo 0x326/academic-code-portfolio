@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
 
-cat /proc/cpuinfo | grep 'model name' | uniq | head -n 1
-cat /proc/meminfo | grep 'MemTotal' | uniq | head -n 1
+grep 'model name' /proc/cpuinfo | uniq | head -n 1
+grep 'MemTotal' /proc/meminfo | uniq | head -n 1
 
 ASSIGNMENT_NAME='Homework01'
 GCC_FLAGS='-g -O3 -Wall -std=c++17'
 PERF_STAT_EVENTS='task-clock,branches,branch-misses,L1-dcache-loads,L1-dcache-load-misses'
 
 cpplint.py ackermann.cpp
-g++ ${GCC_FLAGS} ackermann.cpp -o ackermann
-
-if [[ $? -ne 0 ]]; then
+if ! g++ ${GCC_FLAGS} ackermann.cpp -o ackermann; then
     exit $?
 fi
 
@@ -27,7 +25,7 @@ ulimit -s unlimited
 repeat 6 perf stat -e "${PERF_STAT_EVENTS}" ./ackermann 16 2> "${ASSIGNMENT_NAME}.perfstat"
 
 g++ ${GCC_FLAGS} -fprofile-generate ackermann.cpp -o ackermann_pgo
-rm *.gcda
+rm -- *.gcda
 
 repeat 4 ./ackermann_pgo 9
 repeat 4 ./ackermann_pgo 11

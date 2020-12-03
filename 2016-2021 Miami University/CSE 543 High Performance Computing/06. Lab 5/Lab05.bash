@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-cat /proc/cpuinfo | grep 'model name' | uniq | head -n 1
-cat /proc/meminfo | grep 'MemTotal' | uniq | head -n 1
+grep 'model name' /proc/cpuinfo | uniq | head -n 1
+grep 'MemTotal' /proc/meminfo | uniq | head -n 1
 
 ASSIGNMENT_NAME='Lab05'
 GCC_FLAGS='-g -O3 -Wall -std=c++17'
@@ -23,18 +23,14 @@ repeat() {
 
 # Normal executable
 cpplint.py "${SOURCE_FILE}"
-g++ ${GCC_FLAGS} "${SOURCE_FILE}" -o "${EXECUTABLE}"
-
-if [[ $? -ne 0 ]]; then
+if ! g++ ${GCC_FLAGS} "${SOURCE_FILE}" -o "${EXECUTABLE}"; then
     exit $?
 fi
 
 repeat 2 env time -f "${TIME_FORMAT}" "./${EXECUTABLE}" 2> "${EXECUTABLE}.timing"
 
 # OpenMP executable
-g++ ${GCC_FLAGS} -fopenmp "${SOURCE_FILE}" -o "${OPENMP_EXECUTABLE}"
-
-if [[ $? -ne 0 ]]; then
+if ! g++ ${GCC_FLAGS} -fopenmp "${SOURCE_FILE}" -o "${OPENMP_EXECUTABLE}"; then
     exit $?
 fi
 
