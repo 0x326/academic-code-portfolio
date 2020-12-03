@@ -37,3 +37,5 @@ repeat 4 ./ackermann_pgo 15
 g++ ${GCC_FLAGS} -fprofile-use ackermann.cpp -o ackermann_pgo
 
 repeat 6 perf stat -e "${PERF_STAT_EVENTS}" ./ackermann_pgo 16 2> "${ASSIGNMENT_NAME}_pgo.perfstat"
+
+echo "${ASSIGNMENT_NAME} done"

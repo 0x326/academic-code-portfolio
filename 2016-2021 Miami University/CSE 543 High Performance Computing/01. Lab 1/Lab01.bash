@@ -12,3 +12,5 @@ for _ in {1..5}; do
         exit $?
     fi
 done
+
+echo "$0 done"

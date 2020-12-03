@@ -5,7 +5,7 @@ print_usage() {
     exit 1
 }
 
-# ASSIGNMENT_NAME='Homework02'
+ASSIGNMENT_NAME='Homework02'
 GCC_FLAGS='-O3 -Wall -std=c++17'
 # PERF_STAT_EVENTS='task-clock,branches,branch-misses,L1-dcache-loads,L1-dcache-load-misses'
 TIME_FORMAT=$'%U\t%S\t%e'
@@ -92,7 +92,7 @@ run_test() {
         done 2> "marsaglia_omp_${THREADS}.timing"
     done
 
-    echo 'Done'
+    echo "${ASSIGNMENT_NAME} done"
 }
 
 export_results() {

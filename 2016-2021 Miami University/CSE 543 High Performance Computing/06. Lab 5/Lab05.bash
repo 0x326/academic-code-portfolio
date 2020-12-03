@@ -41,3 +41,5 @@ fi
 for THREADS in {1..8}; do
     repeat 2 env "OMP_NUM_THREADS=${THREADS}" time -f "${TIME_FORMAT}" "./${OPENMP_EXECUTABLE}" 2> "${OPENMP_EXECUTABLE}_${THREADS}.timing"
 done
+
+echo "${ASSIGNMENT_NAME} done"

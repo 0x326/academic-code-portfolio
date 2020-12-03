@@ -5,7 +5,7 @@ print_usage() {
     exit 1
 }
 
-# ASSIGNMENT_NAME='Lab06'
+ASSIGNMENT_NAME='Lab06'
 GCC_FLAGS='-O3 -Wall -std=c++17'
 # PERF_STAT_EVENTS='task-clock,branches,branch-misses,L1-dcache-loads,L1-dcache-load-misses'
 TIME_FORMAT=$'%U\t%S\t%e'
@@ -54,7 +54,7 @@ run_test() {
         repeat 2 env "OMP_NUM_THREADS=${THREADS}" time -f "${TIME_FORMAT}" ./workhorse_explicit 40000000 2> "workhorse_explicit_${THREADS}.timing"
     done
 
-    echo 'Done'
+    echo "${ASSIGNMENT_NAME} done"
 }
 
 export_results() {

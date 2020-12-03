@@ -31,3 +31,5 @@ for ITERATION_COUNT in {1..5}; do
     echo "Run ${ITERATION_COUNT}: ./unroll auto_unrolled"
     perf stat -e "${PERF_STAT_EVENTS}" ./unroll auto_unrolled 2>> "${LAB_NUM}-auto_unrolled.perfstat"
 done
+
+echo "${LAB_NUM} done"

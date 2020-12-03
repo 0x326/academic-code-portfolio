@@ -17,8 +17,10 @@ for _ in {1..8}; do
 done
 
 for _ in {1..8}; do
-    env time -f "${TIME_FORMAT}" "./${LAB_NUM}" if 2000000000
+    env time -f "${TIME_FORMAT}" "./${LAB_NUM}" 'if' 2000000000
     if [[ $? -ne 0 ]]; then
         exit $?
     fi
 done
+
+echo "${LAB_NUM} done"

@@ -17,3 +17,5 @@ perf stat -d -d -d "./${LAB_NUM}-good" 2> "${LAB_NUM}-good.perfstat"
 
 echo "Running ${LAB_NUM}-bad..."
 perf stat -d -d -d "./${LAB_NUM}-bad" 2> "${LAB_NUM}-bad.perfstat"
+
+echo "${LAB_NUM} done"
