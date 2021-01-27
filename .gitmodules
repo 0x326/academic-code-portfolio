@@ -2,7 +2,7 @@
 	path = 2016-2021 Miami University/CSE 174 Fundamentals of Programming and Problem Solving/ProjectEuler challenge
 	url = https://github.com/0x326/miami-university-cse-174-group-project
 [submodule "CSE 201 Introduction to Software Engineering/Final Project"]
-	path = 2016-2021 Miami University/CSE 201 Introduction to Software Engineering/Semester-long Project - Pac-Man™ for the Web
+	path = 2016-2021 Miami University/CSE 201 Introduction to Software Engineering/Semester-long Project - Pac-Man™ for the Web/software-artifacts
 	url = https://github.com/0x326/miami-university-cse-201-group-project
 [submodule "2016-2020 Miami University/CSE 464 Algorithms/miami-university-cse-464-group-project"]
 	path = 2016-2021 Miami University/CSE 564 Algorithms/miami-university-cse-464-group-project
@@ -31,3 +31,6 @@
 [submodule "2016-2021 Miami University/CSE 448-449 Senior Capstone/capstone-project"]
 	path = 2016-2021 Miami University/CSE 448-449 Senior Capstone/capstone-project
 	url = https://gitlab.com/0x326/miami-university-senior-capstone-project.git
+[submodule "2016-2021 Miami University/CSE 201 Introduction to Software Engineering/Semester-long Project - Pac-Man™ for the Web/software-lifecycle-documents"]
+	path = 2016-2021 Miami University/CSE 201 Introduction to Software Engineering/Semester-long Project - Pac-Man™ for the Web/software-lifecycle-documents
+	url = https://github.com/0x326/miami-university-cse-201-group-project-materials.git
