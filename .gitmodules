@@ -25,3 +25,6 @@
 [submodule "2016-2021 Miami University/CSE 551 Web Services/nodejs-code"]
 	path = 2016-2021 Miami University/CSE 551 Web Services/nodejs-code
 	url = https://gitlab.com/0x326/miami-university-cse-451-nodejs.git
+[submodule "2016-2021 Miami University/CSE 551 Web Services/docker-server"]
+	path = 2016-2021 Miami University/CSE 551 Web Services/docker-server
+	url = https://gitlab.com/0x326/miami-university-cse-451-docker-server.git
