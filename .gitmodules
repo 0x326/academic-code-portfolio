@@ -22,3 +22,6 @@
 [submodule "2016-2021 Miami University/CSE 551 Web Services/ci-cd-group-project"]
 	path = 2016-2021 Miami University/CSE 551 Web Services/ci-cd-group-project
 	url = https://gitlab.com/0x326/cse-551-ci-cd-group-project.git
+[submodule "2016-2021 Miami University/CSE 551 Web Services/nodejs-code"]
+	path = 2016-2021 Miami University/CSE 551 Web Services/nodejs-code
+	url = https://gitlab.com/0x326/miami-university-cse-451-nodejs.git
