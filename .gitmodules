@@ -37,3 +37,6 @@
 [submodule "2016-2021 Miami University/CSE 585 Advanced Databases/apache-geode-group-project"]
 	path = 2016-2021 Miami University/CSE 585 Advanced Databases/apache-geode-group-project
 	url = https://github.com/0x326/miami-university-cse-485-group-project.git
+[submodule "2016-2021 Miami University/CSE 601 Research Methods/data-visualization-independent-study"]
+	path = 2016-2021 Miami University/CSE 601 Research Methods/data-visualization-independent-study
+	url = https://gitlab.com/0x326/miami-university-cse-601-independent-study.git
