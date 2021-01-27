@@ -28,3 +28,6 @@
 [submodule "2016-2021 Miami University/CSE 551 Web Services/docker-server"]
 	path = 2016-2021 Miami University/CSE 551 Web Services/docker-server
 	url = https://gitlab.com/0x326/miami-university-cse-451-docker-server.git
+[submodule "2016-2021 Miami University/CSE 448-449 Senior Capstone/capstone-project"]
+	path = 2016-2021 Miami University/CSE 448-449 Senior Capstone/capstone-project
+	url = https://gitlab.com/0x326/miami-university-senior-capstone-project.git
