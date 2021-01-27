@@ -34,3 +34,6 @@
 [submodule "2016-2021 Miami University/CSE 201 Introduction to Software Engineering/Semester-long Project - Pac-Man™ for the Web/software-lifecycle-documents"]
 	path = 2016-2021 Miami University/CSE 201 Introduction to Software Engineering/Semester-long Project - Pac-Man™ for the Web/software-lifecycle-documents
 	url = https://github.com/0x326/miami-university-cse-201-group-project-materials.git
+[submodule "2016-2021 Miami University/CSE 585 Advanced Databases/apache-geode-group-project"]
+	path = 2016-2021 Miami University/CSE 585 Advanced Databases/apache-geode-group-project
+	url = https://github.com/0x326/miami-university-cse-485-group-project.git
