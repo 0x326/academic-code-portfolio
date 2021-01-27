@@ -19,3 +19,6 @@
 [submodule "2016-2021 Miami University/CSE 383 Web Application Programming/10. Final Group Project"]
 	path = 2016-2021 Miami University/CSE 383 Web Application Programming/10. Final Group Project
 	url = https://gitlab.com/0x326/miami-university-cse-383-final-group-project.git
+[submodule "2016-2021 Miami University/CSE 551 Web Services/ci-cd-group-project"]
+	path = 2016-2021 Miami University/CSE 551 Web Services/ci-cd-group-project
+	url = https://gitlab.com/0x326/cse-551-ci-cd-group-project.git
