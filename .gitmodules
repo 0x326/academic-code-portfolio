@@ -43,3 +43,6 @@
 [submodule "2016-2021 Miami University/CSE 700 Thesis Research/thesis-document"]
 	path = 2016-2021 Miami University/CSE 700 Thesis Research/thesis-document
 	url = https://gitlab.com/0x326/miami-university-cse-700-thesis.git
+[submodule "2016-2021 Miami University/CSE 700 Thesis Research/apia-implementation"]
+	path = 2016-2021 Miami University/CSE 700 Thesis Research/apia-implementation
+	url = https://gitlab.com/0x326/miami-university-cse-700-apia.git
