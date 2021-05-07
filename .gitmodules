@@ -52,3 +52,6 @@
 [submodule "2016-2021 Miami University/CSE 627 Machine Learning/homework"]
 	path = 2016-2021 Miami University/CSE 627 Machine Learning/homework
 	url = https://gitlab.com/0x326/miami-university-cse-627-homework.git
+[submodule "2016-2021 Miami University/CSE 627 Machine Learning/class-files"]
+	path = 2016-2021 Miami University/CSE 627 Machine Learning/class-files
+	url = https://github.com/0x326/miami-university-cse-627-class-files.git
