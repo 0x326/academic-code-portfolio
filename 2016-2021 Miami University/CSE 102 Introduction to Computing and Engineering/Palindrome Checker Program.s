@@ -2,22 +2,48 @@
 ; Paste into textbox and press "Run"
 ; Prints 'T' if the given variable is a palindrome, 'F' otherwise
 
+; C#: int a;
+; C#: int b;
+; C#: int c;
+; C#: int d;
+
   JMP start
 
-var:
+; Define variable named "foo"
+;
+;   C#: char[] foo = "able was I ere I saw elba";
+foo:
   DB "able was I ere I saw elba"
-  DB 0
+  DB 0 ; Denotes the end of the string
 
+; Define entrypoint
+;
+;   C#: void main() {
 start:
-  MOV A, var
+  ; C# a = foo;
+  MOV A, foo
+
+  ; C#: b = findEnd();
   CALL findEnd ; Find end of string
   MOV B, A
-  MOV A, var
+
+  ; C#: a = foo;
+  MOV A, foo
+
+  ; C#: c = computePalindrome();
   CALL computePalindrome
   MOV A, C
-  CALL printSuccessValue
-  HLT
 
+  ; C#: printSuccessValue();
+  CALL printSuccessValue
+
+  ; C#: return;
+  HLT
+; }
+
+; Define function "findEnd"
+;
+;   C#: int findEnd(int a) {
 findEnd:
   ; param: A: start of variable
   ; return: A: end of variable
@@ -37,7 +63,11 @@ findEnd:
   POP C
   POP B
   RET
+; }
 
+; Define function "computePalindrome"
+;
+;  C#: int computePalindrome(int a, int b) {
 computePalindrome:
   ; param A: start of variable
   ; param B: end of variable
@@ -47,6 +77,7 @@ computePalindrome:
   PUSH B
   DEC B
 
+; C#: do {
 .computePalindromeLoop:
   CMP A, B ; Check to see whether we have breached the midpoint
   JAE .computePalindromeYes
@@ -58,6 +89,7 @@ computePalindrome:
 
   CMP C, D ; Compare values
   JZ .computePalindromeLoop
+  ; } while (c == d);
 
   MOV C, 0
   JMP .computePalindromeEnd
@@ -70,7 +102,11 @@ computePalindrome:
   POP B
   POP A
   RET
+; }
 
+; Define function "printSuccessValue"
+;
+;   C#: void printSuccessValue(int a) {
 printSuccessValue:
   ; param A: success value (0 if false)
 
@@ -79,13 +115,18 @@ printSuccessValue:
   CMP A, 0 ; Determine whether A is zero
   JZ .printSuccessValueFailure
 
+  ; C#: else {
   MOV [0xE8], 'T' ; If not zero, print 'T'
   JMP .printSuccessValueEnd
+  ; }
 
+; C#: if (a == 0) {
 .printSuccessValueFailure:
   MOV [0xE8], 'F' ; Otherwise, print 'F'
   ; Fall through
+; }
 
 .printSuccessValueEnd:
   POP A
   RET
+; }
