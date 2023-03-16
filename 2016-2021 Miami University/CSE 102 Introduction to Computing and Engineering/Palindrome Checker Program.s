@@ -1,6 +1,9 @@
 ; Written for https://schweigi.github.io/assembler-simulator/
 ; Paste into textbox and press "Run"
-; Prints 'T' if the given variable is a palindrome, 'F' otherwise
+;   Optional: Turn on register addressing for "A" and "B".
+;
+; What does this do?
+;   Prints 'T' if the given variable is a palindrome, 'F' otherwise
 
 ; C#: int a;
 ; C#: int b;
