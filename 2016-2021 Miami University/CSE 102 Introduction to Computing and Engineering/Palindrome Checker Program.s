@@ -89,7 +89,7 @@ computePalindrome:
 
   CMP C, D ; Compare values
   JZ .computePalindromeLoop
-  ; } while (c == d);
+  ; } while (!(c == d));
 
   MOV C, 0
   JMP .computePalindromeEnd
@@ -120,7 +120,7 @@ printSuccessValue:
   JMP .printSuccessValueEnd
   ; }
 
-; C#: if (a == 0) {
+; C#: if (!(a == 0)) {
 .printSuccessValueFailure:
   MOV [0xE8], 'F' ; Otherwise, print 'F'
   ; Fall through
